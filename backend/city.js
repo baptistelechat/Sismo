@@ -1,6 +1,6 @@
 const csv=require('csvtojson')
 
-class City {
+export default class City {
 
     // SETTERS
     set Code_postal(Code_postal){
