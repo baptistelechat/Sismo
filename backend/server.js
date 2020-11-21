@@ -2,9 +2,11 @@
 const express = require('express')
 const chalk = require('chalk')
 const csv = require('csvtojson')
+const cors = require('cors')
 
 // Constants
 const app = express()
+app.use(cors())
 const PORT = 8000
 const csvFilePath = './data.csv'
 const APIversion = '/api/v1'
