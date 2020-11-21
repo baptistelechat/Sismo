@@ -37,9 +37,9 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Code_postal Match for ${id}`) : chalk.bgBlue.black(`Get by Code_postal : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Code_postal'))
 })
 
 // -----------------------------------------------------------------
@@ -57,9 +57,9 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Code_commune_INSEE Match for ${id}`) : chalk.bgBlue.black(`Get by Code_commune_INSEE : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Code_commune_INSEE'))
 })
 
 // -----------------------------------------------------------------
@@ -77,9 +77,9 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Nom_commune Match for ${id}`) : chalk.bgBlue.black(`Get by Nom_commune : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Name'))
 })
 
 // -----------------------------------------------------------------
@@ -97,9 +97,9 @@ app.get(`${APIversion}/city/wind/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Vent Match for ${id}`) : chalk.bgBlue.black(`Get by Vent : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Vent'))
 })
 
 // -----------------------------------------------------------------
@@ -117,9 +117,9 @@ app.get(`${APIversion}/city/snow/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Neige Match for ${id}`) : chalk.bgBlue.black(`Get by Neige : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Neige'))
 })
 
 // -----------------------------------------------------------------
@@ -137,9 +137,9 @@ app.get(`${APIversion}/city/seism/:id`, (req, res) => {
           match.push(jsonObj[i])
         }
       }
-      res.send(match)
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Seisme Match for ${id}`) : chalk.bgBlue.black(`Get by Seisme : ${id}`))
     })
-  console.log(chalk.bgBlue.black('Get by Seisme'))
 })
 
 // Server listening on port 3000
