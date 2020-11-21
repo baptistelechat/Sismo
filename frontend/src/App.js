@@ -1,11 +1,11 @@
 import './App.css';
-import CitiesCP from './components/citiesCP'
+import Cities from './components/cities'
 
 function App() {
   return (
     <div className="App">
       <h1>Sismo</h1>
-      <CitiesCP/>
+      <Cities/>
     </div>
   );
 }
