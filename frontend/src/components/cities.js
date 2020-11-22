@@ -10,7 +10,7 @@ class cities extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    axios.get(`http://localhost:8000/api/v1/city/cp/${this.state.search}`)
+    axios.get(`https://sismo-api.vercel.app/api/v1/city/cp/${this.state.search}`)
       .then(res => {
         const cities = res.data;
         this.setState({ cities });
