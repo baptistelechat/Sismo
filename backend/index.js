@@ -3,13 +3,19 @@ const express = require('express')
 const chalk = require('chalk')
 const csv = require('csvtojson')
 const cors = require('cors')
+const path = require('path')
 
 // Constants
 const app = express()
+app.use(express.static(path.join(__dirname, '/public')))
 app.use(cors())
 const PORT = 8000
-const csvFilePath = './data.csv'
+const csvFilePath = path.join(__dirname, '/public/data.csv')
 const APIversion = '/api/v1'
+
+app.get('/', (req, res) => {
+  res.send('🌍 Sismo API Work !')
+})
 
 // -----------------------------------------------------------------
 // ---------------------------- GET ALL ----------------------------
