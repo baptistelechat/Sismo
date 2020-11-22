@@ -6,7 +6,7 @@ class cities extends Component {
     return (
       <div>
         <ul>
-          { this.props.data.map((cities, index) => <li key={index}>{cities.Nom_commune}</li>)}
+          { this.props.data.map((cities, index) => <li key={index}>{cities.Nom_commune ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"}</li>)}
         </ul>
       </div>
     );
