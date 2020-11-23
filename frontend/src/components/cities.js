@@ -1,23 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+import SearchIcon from '@material-ui/icons/Search';
 
 function cities(props) {
   
     return (
       <div>
+        <ListItem >
+          <ListItemIcon><SearchIcon color="secondary" fontSize='large'/></ListItemIcon>
+          <h2>Résultat de votre recherche</h2>
+        </ListItem>
         <List>
           { props.data.map((cities, index) => 
           <ListItem button key={index}>
