@@ -8,13 +8,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import ScrollArea from 'react-scrollbar'
 import { makeStyles } from '@material-ui/core/styles';
 
+import DataPaper from './dataPaper'
+
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
-    height: "60vh",
-  },
+    height: "40vh",
+  }
 }));
 
-function Cities(props) {
+function CitiesList(props) {
   
   const classes = useStyles();
   
@@ -31,13 +33,13 @@ function Cities(props) {
               <ListItemIcon>
                 <ChevronRightIcon />
               </ListItemIcon>
-              <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={`Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE} - Vent : ${cities.Vent} - Neige : ${cities.Neige} - Sismique : ${cities.Seisme}`}/>
+              <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE} - Vent : ${cities.Vent} - Neige : ${cities.Neige} - Sismique : ${cities.Seisme}` : null}/>
             </ListItem>)}
           </List>
         </ScrollArea>
+        <DataPaper/>
       </div>
     );
 }
 
-export default Cities;
-
+export default CitiesList;

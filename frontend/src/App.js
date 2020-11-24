@@ -1,5 +1,5 @@
 // import './App.css';
-import Cities from './components/cities'
+import CitiesList from './components/citiesList'
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import SearchAppBar from './components/searchAppBar'
@@ -35,7 +35,7 @@ function App() {
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper} elevation={3}>
-            <Cities data={searchValue}/>
+            <CitiesList data={searchValue}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
