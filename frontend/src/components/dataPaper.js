@@ -9,9 +9,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     height: '20vh',
     color: theme.palette.text.primary,
-    [theme.breakpoints.down('sm')]: {
-      height: '15vh',
-    },
   },
   grid: {
     paddingRight:theme.spacing(2),

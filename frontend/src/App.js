@@ -17,11 +17,18 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft:theme.spacing(3),
   },
   paper: {
-    padding: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
+    paddingRight:theme.spacing(2),
+    paddingLeft:theme.spacing(2),
     color: theme.palette.text.primary,
     height:"82vh",
     [theme.breakpoints.down('sm')]: {
-      height: "135vh",
+      height: "130vh",
+      paddingBottom: theme.spacing(10),
+    },
+    [theme.breakpoints.down('md')]: {
+      paddingBottom: theme.spacing(30),
     },
   },
 }));
