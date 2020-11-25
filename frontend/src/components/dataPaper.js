@@ -24,18 +24,18 @@ const DataPaper = () => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={3} className={classes.grid} >
-      <Grid item xs={4} sm={4}>
+    <Grid container spacing={2} className={classes.grid} >
+      <Grid item xs={12} sm={12} md={4}>
         <Paper className={classes.paper} elevation={3}>
           Vent
         </Paper>
       </Grid>
-      <Grid item xs={4} sm={4}>
+      <Grid item xs={12} sm={12} md={4}>
         <Paper className={classes.paper} elevation={3}>
           Neige
         </Paper>
       </Grid>
-      <Grid item xs={4} sm={4}>
+      <Grid item xs={12} sm={12} md={4}>
         <Paper className={classes.paper} elevation={3}>
           Sismicité
         </Paper>

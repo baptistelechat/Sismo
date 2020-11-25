@@ -11,15 +11,18 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   grid: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     paddingRight:theme.spacing(3),
     paddingLeft:theme.spacing(3),
   },
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.primary,
-    height:"80vh"
+    height:"82vh",
+    [theme.breakpoints.down('sm')]: {
+      height: "135vh",
+    },
   },
 }));
 
