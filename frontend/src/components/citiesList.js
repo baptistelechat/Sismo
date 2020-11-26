@@ -44,7 +44,7 @@ function CitiesList(props) {
               <ListItemIcon>
                 <ChevronRightIcon />
               </ListItemIcon>
-              <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE} - Vent : ${cities.Vent} - Neige : ${cities.Neige} - Sismique : ${cities.Seisme}` : null}/>
+              <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}` : null}/>
             </ListItem>)}
           </List>
         </ScrollArea>
