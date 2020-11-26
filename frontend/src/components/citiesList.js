@@ -12,13 +12,24 @@ import DataPaper from './dataPaper'
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
-    height: "40vh",
+    height: "38vh",
   }
 }));
 
 function CitiesList(props) {
   
   const classes = useStyles();
+
+  const [choice, setChoice] = React.useState('');
+  const [listVisible, setListVisible] = React.useState(false);
+
+  const listItemClicked = (index) => (event) => {
+    const selectedCity = props.data[index]
+    setChoice(selectedCity)
+    setListVisible(true)
+    console.log(index)
+    console.log(selectedCity)
+  }
   
     return (
       <div>
@@ -29,7 +40,7 @@ function CitiesList(props) {
         <ScrollArea className={classes.scrollbar}>
           <List>
             { props.data.map((cities, index) => 
-            <ListItem button key={index}>
+            <ListItem button key={index} onClick={listItemClicked(index)}>
               <ListItemIcon>
                 <ChevronRightIcon />
               </ListItemIcon>
@@ -37,7 +48,7 @@ function CitiesList(props) {
             </ListItem>)}
           </List>
         </ScrollArea>
-        <DataPaper/>
+        <DataPaper data={choice} listVisible={listVisible}/>
       </div>
     );
 }
