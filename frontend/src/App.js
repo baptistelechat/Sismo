@@ -52,7 +52,6 @@ function App() {
           <Paper className={classes.paper} elevation={3}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum voluptatem accusantium iste totam facilis quas, magnam facere culpa voluptatum excepturi ad saepe eligendi suscipit nobis enim natus, debitis dolorem evenietLorem ipsum dolor sit amet consectetur adipisicing elit. Eum voluptatem accusantium iste totam facilis quas, magnam facere culpa voluptatum excepturi ad saepe eligendi suscipit nobis enim natus, debitis dolorem evenietLorem ipsum dolor sit amet consectetur adipisicing elit. Eum voluptatem accusantium iste totam facilis quas, magnam facere culpa voluptatum excepturi ad saepe eligendi suscipit nobis enim natus, debitis dolorem evenietLorem ipsum dolor sit amet consectetur adipisicing elit. Eum voluptatem accusantium iste totam facilis quas, magnam facere culpa voluptatum excepturi ad saepe eligendi suscipit nobis enim natus, debitis dolorem eveniet!</Paper>
         </Grid>
       </Grid>
-      
     </div>
   );
 }

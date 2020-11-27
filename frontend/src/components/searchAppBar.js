@@ -1,12 +1,10 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Fab from '@material-ui/core/Fab';
@@ -14,8 +12,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-
 import axios from 'axios'
+import MyDrawer from './drawer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,11 +89,11 @@ const MyRadio = withStyles({
 })((props) => <Radio color="default" {...props} />);
 
 export default function SearchAppBar(props) {
+
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = React.useState('');
   const [param, setParam] = React.useState('cp');
-
 
   const handleSubmit = (event) => {
     axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
@@ -117,23 +115,16 @@ export default function SearchAppBar(props) {
 
   const handleKeypress = (event) => {
     //it triggers by pressing the enter key
-  if (event.keyCode === 13) {
-    handleSubmit();
-  }
-};
+    if (event.keyCode === 13) {
+      handleSubmit();
+    }
+  };
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+          <MyDrawer/> 
           <Typography className={classes.title} variant="h6" noWrap>
             Sismo
           </Typography>
