@@ -5,11 +5,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Fab from '@material-ui/core/Fab';
-
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import axios from 'axios'
 
@@ -73,13 +77,25 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       display:"none"
     },
-  }
+  },
 }));
+
+const MyRadio = withStyles({
+  root: {
+    color: '#fff',
+    '&$checked': {
+      color: '#fff',
+    },
+  },
+  checked: {},
+})((props) => <Radio color="default" {...props} />);
 
 export default function SearchAppBar(props) {
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = React.useState('');
+  const [param, setParam] = React.useState('');
+
 
   const handleSubmit = (event) => {
     // event.preventDefault()
@@ -93,6 +109,10 @@ export default function SearchAppBar(props) {
   const handleChange= (event) => {
     setSearchValue(event.currentTarget.value)
   }
+
+  const handleChangeRadio = (event) => {
+    setParam(event.target.value);
+  };
 
   const handleKeypress = (event) => {
     //it triggers by pressing the enter key
@@ -116,6 +136,13 @@ export default function SearchAppBar(props) {
           <Typography className={classes.title} variant="h6" noWrap>
             Sismo
           </Typography>
+          <FormControl component="fieldset">
+            <RadioGroup row aria-label="parameters" name="params" value={param} onChange={handleChangeRadio}>
+              <FormControlLabel value="cp" control={<MyRadio/>} label="Code Postal"/>
+              <FormControlLabel value="insee" control={<MyRadio/>} label="Code INSEE" />
+              <FormControlLabel value="nom" control={<MyRadio />} label="Nom" />
+            </RadioGroup>
+          </FormControl>
           <div className={classes.search} onSubmit={handleSubmit}>
             <div className={classes.searchIcon}>
               <LocationOnIcon />
