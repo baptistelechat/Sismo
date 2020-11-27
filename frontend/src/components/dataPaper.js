@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
   },
+  h2: {
+    marginTop: theme.spacing(1)
+  }
 }));
 
 const DataPaper = (props) => {
@@ -27,7 +30,7 @@ const DataPaper = (props) => {
     <div>
       <ListItem >
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
-        <h2>{props.data.Nom_commune ? `${props.data.Nom_commune} (${props.data.Code_postal})` : 'Aucune ville sélectionnée'}</h2>
+        <h2 className={classes.h2}>{props.data.Nom_commune ? `${props.data.Nom_commune} (${props.data.Code_postal})` : 'Aucune ville sélectionnée'}</h2>
       </ListItem>
       <Grid container spacing={2} className={classes.grid} >
         <Grid item xs={12} sm={12} md={4}>

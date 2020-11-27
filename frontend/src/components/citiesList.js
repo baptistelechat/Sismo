@@ -13,6 +13,9 @@ import DataPaper from './dataPaper'
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
     height: "38vh",
+  },
+  h2: {
+    marginTop: theme.spacing(1)
   }
 }));
 
@@ -35,7 +38,7 @@ function CitiesList(props) {
       <div>
         <ListItem >
           <ListItemIcon><SearchIcon color="secondary" fontSize='large'/></ListItemIcon>
-          <h2>Résultat de votre recherche</h2>
+          <h2 className={classes.h2}>Résultat de votre recherche</h2>
         </ListItem>
         <ScrollArea className={classes.scrollbar}>
           <List>
