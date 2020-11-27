@@ -94,12 +94,11 @@ export default function SearchAppBar(props) {
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = React.useState('');
-  const [param, setParam] = React.useState('');
+  const [param, setParam] = React.useState('cp');
 
 
   const handleSubmit = (event) => {
-    // event.preventDefault()
-    axios.get(`https://sismo-api.vercel.app/api/v1/city/cp/${searchValue}`)
+    axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase()}`)
       .then(res => {
         props.data(res.data);
         console.log(res.data);
@@ -107,11 +106,13 @@ export default function SearchAppBar(props) {
   }
 
   const handleChange= (event) => {
-    setSearchValue(event.currentTarget.value)
+      setSearchValue(event.currentTarget.value)
   }
 
   const handleChangeRadio = (event) => {
-    setParam(event.target.value);
+    const param = event.currentTarget.value
+    setParam(param);
+    console.log(param)
   };
 
   const handleKeypress = (event) => {
@@ -140,7 +141,7 @@ export default function SearchAppBar(props) {
             <RadioGroup row aria-label="parameters" name="params" value={param} onChange={handleChangeRadio}>
               <FormControlLabel value="cp" control={<MyRadio/>} label="Code Postal"/>
               <FormControlLabel value="insee" control={<MyRadio/>} label="Code INSEE" />
-              <FormControlLabel value="nom" control={<MyRadio />} label="Nom" />
+              <FormControlLabel value="name" control={<MyRadio />} label="Nom" />
             </RadioGroup>
           </FormControl>
           <div className={classes.search} onSubmit={handleSubmit}>
