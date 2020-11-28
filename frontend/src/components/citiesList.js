@@ -40,6 +40,13 @@ function CitiesList(props) {
           <h2 className={classes.h2}>{props.data.length>1 ? 'Résultats de votre recherche' : 'Résultat de votre recherche'}</h2>
         </ListItem>
         <ScrollArea className={classes.scrollbar}>
+          {props.data.length === 0 ?
+          <ListItem>
+            <ListItemIcon>
+              <ChevronRightIcon />
+            </ListItemIcon>
+            <ListItemText primary="Veuillez saisir une valeur dans le champ de recherche" secondary=""/>
+          </ListItem> : null}
           <List>
             { props.data.map((cities, index) => 
             <ListItem button key={index} onClick={listItemClicked(index)}>
