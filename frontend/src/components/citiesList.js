@@ -37,7 +37,7 @@ function CitiesList(props) {
       <div>
         <ListItem >
           <ListItemIcon><SearchIcon color="secondary" fontSize='large'/></ListItemIcon>
-          <h2 className={classes.h2}>Résultat de votre recherche</h2>
+          <h2 className={classes.h2}>{props.data.length>1 ? 'Résultats de votre recherche' : 'Résultat de votre recherche'}</h2>
         </ListItem>
         <ScrollArea className={classes.scrollbar}>
           <List>
