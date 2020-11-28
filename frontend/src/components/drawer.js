@@ -57,6 +57,15 @@ const MyDrawer = () => {
         <ListItemIcon><MenuIcon className={classes.iconHeader}/></ListItemIcon>
         <h1 className={classes.h1}>Sismo</h1>
       </ListItem>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>

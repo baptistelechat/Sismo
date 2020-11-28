@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     height: "38vh",
   },
   h2: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
+    marginBottom: 0
   }
 }));
 
@@ -24,12 +25,10 @@ function CitiesList(props) {
   const classes = useStyles();
 
   const [choice, setChoice] = React.useState('');
-  const [listVisible, setListVisible] = React.useState(false);
 
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
     setChoice(selectedCity)
-    setListVisible(true)
     console.log(index)
     console.log(selectedCity)
   }
@@ -51,7 +50,7 @@ function CitiesList(props) {
             </ListItem>)}
           </List>
         </ScrollArea>
-        <DataPaper data={choice} listVisible={listVisible}/>
+        <DataPaper data={choice}/>
       </div>
     );
 }

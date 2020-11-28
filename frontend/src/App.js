@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
     color: theme.palette.text.primary,
-    height:"82vh",
+    height:"79vh",
     [theme.breakpoints.down('sm')]: {
       height: "130vh",
       paddingBottom: theme.spacing(10),
