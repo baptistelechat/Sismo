@@ -66,7 +66,7 @@ function App() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap/>
+            <ReactMap data={searchValue}/>
           </Paper>
         </Grid>
       </Grid>

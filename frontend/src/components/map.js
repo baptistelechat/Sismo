@@ -1,8 +1,24 @@
 import React from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
+import L from 'leaflet'
+import DefaultPin from '../img/pin.svg'
+
+let DefaultIcon = L.icon({
+  iconUrl: DefaultPin,
+  iconRetinaUrl: DefaultPin,
+  iconAnchor: null,
+  popupAnchor: [0,-15],
+  shadowUrl: null,
+  shadowSize: null,
+  shadowAnchor: null,
+  iconSize: 30,
+  // className: 'leaflet-div-icon'
+});
+
+
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -21,18 +37,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ReactMap = () => {
+const ReactMap = (props) => {
 
   const classes = useStyles();
-  const [searchValue, setSearchValue] = React.useState('');
 
-  const position = [47.2028927,-1.5434697]
+  const defaultPosition = [46.539006,2.4298391]
   
   return (
     <Grid container spacing={2} className={classes.grid} >
       <MapContainer
-        center={position}
-        zoom={15}
+        center={defaultPosition}
+        zoom={6}
         style={{height: '80vh', width: '100%'}}
         scrollWheelZoom={true}
       >
@@ -40,6 +55,17 @@ const ReactMap = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+          {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
+            <Marker key={index} position={[cities.Latitude, cities.Longitude]} icon={DefaultIcon}>
+              <Popup>
+                <h3>{`${cities.Nom_commune} (${cities.Code_postal})`}</h3>
+                <p>{`Vent : ${cities.Vent}`}</p>
+                <p>{`Neige : ${cities.Neige}`}</p>
+                <p>{`Séisme : ${cities.Seisme}`}</p>
+              </Popup>
+            </Marker>) : null}
+
+        
       </MapContainer>
     </Grid>
   );
