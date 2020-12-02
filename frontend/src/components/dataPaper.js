@@ -56,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     height: '12vh',
+    [theme.breakpoints.down('md')]: {
+    height: '9.5vh',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '12vh',
+    },
   }
 }));
 
