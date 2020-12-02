@@ -6,20 +6,6 @@ import "leaflet/dist/leaflet.css";
 import L from 'leaflet'
 import DefaultPin from '../img/pin.svg'
 
-let DefaultIcon = L.icon({
-  iconUrl: DefaultPin,
-  iconRetinaUrl: DefaultPin,
-  iconAnchor: null,
-  popupAnchor: [0,-15],
-  shadowUrl: null,
-  shadowSize: null,
-  shadowAnchor: null,
-  iconSize: 30,
-  // className: 'leaflet-div-icon'
-});
-
-
-
 const useStyles = makeStyles((theme) => ({
   grid: {
     paddingTop:theme.spacing(1),
@@ -37,18 +23,31 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
 const ReactMap = (props) => {
 
   const classes = useStyles();
 
-  const defaultPosition = [46.539006,2.4298391]
+  const defaultPosition = [46.539006,2.4298391];
+  
+  let DefaultIcon = L.icon({
+    iconUrl: DefaultPin,
+    iconRetinaUrl: DefaultPin,
+    iconAnchor: null,
+    popupAnchor: [0,-15],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 30,
+    // className: 'leaflet-div-icon'
+  });
   
   return (
     <Grid container spacing={2} className={classes.grid} >
       <MapContainer
         center={defaultPosition}
         zoom={6}
-        style={{height: '80vh', width: '100%'}}
+        style={{height: '82vh', width: '100%'}}
         scrollWheelZoom={true}
       >
         <TileLayer
@@ -56,7 +55,17 @@ const ReactMap = (props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
           {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
-            <Marker key={index} position={[cities.Latitude, cities.Longitude]} icon={DefaultIcon}>
+            <Marker key={index}
+              position={[cities.Latitude, cities.Longitude]}
+              icon={DefaultIcon}
+              eventHandlers ={{
+                click: (e) => {
+                  const selectedCity = props.data[index]
+                  props.choice(selectedCity)
+                  console.log(index)
+                  console.log(selectedCity)
+                },
+              }}>
               <Popup>
                 <h3>{`${cities.Nom_commune} (${cities.Code_postal})`}</h3>
                 <p>{`Vent : ${cities.Vent}`}</p>
@@ -64,8 +73,6 @@ const ReactMap = (props) => {
                 <p>{`Séisme : ${cities.Seisme}`}</p>
               </Popup>
             </Marker>) : null}
-
-        
       </MapContainer>
     </Grid>
   );

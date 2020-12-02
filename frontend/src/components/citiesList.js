@@ -12,7 +12,7 @@ import DataPaper from './dataPaper'
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
-    height: "38vh",
+    height: "44vh",
   },
   h2: {
     marginTop: theme.spacing(1),
@@ -28,7 +28,7 @@ function CitiesList(props) {
 
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
-    setChoice(selectedCity)
+    props.choice(selectedCity)
     console.log(index)
     console.log(selectedCity)
   }
@@ -57,7 +57,6 @@ function CitiesList(props) {
             </ListItem>)}
           </List>
         </ScrollArea>
-        <DataPaper data={choice}/>
       </div>
     );
 }
