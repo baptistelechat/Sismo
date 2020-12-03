@@ -8,8 +8,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import ScrollArea from 'react-scrollbar'
 import { makeStyles } from '@material-ui/core/styles';
 
-import DataPaper from './dataPaper'
-
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
     height: "44vh",
@@ -23,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
 function CitiesList(props) {
   
   const classes = useStyles();
-
-  const [choice, setChoice] = React.useState('');
 
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]

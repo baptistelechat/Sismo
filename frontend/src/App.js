@@ -13,10 +13,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   grid: {
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(12),
     paddingBottom: theme.spacing(2),
     paddingRight:theme.spacing(3),
     paddingLeft:theme.spacing(3),
+    [theme.breakpoints.between('xs', 'sm')]: {
+      paddingTop: theme.spacing(18),
+    },
+    [theme.breakpoints.between('sm', 'md')]: {
+      paddingTop: theme.spacing(12),
+    },
   },
   paperL: {
     paddingTop: theme.spacing(2),
