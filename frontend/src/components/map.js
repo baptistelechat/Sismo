@@ -4,6 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet'
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+
 import DefaultPin from '../img/icon/pin.svg'
 import Abak from '../img/icon/abak-ingenierie.png'
 import Anjou from '../img/icon/anjou-structure.png'
@@ -18,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
   },
-
   map: {
     [theme.breakpoints.down('sm')]: {
       height: '130vh',
@@ -26,14 +29,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       height: '130vh',
     },
+  },
+  switch: {
+    marginBottom: theme.spacing(1)
   }
 }));
-
 
 const ReactMap = (props) => {
 
   const classes = useStyles();
-
+  const [showCompany, setShowCompany] = React.useState(true);
   const defaultPosition = [46.539006,2.4298391];
   
   const DefaultIcon = L.icon({
@@ -126,22 +131,34 @@ const ReactMap = (props) => {
     {"name": "ANJOU Structure", "position": [47.4723274,-0.6111125], "adress": "9 rue Joseph Fourier", "cp": 49070,  "city": "BEAUCOUZE", "size": 30, "icon": AnjouIcon},
     {"name": "PEZZO Ingénierie", "position": [47.2859271,-2.2963234], "adress": "39 Route de Fondeline", "cp": 44600,  "city": "ST NAZAIRE", "size": 30, "icon": PezzoIcon},
     {"name": "EXETERA Ingénierie", "position": [47.298918,-1.757653], "adress": "ZA du Bois de la Noue", "cp": 44360,  "city": "ST ETIENNE DE MONTLUC", "size": 30, "icon": ExeteraIcon},
-    {"name": "GRIF", "position": [48.852263,2.516225], "adress": "6 Rue Vincent Van Gogh", "cp": 93360,  "city": "NEUILLY PLAISANCE", "size": 30, "icon": GrifIcon},
+    {"name": "GRIF", "position": [48.85247560954471,2.51714689365774], "adress": "6 Rue Vincent Van Gogh", "cp": 93360,  "city": "NEUILLY PLAISANCE", "size": 30, "icon": GrifIcon},
   ];
+
+  const companyVisibility = () => {
+    showCompany ? setShowCompany(false) : setShowCompany(true)
+  }
 
   return (
     <Grid container spacing={2} className={classes.grid} >
+      <FormControl component="fieldset" className={classes.switch}>
+        <FormControlLabel
+          value="start"
+          control={<Switch color="secondary" checked={showCompany} onChange={companyVisibility}/>}
+          label="Afficher les agences"
+          labelPlacement="start"
+          />
+      </FormControl>
       <MapContainer
         center={defaultPosition}
         zoom={6}
-        style={{height: '82vh', width: '100%'}}
+        style={{height: '77vh', width: '100%'}}
         scrollWheelZoom={true}
       >
         <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-          {true ? company.map((company, index) => 
+          {showCompany ? company.map((company, index) => 
             <Marker key={index}
               position={company.position}
               icon={company.icon}>
