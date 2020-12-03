@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     height:"82vh",
     [theme.breakpoints.down('sm')]: {
-      height: "130vh",
+      height: "133vh",
       paddingBottom: theme.spacing(10),
     },
     [theme.breakpoints.down('md')]: {
