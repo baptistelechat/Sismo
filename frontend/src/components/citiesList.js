@@ -7,6 +7,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SearchIcon from '@material-ui/icons/Search';
 import ScrollArea from 'react-scrollbar'
 import { makeStyles } from '@material-ui/core/styles';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   h2: {
     marginTop: theme.spacing(1),
     marginBottom: 0
+  },
+  selected: {
+      color : theme.palette.secondary.main,
   }
 }));
 
@@ -25,6 +29,7 @@ function CitiesList(props) {
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
     props.choice(selectedCity)
+    props.indexSelected(index)
     console.log(index)
     console.log(selectedCity)
   }
@@ -47,9 +52,13 @@ function CitiesList(props) {
             { props.data.map((cities, index) => 
             <ListItem button key={index} onClick={listItemClicked(index)}>
               <ListItemIcon>
-                <ChevronRightIcon />
+                {props.index === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
               </ListItemIcon>
-              <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}` : null}/>
+              {props.index === index || props.indexMap === index ?
+                <ListItemText className={classes.selected} primary={cities.Nom_commune} secondary={`Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}`}/>
+                : 
+                <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}` : null}/>
+              }
             </ListItem>)}
           </List>
         </ScrollArea>

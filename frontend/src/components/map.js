@@ -8,7 +8,8 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-import DefaultPin from '../img/icon/pin.svg'
+import DefaultPin from '../img/icon/pinDefault.svg'
+import SelectedPin from '../img/icon/pinSelected.svg'
 import Abak from '../img/icon/abak-ingenierie.png'
 import Anjou from '../img/icon/anjou-structure.png'
 import Pezzo from '../img/icon/pezzo-ingenierie.png'
@@ -21,14 +22,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop:theme.spacing(1),
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
-  },
-  map: {
-    [theme.breakpoints.down('sm')]: {
-      height: '130vh',
-    },
-    [theme.breakpoints.down('md')]: {
-      height: '130vh',
-    },
   },
   switch: {
     marginBottom: theme.spacing(1)
@@ -44,6 +37,17 @@ const ReactMap = (props) => {
   const DefaultIcon = L.icon({
     iconUrl: DefaultPin,
     iconRetinaUrl: DefaultPin,
+    iconAnchor: null,
+    popupAnchor: [0,-15],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 30,
+  });
+
+  const SelectedIcon = L.icon({
+    iconUrl: SelectedPin,
+    iconRetinaUrl: SelectedPin,
     iconAnchor: null,
     popupAnchor: [0,-15],
     shadowUrl: null,
@@ -151,7 +155,7 @@ const ReactMap = (props) => {
       <MapContainer
         center={defaultPosition}
         zoom={6}
-        style={{height: '77vh', width: '100%'}}
+        style={{height: '78vh', width: '100%'}}
         scrollWheelZoom={true}
       >
         <TileLayer
@@ -171,11 +175,12 @@ const ReactMap = (props) => {
           {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
             <Marker key={index}
               position={[cities.Latitude, cities.Longitude]}
-              icon={DefaultIcon}
+              icon={props.index === index ? SelectedIcon : DefaultIcon}
               eventHandlers ={{
                 click: (e) => {
                   const selectedCity = props.data[index]
                   props.choice(selectedCity)
+                  props.indexSelected(index)
                   console.log(index)
                   console.log(selectedCity)
                 },

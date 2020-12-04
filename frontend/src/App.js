@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   grid: {
-    paddingTop: theme.spacing(12),
+    paddingTop: theme.spacing(11),
     paddingBottom: theme.spacing(2),
     paddingRight:theme.spacing(3),
     paddingLeft:theme.spacing(3),
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
     color: theme.palette.text.primary,
-    height:"82vh",
+    height:"84vh",
     [theme.breakpoints.down('sm')]: {
       height: "133vh",
       paddingBottom: theme.spacing(10),
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
     color: theme.palette.text.primary,
-    height:"82vh",
+    height:"84vh",
     [theme.breakpoints.down('sm')]: {
       height: "70vh",
       paddingBottom: theme.spacing(10),
@@ -62,6 +62,7 @@ function App() {
 
   const [searchValue, setSearchValue] = React.useState([]);
   const [citySelected, setCitySelected] = React.useState([]);
+  const [index, setIndex] = React.useState(-1);
 
   return (
     <div className="App">
@@ -69,13 +70,13 @@ function App() {
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
-            <CitiesList data={searchValue} choice={setCitySelected}/>
+            <CitiesList data={searchValue} choice={setCitySelected} indexSelected={setIndex} index={index}/>
             <DataPaper choice={citySelected}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap data={searchValue} choice={setCitySelected}/>
+            <ReactMap data={searchValue} choice={setCitySelected} indexSelected={setIndex} index={index}/>
           </Paper>
         </Grid>
       </Grid>
