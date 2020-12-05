@@ -60,23 +60,23 @@ function App() {
   
   const classes = useStyles();
 
-  const [searchValue, setSearchValue] = React.useState([]);
+  const [result, setResult] = React.useState([]);
   const [citySelected, setCitySelected] = React.useState([]);
   const [index, setIndex] = React.useState(-1);
 
   return (
     <div className="App">
-      <SearchAppBar data={setSearchValue}/>
+      <SearchAppBar data={setResult}/>
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
-            <CitiesList data={searchValue} choice={setCitySelected} indexSelected={setIndex} index={index}/>
+            <CitiesList data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/>
             <DataPaper choice={citySelected}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap data={searchValue} choice={setCitySelected} indexSelected={setIndex} index={index}/>
+            <ReactMap data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/>
           </Paper>
         </Grid>
       </Grid>

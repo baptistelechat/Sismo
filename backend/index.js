@@ -41,7 +41,7 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Code_postal === id) {
+        if (jsonObj[i].codePostal === id) {
           match.push(jsonObj[i])
         }
       }
@@ -61,7 +61,7 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Code_commune_INSEE === id) {
+        if (jsonObj[i].insee === id) {
           match.push(jsonObj[i])
         }
       }
@@ -81,7 +81,7 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Nom_commune === id) {
+        if (jsonObj[i].nomCommune === id) {
           match.push(jsonObj[i])
         }
       }
@@ -101,7 +101,7 @@ app.get(`${APIversion}/city/wind/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Vent === id) {
+        if (jsonObj[i].vent === id) {
           match.push(jsonObj[i])
         }
       }
@@ -121,7 +121,7 @@ app.get(`${APIversion}/city/snow/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Neige === id) {
+        if (jsonObj[i].neige === id) {
           match.push(jsonObj[i])
         }
       }
@@ -141,12 +141,52 @@ app.get(`${APIversion}/city/seism/:id`, (req, res) => {
       const id = req.params.id
       const match = []
       for (let i = 0; i < jsonObj.length; i++) {
-        if (jsonObj[i].Seisme === id) {
+        if (jsonObj[i].seisme === id) {
           match.push(jsonObj[i])
         }
       }
       match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
       console.log(match.length === 0 ? chalk.bgYellow.black(`No Seisme Match for ${id}`) : chalk.bgBlue.black(`Get by Seisme : ${id}`))
+    })
+})
+
+// -----------------------------------------------------------------
+// ------------------------- GET BY DEPT ---------------------------
+// --------------- GET /api/v1/city/department/:id ----------------
+// -----------------------------------------------------------------
+app.get(`${APIversion}/city/department/:id`, (req, res) => {
+  csv()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      const id = req.params.id
+      const match = []
+      for (let i = 0; i < jsonObj.length; i++) {
+        if (jsonObj[i].departement === id) {
+          match.push(jsonObj[i])
+        }
+      }
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Departement Match for ${id}`) : chalk.bgBlue.black(`Get by Departement : ${id}`))
+    })
+})
+
+// -----------------------------------------------------------------
+// ------------------------- GET BY REGION -------------------------
+// ------------------ GET /api/v1/city/state/:id ------------------
+// -----------------------------------------------------------------
+app.get(`${APIversion}/city/state/:id`, (req, res) => {
+  csv()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      const id = req.params.id
+      const match = []
+      for (let i = 0; i < jsonObj.length; i++) {
+        if (jsonObj[i].region === id) {
+          match.push(jsonObj[i])
+        }
+      }
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Region Match for ${id}`) : chalk.bgBlue.black(`Get by Region : ${id}`))
     })
 })
 

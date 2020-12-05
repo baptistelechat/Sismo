@@ -69,16 +69,16 @@ const DataPaper = (props) => {
 
   const classes = useStyles();
 
-  const wind = props.choice.Vent;
-  const snow = props.choice.Neige;
-  const seism = props.choice.Seisme;
+  const wind = props.choice.vent;
+  const snow = props.choice.neige;
+  const seism = props.choice.seisme;
 
   
   return (
     <div>
       <ListItem >
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
-        <h2 className={classes.h2}>{props.choice.Nom_commune ? `${props.choice.Nom_commune} (${props.choice.Code_postal})` : 'Aucune ville sélectionnée'}</h2>
+        <h2 className={classes.h2}>{props.choice.nomCommune ? `${props.choice.nomCommune} (${props.choice.codePostal})` : 'Aucune ville sélectionnée'}</h2>
       </ListItem>
       <Grid container spacing={2} className={classes.grid} >
         <Grid item xs={12} sm={12} md={4}>

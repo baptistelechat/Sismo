@@ -102,6 +102,12 @@ export default function SearchAppBar(props) {
         props.data(res.data);
         console.log(res.data);
       })
+
+    // axios.get(`http://localhost:8000/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
+    //   .then(res => {
+    //     props.data(res.data);
+    //     console.log(res.data);
+    //   })
   }
 
   const handleChange= (event) => {

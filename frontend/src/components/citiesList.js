@@ -54,10 +54,10 @@ function CitiesList(props) {
               <ListItemIcon>
                 {props.index === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
               </ListItemIcon>
-              {props.index === index || props.indexMap === index ?
-                <ListItemText className={classes.selected} primary={cities.Nom_commune} secondary={`Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}`}/>
+              {props.index === index ?
+                <ListItemText className={classes.selected} primary={cities.nomCommune} secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}/>
                 : 
-                <ListItemText primary={cities.Code_postal ? cities.Nom_commune : "Aucune valeur correspondante à votre recherche"} secondary={cities.Code_postal ? `Code postal : ${cities.Code_postal} - INSEE : ${cities.Code_commune_INSEE}` : null}/>
+                <ListItemText primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
               }
             </ListItem>)}
           </List>

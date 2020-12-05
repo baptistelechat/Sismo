@@ -8,6 +8,8 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
+import Georisques from './georisques'
+
 import DefaultPin from '../img/icon/pinDefault.svg'
 import SelectedPin from '../img/icon/pinSelected.svg'
 import Abak from '../img/icon/abak-ingenierie.png'
@@ -152,6 +154,7 @@ const ReactMap = (props) => {
           labelPlacement="start"
           />
       </FormControl>
+      <Georisques data={props.data} index={props.index}/>
       <MapContainer
         center={defaultPosition}
         zoom={6}
@@ -174,7 +177,7 @@ const ReactMap = (props) => {
             </Marker>) : null}
           {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
             <Marker key={index}
-              position={[cities.Latitude, cities.Longitude]}
+              position={[cities.latitude, cities.longitude]}
               icon={props.index === index ? SelectedIcon : DefaultIcon}
               eventHandlers ={{
                 click: (e) => {
@@ -186,10 +189,10 @@ const ReactMap = (props) => {
                 },
               }}>
               <Popup>
-                <h3>{`${cities.Nom_commune} (${cities.Code_postal})`}</h3>
-                <p>{`Vent : ${cities.Vent}`}</p>
-                <p>{`Neige : ${cities.Neige}`}</p>
-                <p>{`Séisme : ${cities.Seisme}`}</p>
+                <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
+                <p>{`Vent : ${cities.vent}`}</p>
+                <p>{`Neige : ${cities.neige}`}</p>
+                <p>{`Séisme : ${cities.seisme}`}</p>
               </Popup>
             </Marker>) : null}
       </MapContainer>
