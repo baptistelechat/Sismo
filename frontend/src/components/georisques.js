@@ -26,7 +26,7 @@ const Georisques = (props) => {
 
   return (
     <div> 
-      {props.index !== -1 ?
+      {props.index !== -1 && props.data[props.index].vent !== 'x' ?
         <Fab
           variant="extended"
           size="medium"

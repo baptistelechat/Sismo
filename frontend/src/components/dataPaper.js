@@ -13,6 +13,7 @@ import seism_2 from '../img/seism/seism-2.png'
 import seism_3 from '../img/seism/seism-3.png'
 import seism_4 from '../img/seism/seism-4.png'
 import seism_5 from '../img/seism/seism-5.png'
+import seism_error from '../img/seism/seism-error.png'
 
 // SNOW
 import snow_default from '../img/snow/snow-default.png'
@@ -25,6 +26,7 @@ import snow_C1 from '../img/snow/snow-C1.png'
 import snow_C2 from '../img/snow/snow-C2.png'
 import snow_D from '../img/snow/snow-D.png'
 import snow_E from '../img/snow/snow-E.png'
+import snow_error from '../img/snow/snow-error.png'
 
 // WIND
 import wind_default from '../img/wind/wind-default.png'
@@ -33,6 +35,7 @@ import wind_2 from '../img/wind/wind-2.png'
 import wind_3 from '../img/wind/wind-3.png'
 import wind_4 from '../img/wind/wind-4.png'
 import wind_5 from '../img/wind/wind-5.png'
+import wind_error from '../img/wind/wind-error.png'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,19 +87,19 @@ const DataPaper = (props) => {
         <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.paper} elevation={3}>
             <h3 className={classes.h3}>Vent</h3>
-            <img className={classes.img} src={wind === '1' ? wind_1 : wind === '2' ? wind_2 : wind === '3' ? wind_3 : wind === '4' ? wind_4 : wind === '5' ? wind_5 : wind_default} alt="image_wind" />
+            <img className={classes.img} src={wind === '1' ? wind_1 : wind === '2' ? wind_2 : wind === '3' ? wind_3 : wind === '4' ? wind_4 : wind === '5' ? wind_5 : wind === 'x' ? wind_error : wind_default} alt="image_wind" />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.paper} elevation={3}>
           <h3 className={classes.h3}>Neige</h3>
-          <img className={classes.img} src={snow === 'A1' ? snow_A1 : snow === 'A2' ? snow_A2 : snow === 'B1' ? snow_B1 :  snow === 'B2' ? snow_B2 : snow === 'C1' ? snow_C1 : snow === 'C2' ? snow_C2 : snow === 'D' ? snow_D : snow === 'E' ? snow_E : snow === '0' ? snow_0 : snow_default} alt="image_wind" />
+          <img className={classes.img} src={snow === 'A1' ? snow_A1 : snow === 'A2' ? snow_A2 : snow === 'B1' ? snow_B1 :  snow === 'B2' ? snow_B2 : snow === 'C1' ? snow_C1 : snow === 'C2' ? snow_C2 : snow === 'D' ? snow_D : snow === 'E' ? snow_E : snow === '0' ? snow_0 : snow === 'x' ? snow_error : snow_default} alt="image_wind" />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.paper} elevation={3}>
           <h3 className={classes.h3}>Séisme</h3>
-          <img className={classes.img} src={seism === '1' ? seism_1 : seism === '2' ? seism_2 : seism === '3' ? seism_3 : seism === '4' ? seism_4 : seism === '5' ? seism_5 : seism_default} alt="image_wind" /></Paper>
+          <img className={classes.img} src={seism === '1' ? seism_1 : seism === '2' ? seism_2 : seism === '3' ? seism_3 : seism === '4' ? seism_4 : seism === '5' ? seism_5 : seism === 'x' ? seism_error : seism_default} alt="image_wind" /></Paper>
         </Grid>
       </Grid>
     </div>
