@@ -170,6 +170,26 @@ app.get(`${APIversion}/city/department/:id`, (req, res) => {
     })
 })
 
+// ---------------------------------------------------------------------
+// ------------------------- GET BY CODEDEPT ---------------------------
+// --------------- GET /api/v1/city/department/:id ---------------------
+// ---------------------------------------------------------------------
+app.get(`${APIversion}/city/codeDepartment/:id`, (req, res) => {
+  csv()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      const id = req.params.id
+      const match = []
+      for (let i = 0; i < jsonObj.length; i++) {
+        if (jsonObj[i].codeDepartement === id) {
+          match.push(jsonObj[i])
+        }
+      }
+      match.length === 0 ? res.send(['Aucune valeur correspondante à votre recherche']) : res.send(match)
+      console.log(match.length === 0 ? chalk.bgYellow.black(`No Departement Match for ${id}`) : chalk.bgBlue.black(`Get by Departement : ${id}`))
+    })
+})
+
 // -----------------------------------------------------------------
 // ------------------------- GET BY REGION -------------------------
 // ------------------ GET /api/v1/city/state/:id ------------------
