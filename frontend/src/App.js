@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchAppBar data={setResult}/>
+      <SearchAppBar data={setResult} indexSelected={setIndex}/>
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>

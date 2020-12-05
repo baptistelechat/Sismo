@@ -19,6 +19,11 @@ const Georisques = (props) => {
   
   const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${props.index !== -1 ? props.data[props.index].insee : ''}&ign=false&CGU-commune=on&commune=${props.index !== -1 ? props.data[props.index].codePostal : ''}+${props.index !== -1 ? props.data[props.index].nomCommuneExact : ''}`
 
+  const openInNewTab = () => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
+
   return (
     <div> 
       {props.index !== -1 ?
@@ -28,7 +33,8 @@ const Georisques = (props) => {
           color="secondary"
           aria-label="add"
           className={classes.fab}
-          href={url}
+          // href={url}
+          onClick={openInNewTab}
         >
           <BuildIcon className={classes.extendedIcon}/>
           Géorisques
