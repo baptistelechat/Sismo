@@ -110,7 +110,7 @@ export default function SearchAppBar(props) {
   const [param, setParam] = React.useState('cp');
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [resultLength, setResultLength] = React.useState(-1);
-  const [result, setResult] = React.useState(-1);
+  const [result, setResult] = React.useState('');
 
   const handleSubmit = (event) => {
     axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
@@ -212,12 +212,13 @@ export default function SearchAppBar(props) {
           </Toolbar>
       </AppBar>
       <div className={classes.snackbar}>
-        {result.[0] !== "Aucune valeur correspondante à votre recherche" ? <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-          <Alert onClose={handleCloseSnackbar} severity="info">
+        {result.[0] !== "Aucune valeur correspondante à votre recherche" ? 
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="success">
             {snackbarTest()}
           </Alert>
         </Snackbar> : 
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}  anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
           <Alert onClose={handleCloseSnackbar} severity="error">
             Aucune valeur correspondante à votre recherche
           </Alert>

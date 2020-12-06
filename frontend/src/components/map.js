@@ -7,6 +7,8 @@ import L from 'leaflet'
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import Georisques from './georisques'
 
@@ -30,10 +32,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const ReactMap = (props) => {
 
   const classes = useStyles();
+
   const [showCompany, setShowCompany] = React.useState(true);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [result, setResult] = React.useState('');
+
   const defaultPosition = [46.539006,2.4298391];
   
   const DefaultIcon = L.icon({
@@ -144,6 +154,13 @@ const ReactMap = (props) => {
     showCompany ? setShowCompany(false) : setShowCompany(true)
   }
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
   return (
     <Grid container spacing={2} className={classes.grid} >
       <FormControl component="fieldset" className={classes.switch}>
@@ -184,6 +201,8 @@ const ReactMap = (props) => {
                   const selectedCity = props.data[index]
                   props.choice(selectedCity)
                   props.indexSelected(index)
+                  setOpenSnackbar(true)
+                  setResult(selectedCity)
                   console.log(index)
                   console.log(selectedCity)
                 },
@@ -196,6 +215,23 @@ const ReactMap = (props) => {
               </Popup>
             </Marker>) : null}
       </MapContainer>
+      {result.vent === "-"?
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="error">
+            {`${result.nomCommuneExact} (${result.codePostal}) - Données indisponible.`}
+          </Alert>
+        </Snackbar> : 
+        result.vent === "x" ?
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="warning">
+            {`${result.nomCommuneExact} (${result.codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`}  
+          </Alert>
+        </Snackbar> :
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="info">
+            {`${result.nomCommuneExact} (${result.codePostal}) sélectionnée`}
+          </Alert>
+        </Snackbar>}
     </Grid>
   );
 }

@@ -8,6 +8,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import ScrollArea from 'react-scrollbar'
 import { makeStyles } from '@material-ui/core/styles';
 import CheckIcon from '@material-ui/icons/Check';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
@@ -19,20 +21,42 @@ const useStyles = makeStyles((theme) => ({
   },
   selected: {
       color : theme.palette.secondary.main,
-  }
+  },
+  snackbar: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function CitiesList(props) {
   
   const classes = useStyles();
 
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [result, setResult] = React.useState('');
+
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
     props.choice(selectedCity)
     props.indexSelected(index)
+    setOpenSnackbar(true)
+    setResult(selectedCity)
     console.log(index)
     console.log(selectedCity)
   }
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
   
     return (
       <div>
@@ -62,6 +86,23 @@ function CitiesList(props) {
             </ListItem>)}
           </List>
         </ScrollArea>
+        {result.vent === "-"?
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="error">
+            {`${result.nomCommuneExact} (${result.codePostal}) - Données indisponible.`}
+          </Alert>
+        </Snackbar> : 
+        result.vent === "x" ?
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="warning">
+            {`${result.nomCommuneExact} (${result.codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`}  
+          </Alert>
+        </Snackbar> :
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
+          <Alert onClose={handleCloseSnackbar} severity="info">
+            {`${result.nomCommuneExact} (${result.codePostal}) sélectionnée`}
+          </Alert>
+        </Snackbar>}
       </div>
     );
 }
