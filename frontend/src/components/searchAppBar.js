@@ -13,6 +13,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 import axios from 'axios'
 import MyDrawer from './drawer';
 
@@ -69,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  Fab: {
+  fab: {
     marginLeft:theme.spacing(2),
     marginTop:theme.spacing(2),
     marginBottom:theme.spacing(2),
@@ -77,7 +80,17 @@ const useStyles = makeStyles((theme) => ({
       display:"none"
     },
   },
+  snackbar: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const MyRadio = withStyles({
   root: {
@@ -95,13 +108,19 @@ export default function SearchAppBar(props) {
 
   const [searchValue, setSearchValue] = React.useState('');
   const [param, setParam] = React.useState('cp');
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [resultLength, setResultLength] = React.useState(-1);
+  const [result, setResult] = React.useState(-1);
 
   const handleSubmit = (event) => {
     axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
       .then(res => {
         props.data(res.data);
         console.log(res.data);
-        props.indexSelected(-1)
+        props.indexSelected(-1);
+        setOpenSnackbar(true)
+        setResultLength(res.data.length)
+        setResult(res.data)
       })
 
     // axios.get(`http://localhost:8000/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
@@ -125,6 +144,34 @@ export default function SearchAppBar(props) {
     //it triggers by pressing the enter key
     if (event.keyCode === 13) {
       handleSubmit();
+    }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
+  const snackbarTest = () => {
+    if (resultLength>1 && param === 'cp') {
+      return `${resultLength} résultats trouvés pour le code postal : ${searchValue}`
+    }
+    if (resultLength>1 && param === 'insee') {
+      return `${resultLength} résultats trouvés pour le code INSEE : ${searchValue}`
+    }
+    if (resultLength>1 && param === 'name') {
+      return `${resultLength} résultats trouvés pour la valeur : ${searchValue}`
+    }
+    if (resultLength===1 && param === 'cp') {
+      return `${resultLength} résultat trouvé pour le code postal : ${searchValue}`
+    }
+    if (resultLength===1 && param === 'insee') {
+      return `${resultLength} résultat trouvé pour le code INSEE : ${searchValue}`
+    }
+    if (resultLength===1 && param === 'name') {
+      return `${resultLength} résultat trouvé pour la valeur : ${searchValue}`
     }
   };
 
@@ -159,11 +206,23 @@ export default function SearchAppBar(props) {
               onKeyUp={handleKeypress}
             />
           </div>
-          <Fab className={classes.Fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
+          <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
               <SearchIcon />
             </Fab>
           </Toolbar>
       </AppBar>
+      <div className={classes.snackbar}>
+        {result.[0] !== "Aucune valeur correspondante à votre recherche" ? <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="info">
+            {snackbarTest()}
+          </Alert>
+        </Snackbar> : 
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="error">
+            Aucune valeur correspondante à votre recherche
+          </Alert>
+        </Snackbar>}
+      </div>
     </div>
   );
 }
