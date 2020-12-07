@@ -7,8 +7,11 @@ import L from 'leaflet'
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+
+import OldCitySnackbar from './snackbars/oldCitySnackbar'
+import CitySelectedSnackbar from './snackbars/citySelectedSnackbar'
+import NoDataSnackbar from './snackbars/noDataSnackbar'
+import CompanySnackbar from './snackbars/companySnackbar'
 
 import Georisques from './georisques'
 
@@ -31,10 +34,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1)
   }
 }));
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 const ReactMap = (props) => {
 
@@ -154,13 +153,6 @@ const ReactMap = (props) => {
     showCompany ? setShowCompany(false) : setShowCompany(true)
   }
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
-  };
-
   return (
     <Grid container spacing={2} className={classes.grid} >
       <FormControl component="fieldset" className={classes.switch}>
@@ -175,7 +167,7 @@ const ReactMap = (props) => {
       <MapContainer
         center={defaultPosition}
         zoom={6}
-        style={{height: '78vh', width: '100%'}}
+        style={{height: '77vh', width: '100%'}}
         scrollWheelZoom={true}
       >
         <TileLayer
@@ -185,7 +177,16 @@ const ReactMap = (props) => {
           {showCompany ? company.map((company, index) => 
             <Marker key={index}
               position={company.position}
-              icon={company.icon}>
+              icon={company.icon}
+              eventHandlers ={{
+                click: (e) => {
+                  const selectedCompany = company
+                  setOpenSnackbar(true)
+                  setResult(selectedCompany)
+                  console.log(index)
+                  console.log(selectedCompany)
+                },
+              }}>
               <Popup>
                 <h3>{company.name}</h3>
                 <p>{company.adress}</p>
@@ -215,23 +216,13 @@ const ReactMap = (props) => {
               </Popup>
             </Marker>) : null}
       </MapContainer>
-      {result.vent === "-"?
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
-          <Alert onClose={handleCloseSnackbar} severity="error">
-            {`${result.nomCommuneExact} (${result.codePostal}) - Données indisponible.`}
-          </Alert>
-        </Snackbar> : 
-        result.vent === "x" ?
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
-          <Alert onClose={handleCloseSnackbar} severity="warning">
-            {`${result.nomCommuneExact} (${result.codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`}  
-          </Alert>
-        </Snackbar> :
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
-          <Alert onClose={handleCloseSnackbar} severity="info">
-            {`${result.nomCommuneExact} (${result.codePostal}) sélectionnée`}
-          </Alert>
-        </Snackbar>}
+      {result.vent === "-" ?
+      <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> : 
+      result.vent === "x" ?
+      <OldCitySnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> :
+      result.vent === undefined ?
+      <CompanySnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> :
+      <CitySelectedSnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/>}
     </Grid>
   );
 }

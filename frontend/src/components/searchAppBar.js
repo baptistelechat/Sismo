@@ -13,8 +13,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import SuccessSearch from './snackbars/successSearch'
+import ErrorSearch from './snackbars/errorSearch'
 
 import axios from 'axios'
 import MyDrawer from './drawer';
@@ -79,18 +79,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       display:"none"
     },
-  },
-  snackbar: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
+  }
 }));
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 const MyRadio = withStyles({
   root: {
@@ -147,34 +137,6 @@ export default function SearchAppBar(props) {
     }
   };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
-  };
-
-  const snackbarTest = () => {
-    if (resultLength>1 && param === 'cp') {
-      return `${resultLength} résultats trouvés pour le code postal : ${searchValue}`
-    }
-    if (resultLength>1 && param === 'insee') {
-      return `${resultLength} résultats trouvés pour le code INSEE : ${searchValue}`
-    }
-    if (resultLength>1 && param === 'name') {
-      return `${resultLength} résultats trouvés pour la valeur : ${searchValue}`
-    }
-    if (resultLength===1 && param === 'cp') {
-      return `${resultLength} résultat trouvé pour le code postal : ${searchValue}`
-    }
-    if (resultLength===1 && param === 'insee') {
-      return `${resultLength} résultat trouvé pour le code INSEE : ${searchValue}`
-    }
-    if (resultLength===1 && param === 'name') {
-      return `${resultLength} résultat trouvé pour la valeur : ${searchValue}`
-    }
-  };
-
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
@@ -213,16 +175,8 @@ export default function SearchAppBar(props) {
       </AppBar>
       <div className={classes.snackbar}>
         {result.[0] !== "Aucune valeur correspondante à votre recherche" ? 
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
-          <Alert onClose={handleCloseSnackbar} severity="success">
-            {snackbarTest()}
-          </Alert>
-        </Snackbar> : 
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}  anchorOrigin={{vertical: 'bottom',horizontal: 'right'}}>
-          <Alert onClose={handleCloseSnackbar} severity="error">
-            Aucune valeur correspondante à votre recherche
-          </Alert>
-        </Snackbar>}
+        <SuccessSearch open={openSnackbar} setOpen={setOpenSnackbar} length={resultLength} param={param} data={searchValue}/> : 
+        <ErrorSearch open={openSnackbar} setOpen={setOpenSnackbar}/>}
       </div>
     </div>
   );
