@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import React, { useRef, useState, useEffect}from 'react';
+import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ReactMap = (props) => {
+
+  const layerGroupRef = useRef();
+  const mapRef = useRef(null);
 
   const classes = useStyles();
 
@@ -153,8 +156,29 @@ const ReactMap = (props) => {
     showCompany ? setShowCompany(false) : setShowCompany(true)
   }
 
+  const handleMarkerClick = (index) => {
+    const selectedCity = props.data[index]
+    props.choice(selectedCity)
+    props.indexSelected(index)
+    setOpenSnackbar(true)
+    setResult(selectedCity)
+    console.log(index)
+    console.log(selectedCity)
+  }
+
+  useEffect(() => {
+    if (props.data[0] !== undefined) {
+      const map = mapRef.current.leafletElement;
+      const layerGroup = layerGroupRef.current.leafletElement;
+      const bounds = layerGroup.getBounds();
+      if (bounds.isValid()) {
+        map.fitBounds(bounds);
+      }
+    } 
+  })
+
   return (
-    <Grid container spacing={2} className={classes.grid} >
+    <Grid container spacing={2} className={classes.grid}>
       <FormControl component="fieldset" className={classes.switch}>
         <FormControlLabel
           value="start"
@@ -164,11 +188,11 @@ const ReactMap = (props) => {
           />
       </FormControl>
       <Georisques data={props.data} index={props.index}/>
-      <MapContainer
+      <Map
+        ref={mapRef}
         center={defaultPosition}
         zoom={6}
         style={{height: '77vh', width: '100%'}}
-        scrollWheelZoom={true}
       >
         <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -177,45 +201,28 @@ const ReactMap = (props) => {
           {showCompany ? company.map((company, index) => 
             <Marker key={index}
               position={company.position}
-              icon={company.icon}
-              eventHandlers ={{
-                click: (e) => {
-                  const selectedCompany = company
-                  setOpenSnackbar(true)
-                  setResult(selectedCompany)
-                  console.log(index)
-                  console.log(selectedCompany)
-                },
-              }}>
+              icon={company.icon}>
               <Popup>
                 <h3>{company.name}</h3>
                 <p>{company.adress}</p>
                 <p>{company.cp} {company.city}</p>
               </Popup>
             </Marker>) : null}
-          {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
-            <Marker key={index}
-              position={[cities.latitude, cities.longitude]}
-              icon={props.index === index ? SelectedIcon : DefaultIcon}
-              eventHandlers ={{
-                click: (e) => {
-                  const selectedCity = props.data[index]
-                  props.choice(selectedCity)
-                  props.indexSelected(index)
-                  setOpenSnackbar(true)
-                  setResult(selectedCity)
-                  console.log(index)
-                  console.log(selectedCity)
-                },
-              }}>
-              <Popup>
-                <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
-                <p>{`Vent : ${cities.vent}`}</p>
-                <p>{`Neige : ${cities.neige}`}</p>
-                <p>{`Séisme : ${cities.seisme}`}</p>
-              </Popup>
-            </Marker>) : null}
-      </MapContainer>
+          <FeatureGroup ref={layerGroupRef}>
+              {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
+              <Marker key={index}
+                position={[cities.latitude, cities.longitude]}
+                icon={props.index === index ? SelectedIcon : DefaultIcon}
+                onClick={() => handleMarkerClick(index)}>
+                <Popup>
+                  <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
+                  <p>{`Vent : ${cities.vent}`}</p>
+                  <p>{`Neige : ${cities.neige}`}</p>
+                  <p>{`Séisme : ${cities.seisme}`}</p>
+                </Popup>
+              </Marker>) : null}
+            </FeatureGroup>
+      </Map>
       {result.vent === "-" ?
       <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> : 
       result.vent === "x" ?
