@@ -166,6 +166,14 @@ const ReactMap = (props) => {
     console.log(selectedCity)
   }
 
+  const handleCompanyClick = (index, company) => {
+    const selectedCompany = company
+    setOpenSnackbar(true)
+    setResult(selectedCompany)
+    console.log(index)
+    console.log(selectedCompany)
+  }
+
   useEffect(() => {
     if (props.data[0] !== undefined) {
       const map = mapRef.current.leafletElement;
@@ -201,7 +209,8 @@ const ReactMap = (props) => {
           {showCompany ? company.map((company, index) => 
             <Marker key={index}
               position={company.position}
-              icon={company.icon}>
+              icon={company.icon}
+              onClick={() => handleCompanyClick(index, company)}>
               <Popup>
                 <h3>{company.name}</h3>
                 <p>{company.adress}</p>
