@@ -1,10 +1,11 @@
-// import './App.css';
-import CitiesList from './components/citiesList'
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import SearchAppBar from './components/searchAppBar'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import SearchAppBar from './components/searchAppBar'
+import CitiesList from './components/citiesList'
 import ReactMap from './components/map';
 import DataPaper from './components/dataPaper'
 
@@ -65,22 +66,25 @@ function App() {
   const [index, setIndex] = React.useState(-1);
 
   return (
-    <div className="App">
-      <SearchAppBar data={setResult} indexSelected={setIndex}/>
+    <Provider className="App" store={store}>
+      {/* <SearchAppBar data={setResult} indexSelected={setIndex}/> */}
+      <SearchAppBar data={setResult}/>
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
-            <CitiesList data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/>
+            {/* <CitiesList data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/> */}
+            <CitiesList data={result} choice={setCitySelected}/>
             <DataPaper choice={citySelected}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/>
+            {/* <ReactMap data={result} choice={setCitySelected} indexSelected={setIndex} index={index}/> */}
+            <ReactMap data={result} choice={setCitySelected}/>
           </Paper>
         </Grid>
       </Grid>
-    </div>
+    </Provider>
   );
 }
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -92,7 +94,7 @@ const MyRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-export default function SearchAppBar(props) {
+function SearchAppBar(props) {
 
   const classes = useStyles();
 
@@ -107,7 +109,7 @@ export default function SearchAppBar(props) {
       .then(res => {
         props.data(res.data);
         console.log(res.data);
-        props.indexSelected(-1);
+        props.setIndex(-1);
         setOpenSnackbar(true)
         setResultLength(res.data.length)
         setResult(res.data)
@@ -181,3 +183,19 @@ export default function SearchAppBar(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    indexSelected: state.indexSelected
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setIndex: (index) => {
+      dispatch(setIndex(index))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchAppBar)

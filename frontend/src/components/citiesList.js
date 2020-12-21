@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -30,13 +32,15 @@ function CitiesList(props) {
   
   const classes = useStyles();
 
+  console.log(props)
+
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [result, setResult] = React.useState('');
 
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
     props.choice(selectedCity)
-    props.indexSelected(index)
+    props.setIndex(index)
     setOpenSnackbar(true)
     setResult(selectedCity)
     console.log(index)
@@ -61,9 +65,9 @@ function CitiesList(props) {
             { props.data.map((cities, index) => 
             <ListItem button key={index} onClick={listItemClicked(index)}>
               <ListItemIcon>
-                {props.index === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
+                {props.indexSelected === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
               </ListItemIcon>
-              {props.index === index ?
+              {props.indexSelected === index ?
                 <ListItemText className={classes.selected} primary={cities.nomCommune} secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}/>
                 : 
                 <ListItemText primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
@@ -80,4 +84,18 @@ function CitiesList(props) {
     );
 }
 
-export default CitiesList;
+const mapStateToProps = (state) => {
+  return {
+    indexSelected: state.indexSelected
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setIndex: (index) => {
+      dispatch(setIndex(index))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CitiesList)
