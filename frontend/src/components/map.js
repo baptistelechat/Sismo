@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect}from 'react';
+import React, { useRef, useEffect}from 'react';
 import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import { setChoice } from '../redux/cityChoice/actionCityChoice'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
@@ -160,7 +161,7 @@ const ReactMap = (props) => {
 
   const handleMarkerClick = (index) => {
     const selectedCity = props.data[index]
-    props.choice(selectedCity)
+    props.setChoice(selectedCity)
     props.setIndex(index)
     setOpenSnackbar(true)
     setResult(selectedCity)
@@ -197,7 +198,7 @@ const ReactMap = (props) => {
           labelPlacement="start"
           />
       </FormControl>
-      <Georisques data={props.data} index={props.indexSelected}/>
+      <Georisques/>
       <Map
         ref={mapRef}
         center={defaultPosition}
@@ -248,7 +249,8 @@ const ReactMap = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    indexSelected: state.indexSelected
+    indexSelected: state.index.indexSelected,
+    cityChoice: state.city.cityChoice
   }
 }
 
@@ -256,6 +258,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setIndex: (index) => {
       dispatch(setIndex(index))
+    },
+    setChoice: (city) => {
+      dispatch(setChoice(city))
     }
   }
 }

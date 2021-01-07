@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -72,16 +73,15 @@ const DataPaper = (props) => {
 
   const classes = useStyles();
 
-  const wind = props.choice.vent;
-  const snow = props.choice.neige;
-  const seism = props.choice.seisme;
-
+  const wind = props.cityChoice.vent;
+  const snow = props.cityChoice.neige;
+  const seism = props.cityChoice.seisme;
   
   return (
     <div>
       <ListItem >
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
-        <h2 className={classes.h2}>{props.choice.nomCommune ? `${props.choice.nomCommune} (${props.choice.codePostal})` : 'Aucune ville sélectionnée'}</h2>
+        <h2 className={classes.h2}>{props.cityChoice.nomCommune ? `${props.cityChoice.nomCommune} (${props.cityChoice.codePostal})` : 'Aucune ville sélectionnée'}</h2>
       </ListItem>
       <Grid container spacing={2} className={classes.grid} >
         <Grid item xs={12} sm={12} md={4}>
@@ -106,4 +106,10 @@ const DataPaper = (props) => {
   );
 }
 
-export default DataPaper;
+const mapStateToProps = (state) => {
+  return {
+    cityChoice: state.city.cityChoice
+  }
+}
+
+export default connect(mapStateToProps)(DataPaper);

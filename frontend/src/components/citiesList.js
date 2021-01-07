@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import { setChoice } from '../redux/cityChoice/actionCityChoice'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -39,7 +40,7 @@ function CitiesList(props) {
 
   const listItemClicked = (index) => (event) => {
     const selectedCity = props.data[index]
-    props.choice(selectedCity)
+    props.setChoice(selectedCity)
     props.setIndex(index)
     setOpenSnackbar(true)
     setResult(selectedCity)
@@ -86,7 +87,8 @@ function CitiesList(props) {
 
 const mapStateToProps = (state) => {
   return {
-    indexSelected: state.indexSelected
+    indexSelected: state.index.indexSelected,
+    cityChoice: state.city.cityChoice
   }
 }
 
@@ -94,6 +96,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setIndex: (index) => {
       dispatch(setIndex(index))
+    },
+    setChoice: (city) => {
+      dispatch(setChoice(city))
     }
   }
 }

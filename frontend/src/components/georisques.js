@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import BuildIcon from '@material-ui/icons/Build';
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
@@ -17,7 +18,7 @@ const Georisques = (props) => {
 
   const classes = useStyles();
   
-  const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${props.index !== -1 ? props.data[props.index].insee : ''}&ign=false&CGU-commune=on&commune=${props.index !== -1 ? props.data[props.index].codePostal : ''}+${props.index !== -1 ? props.data[props.index].nomCommuneExact : ''}`
+  const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${props.cityChoice.insee}&ign=false&CGU-commune=on&commune=${props.cityChoice.codePostal}+${props.cityChoice.nomCommuneExact}`
 
   const openInNewTab = () => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -26,7 +27,7 @@ const Georisques = (props) => {
 
   return (
     <div> 
-      {props.index !== -1 && props.data[props.index].vent !== 'x' ?
+      {props.indexSelected !== -1 && props.cityChoice.vent !== 'x' ?
         <Fab
           variant="extended"
           size="medium"
@@ -57,4 +58,11 @@ const Georisques = (props) => {
   );
 }
 
-export default Georisques;
+const mapStateToProps = (state) => {
+  return {
+    indexSelected: state.index.indexSelected,
+    cityChoice: state.city.cityChoice
+  }
+}
+
+export default connect(mapStateToProps)(Georisques);

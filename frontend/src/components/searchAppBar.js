@@ -186,7 +186,7 @@ function SearchAppBar(props) {
 
 const mapStateToProps = (state) => {
   return {
-    indexSelected: state.indexSelected
+    indexSelected: state.index.indexSelected,
   }
 }
 
