@@ -61,21 +61,19 @@ function App() {
   
   const classes = useStyles();
 
-  const [result, setResult] = React.useState([]);
-
   return (
     <Provider className="App" store={store}>
-      <SearchAppBar data={setResult}/>
+      <SearchAppBar/>
       <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%'}}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
-            <CitiesList data={result}/>
+            <CitiesList/>
             <DataPaper/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap data={result}/>
+            <ReactMap/>
           </Paper>
         </Grid>
       </Grid>

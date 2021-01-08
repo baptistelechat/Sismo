@@ -14,11 +14,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Georisques = (props) => {
+const Georisques = ({indexSelected, apiData}) => {
 
   const classes = useStyles();
   
-  const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${props.cityChoice.insee}&ign=false&CGU-commune=on&commune=${props.cityChoice.codePostal}+${props.cityChoice.nomCommuneExact}`
+  const url = apiData[indexSelected] === undefined ? "" :`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${apiData[indexSelected].insee}&ign=false&CGU-commune=on&commune=${apiData[indexSelected].codePostal}+${apiData[indexSelected].nomCommuneExact}`
 
   const openInNewTab = () => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -26,8 +26,8 @@ const Georisques = (props) => {
   }
 
   return (
-    <div> 
-      {props.indexSelected !== -1 && props.cityChoice.vent !== 'x' ?
+    <div>
+      {indexSelected !== -1 && apiData[indexSelected].vent !== 'x' ?
         <Fab
           variant="extended"
           size="medium"
@@ -61,7 +61,7 @@ const Georisques = (props) => {
 const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
-    cityChoice: state.city.cityChoice
+    apiData: state.cityApi.cities
   }
 }
 

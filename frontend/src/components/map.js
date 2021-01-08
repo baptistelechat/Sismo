@@ -2,7 +2,6 @@ import React, { useRef, useEffect}from 'react';
 import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
-import { setChoice } from '../redux/cityChoice/actionCityChoice'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
@@ -14,7 +13,6 @@ import FormControl from '@material-ui/core/FormControl';
 import OldCitySnackbar from './snackbars/oldCitySnackbar'
 import CitySelectedSnackbar from './snackbars/citySelectedSnackbar'
 import NoDataSnackbar from './snackbars/noDataSnackbar'
-import CompanySnackbar from './snackbars/companySnackbar'
 
 import Georisques from './georisques'
 
@@ -38,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ReactMap = (props) => {
+const ReactMap = ({indexSelected, apiData, setIndex}) => {
 
   const layerGroupRef = useRef();
   const mapRef = useRef(null);
@@ -47,7 +45,6 @@ const ReactMap = (props) => {
 
   const [showCompany, setShowCompany] = React.useState(true);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [result, setResult] = React.useState('');
 
   const defaultPosition = [46.539006,2.4298391];
   
@@ -160,25 +157,17 @@ const ReactMap = (props) => {
   }
 
   const handleMarkerClick = (index) => {
-    const selectedCity = props.data[index]
-    props.setChoice(selectedCity)
-    props.setIndex(index)
+    setIndex(index)
     setOpenSnackbar(true)
-    setResult(selectedCity)
     console.log(index)
-    console.log(selectedCity)
   }
 
-  const handleCompanyClick = (index, company) => {
-    const selectedCompany = company
+  const handleCompanyClick = (company) => {
     setOpenSnackbar(true)
-    setResult(selectedCompany)
-    console.log(index)
-    console.log(selectedCompany)
   }
 
   useEffect(() => {
-    if (props.data[0] !== undefined) {
+    if (apiData[0] !== undefined) {
       const map = mapRef.current.leafletElement;
       const layerGroup = layerGroupRef.current.leafletElement;
       const bounds = layerGroup.getBounds();
@@ -220,11 +209,11 @@ const ReactMap = (props) => {
                 <p>{company.cp} {company.city}</p>
               </Popup>
             </Marker>) : null}
-          <FeatureGroup ref={layerGroupRef}>
-              {props.data[0] !== 'Aucune valeur correspondante à votre recherche' ? props.data.map((cities, index) => 
+            <FeatureGroup ref={layerGroupRef}>
+              {apiData[0] !== 'Aucune valeur correspondante à votre recherche' ? apiData.map((cities, index) => 
               <Marker key={index}
                 position={[cities.latitude, cities.longitude]}
-                icon={props.indexSelected === index ? SelectedIcon : DefaultIcon}
+                icon={indexSelected === index ? SelectedIcon : DefaultIcon}
                 onClick={() => handleMarkerClick(index)}>
                 <Popup>
                   <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
@@ -235,13 +224,12 @@ const ReactMap = (props) => {
               </Marker>) : null}
             </FeatureGroup>
       </Map>
-      {result.vent === "-" ?
-      <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> : 
-      result.vent === "x" ?
-      <OldCitySnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> :
-      result.vent === undefined ?
-      <CompanySnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/> :
-      <CitySelectedSnackbar open={openSnackbar} setOpen={setOpenSnackbar} data={result}/>}
+      {apiData[indexSelected] === undefined ? <div/> :
+      apiData[indexSelected].vent === "-" ?
+      <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> : 
+      apiData[indexSelected].vent === "x" ?
+      <OldCitySnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> :
+      <CitySelectedSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/>}
     </Grid>
   );
 }
@@ -250,7 +238,7 @@ const ReactMap = (props) => {
 const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
-    cityChoice: state.city.cityChoice
+    apiData: state.cityApi.cities
   }
 }
 
@@ -259,9 +247,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setIndex: (index) => {
       dispatch(setIndex(index))
     },
-    setChoice: (city) => {
-      dispatch(setChoice(city))
-    }
   }
 }
 

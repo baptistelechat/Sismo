@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,7 +19,6 @@ import FormControl from '@material-ui/core/FormControl';
 import SuccessSearch from './snackbars/successSearch'
 import ErrorSearch from './snackbars/errorSearch'
 
-import axios from 'axios'
 import MyDrawer from './drawer';
 
 const useStyles = makeStyles((theme) => ({
@@ -94,32 +94,18 @@ const MyRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-function SearchAppBar(props) {
+function SearchAppBar({setIndex, apiData, citiesApiCall}) {
 
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = React.useState('');
   const [param, setParam] = React.useState('cp');
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [resultLength, setResultLength] = React.useState(-1);
-  const [result, setResult] = React.useState('');
 
   const handleSubmit = (event) => {
-    axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
-      .then(res => {
-        props.data(res.data);
-        console.log(res.data);
-        props.setIndex(-1);
-        setOpenSnackbar(true)
-        setResultLength(res.data.length)
-        setResult(res.data)
-      })
-
-    // axios.get(`http://localhost:8000/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
-    //   .then(res => {
-    //     props.data(res.data);
-    //     console.log(res.data);
-    //   })
+    citiesApiCall(param, searchValue)
+    setIndex(-1);
+    setOpenSnackbar(true)
   }
 
   const handleChange= (event) => {
@@ -176,8 +162,8 @@ function SearchAppBar(props) {
           </Toolbar>
       </AppBar>
       <div className={classes.snackbar}>
-        {result.[0] !== "Aucune valeur correspondante à votre recherche" ? 
-        <SuccessSearch open={openSnackbar} setOpen={setOpenSnackbar} length={resultLength} param={param} data={searchValue}/> : 
+        {apiData[0] !== "Aucune valeur correspondante à votre recherche" ? 
+        <SuccessSearch open={openSnackbar} setOpen={setOpenSnackbar} length={apiData.length} param={param} searchValue={searchValue}/> : 
         <ErrorSearch open={openSnackbar} setOpen={setOpenSnackbar}/>}
       </div>
     </div>
@@ -186,7 +172,7 @@ function SearchAppBar(props) {
 
 const mapStateToProps = (state) => {
   return {
-    indexSelected: state.index.indexSelected,
+    apiData: state.cityApi.cities
   }
 }
 
@@ -194,6 +180,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setIndex: (index) => {
       dispatch(setIndex(index))
+    },
+    citiesApiCall: (param, searchValue) => {
+      dispatch(citiesApiCall(param, searchValue))
     }
   }
 }

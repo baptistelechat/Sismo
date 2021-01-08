@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -30,10 +31,17 @@ const CitySelectedSnackbar = (props) => {
   return (
     <Snackbar open={props.open} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{vertical: 'bottom',horizontal: 'right'}} className={classes.root}>
       <Alert onClose={handleCloseSnackbar} severity="info">
-        {`${props.data.nomCommuneExact} (${props.data.codePostal}) sélectionnée`}
+        {`${props.apiData[props.indexSelected].nomCommuneExact} (${props.apiData[props.indexSelected].codePostal}) sélectionnée`}
       </Alert>
     </Snackbar>
   );
 }
 
-export default CitySelectedSnackbar;
+const mapStateToProps = (state) => {
+  return {
+    indexSelected: state.index.indexSelected,
+    apiData: state.cityApi.cities
+  }
+}
+
+export default connect(mapStateToProps)(CitySelectedSnackbar);

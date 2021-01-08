@@ -69,19 +69,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const DataPaper = (props) => {
+const DataPaper = ({indexSelected, apiData}) => {
 
   const classes = useStyles();
 
-  const wind = props.cityChoice.vent;
-  const snow = props.cityChoice.neige;
-  const seism = props.cityChoice.seisme;
+  const wind = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
+  const snow = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
+  const seism = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
   
   return (
     <div>
       <ListItem >
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
-        <h2 className={classes.h2}>{props.cityChoice.nomCommune ? `${props.cityChoice.nomCommune} (${props.cityChoice.codePostal})` : 'Aucune ville sélectionnée'}</h2>
+        <h2 className={classes.h2}>{apiData[indexSelected] === undefined ? "Aucune ville sélectionnée" : apiData[indexSelected].nomCommune ? `${apiData[indexSelected].nomCommune} (${apiData[indexSelected].codePostal})` : "Aucune ville sélectionnée"}</h2>
       </ListItem>
       <Grid container spacing={2} className={classes.grid} >
         <Grid item xs={12} sm={12} md={4}>
@@ -108,7 +108,8 @@ const DataPaper = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    cityChoice: state.city.cityChoice
+    indexSelected: state.index.indexSelected,
+    apiData: state.cityApi.cities
   }
 }
 

@@ -1,1 +1,0 @@
-export const SET_CITY_CHOICE = 'SET_CITY_CHOICE'

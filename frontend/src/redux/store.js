@@ -1,12 +1,13 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import indexSelectedReducer from './indexSelected/reducerIndexSelected'
-import cityChoiceReducer from './cityChoice/reducerCityChoice'
+import citiesDataReducer from './citiesData/reducerCitiesData'
+import thunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
   index: indexSelectedReducer,
-  city: cityChoiceReducer
+  cityApi: citiesDataReducer
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 export default store
