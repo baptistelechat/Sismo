@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
@@ -98,9 +98,9 @@ function SearchAppBar({setIndex, apiData, citiesApiCall}) {
 
   const classes = useStyles();
 
-  const [searchValue, setSearchValue] = React.useState('');
-  const [param, setParam] = React.useState('cp');
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [param, setParam] = useState('cp');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleSubmit = (event) => {
     citiesApiCall(param, searchValue)

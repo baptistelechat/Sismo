@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import List from '@material-ui/core/List';
@@ -21,20 +21,23 @@ const useStyles = makeStyles((theme) => ({
   },
   h2: {
     marginTop: theme.spacing(1),
-    marginBottom: 0
+    marginBottom: 0,
+    paddingBottom: theme.spacing(1),
+    color: theme.palette.text.primary,
+  },
+  p: {
+    color: theme.palette.text.primary,
   },
   selected: {
-      color : theme.palette.secondary.main,
-  },
+    color : theme.palette.secondary.main,
+  }
 }));
 
 function CitiesList({indexSelected, apiData, setIndex}) {
   
   const classes = useStyles();
 
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
-
-  console.log(apiData[indexSelected])
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const listItemClicked = (index) => (event) => {
     setIndex(index)
@@ -54,7 +57,7 @@ function CitiesList({indexSelected, apiData, setIndex}) {
             <ListItemIcon>
               <ChevronRightIcon />
             </ListItemIcon>
-            <ListItemText primary="Veuillez saisir une valeur dans le champ de recherche" secondary=""/>
+            <ListItemText className={classes.p} primary="Veuillez saisir une valeur dans le champ de recherche" secondary=""/>
           </ListItem> : null}
           <List>
             {apiData.map((cities, index) => 
@@ -65,7 +68,7 @@ function CitiesList({indexSelected, apiData, setIndex}) {
               {indexSelected === index ?
                 <ListItemText className={classes.selected} primary={cities.nomCommune} secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}/>
                 : 
-                <ListItemText primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
+                <ListItemText className={classes.p} primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
               }
             </ListItem>)}
           </List>

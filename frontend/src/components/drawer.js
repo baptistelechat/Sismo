@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from "react";
+import { connect } from 'react-redux'
+import { setDarkTheme, setLightTheme } from '../redux/theme/actionTheme'
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,8 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -33,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MyDrawer = () => {
+const MyDrawer = ({setDarkTheme, setLightTheme, theme}) => {
 
   const classes = useStyles();
 
-  const [openDrawer, setOpenDrawer] = React.useState(false)
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const [light, setLight] = useState(false)
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -45,6 +51,19 @@ const MyDrawer = () => {
     }
     setOpenDrawer(open);
   };
+
+  const handleThemeChange = () => {
+    setLight(!light)
+    setTheme()
+  };
+
+  const setTheme = () => {
+    if (!light) {
+      setDarkTheme()
+    } else {
+      setLightTheme()
+    }
+  }
   
   const list = () => (
     <div
@@ -100,9 +119,34 @@ const MyDrawer = () => {
       </IconButton>
       <Drawer anchor={'left'} open={openDrawer} onClose={toggleDrawer(false)}>
         {list()}
+        <List>
+          <ListItem button onClick={handleThemeChange}>
+            <ListItemIcon>{theme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
+              <ListItemText primary={theme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
+              <Switch checked={light} onChange={handleThemeChange}/>
+          </ListItem>
+        </List>
+
       </Drawer>
     </div>
   );
 }
 
-export default MyDrawer;
+const mapStateToProps = (state) => {
+  return {
+    theme: state.theme,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDarkTheme: () => {
+      dispatch(setDarkTheme())
+    },
+    setLightTheme: () => {
+      dispatch(setLightTheme())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyDrawer);

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect}from 'react';
+import React, { useRef, useEffect, useState }from 'react';
 import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
   switch: {
     marginBottom: theme.spacing(1)
+  },
+  formControlLabel: {
+    color: theme.palette.text.primary
   }
 }));
 
@@ -43,8 +46,8 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
 
   const classes = useStyles();
 
-  const [showCompany, setShowCompany] = React.useState(true);
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [showCompany, setShowCompany] = useState(true);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const defaultPosition = [46.539006,2.4298391];
   
@@ -181,6 +184,7 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
     <Grid container spacing={2} className={classes.grid}>
       <FormControl component="fieldset" className={classes.switch}>
         <FormControlLabel
+          className={classes.formControlLabel}
           value="start"
           control={<Switch color="secondary" checked={showCompany} onChange={companyVisibility}/>}
           label="Afficher les agences"
