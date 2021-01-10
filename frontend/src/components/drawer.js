@@ -16,13 +16,16 @@ import Switch from "@material-ui/core/Switch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+
 import Pop from '../img/Pop_Baptiste.png'
+import logo from '../img/logo.png'
+
 
 const useStyles = makeStyles((theme) => ({
   list: {
     width: '25vw',
     [theme.breakpoints.down('md')]: {
-      width: '50vw',
+      width: '33vw',
     },
     [theme.breakpoints.down('sm')]: {
       width: '75vw',
@@ -60,6 +63,12 @@ const useStyles = makeStyles((theme) => ({
     height: '40px',
     borderRadius: '50%',
     marginRight: theme.spacing(1),
+  },
+  logo: {
+    height: '48px',
+    marginRight: theme.spacing(3),
+    marginLeft: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   }
 }));
 
@@ -107,20 +116,28 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      
+      {/* <div>
+        Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div>
+      <div>
+        Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+      </div> */}
       <Divider />
       <div className={classes.iconContainer}>
-        <FontAwesomeIcon
-          className={classes.fontAwesomeIcon}
-          icon={faLinkedin}
-          onClick={() => openLink(urlLinkedin)}/>
+        <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faLinkedin} onClick={() => openLink(urlLinkedin)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faGithub} onClick={() => openLink(urlGithub)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faEnvelope} onClick={() => openLink(urlMail)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faFacebookMessenger} onClick={() => openLink(urlMessenger)}/>
       </div>
       <div className={classes.iconContainer}>
           <img src={Pop} alt="Pop Baptiste" className={classes.pop}/>
-          <p style={{fontWeight: 'bold'}}>Baptiste LECHAT - M2 LMIOT</p>
+          <p style={{fontWeight: 'bold'}}>Baptiste LECHAT</p>
       </div>
     </div>
   );
@@ -141,15 +158,15 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
         <ListItem className={classes.ListItemHeader}>
           <ListItemIcon><MenuIcon className={classes.iconHeader}/></ListItemIcon>
           <h2 className={classes.h1}>Sismo</h2>
+          <img className={classes.logo} src={logo} alt="logo Sismo"/>
         </ListItem>
         <List>
-        <ListItem button onClick={handleThemeChange}>
-          <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
-            <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
-            <Switch checked={light} onChange={handleThemeChange}/>
-        </ListItem>
-        {list()}
-        
+          <ListItem button onClick={handleThemeChange}>
+            <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
+              <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
+              <Switch checked={light} onChange={handleThemeChange}/>
+          </ListItem>
+          {list()}
         </List>
       </Drawer>
     </div>

@@ -7,6 +7,7 @@ import SearchAppBar from './searchAppBar'
 import CitiesList from './citiesList'
 import ReactMap from './map';
 import DataPaper from './dataPaper'
+import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ThemeContainer({materialTheme}) {
+function ThemeContainer({materialTheme, indexSelected, apiData}) {
   
   const classes = useStyles();
 
@@ -74,6 +75,17 @@ function ThemeContainer({materialTheme}) {
 
   return (
       <ThemeProvider theme={muiTheme}>
+        <Helmet>
+          <title>
+            {
+              indexSelected !== -1 ?
+              `Sismo | ${apiData[indexSelected].nomCommuneExact} (${apiData[indexSelected].codePostal})` :
+              apiData.length === 1 ? `Sismo | ${apiData.length} résultat trouvé` :
+              apiData.length > 0 ? `Sismo | ${apiData.length} résultats trouvés` :
+              "Sismo"
+            }
+          </title>
+        </Helmet>
         <SearchAppBar/>
         <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%', background: materialTheme.background}}>
           <Grid item xs={12} sm={6}>
@@ -95,6 +107,8 @@ function ThemeContainer({materialTheme}) {
 const mapStateToProps = (state) => {
   return {
     materialTheme: state.theme,
+    indexSelected: state.index.indexSelected,
+    apiData: state.cityApi.cities
   }
 }
 

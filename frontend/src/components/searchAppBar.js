@@ -21,6 +21,8 @@ import ErrorSearch from './snackbars/errorSearch'
 
 import MyDrawer from './drawer';
 
+import logo from '../img/logo.png'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -81,6 +83,15 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       display:"none"
     },
+  },
+  logo: {
+    display: 'none',
+    height: '48px',
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      display: 'block'
+    },
   }
 }));
 
@@ -129,7 +140,8 @@ function SearchAppBar({setIndex, apiData, citiesApiCall}) {
     <div className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
-          <MyDrawer/> 
+          <MyDrawer/>
+          <img className={classes.logo} src={logo} alt="logo Sismo"/>
           <Typography className={classes.title} variant="h6" noWrap>
             Sismo
           </Typography>
