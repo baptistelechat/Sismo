@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DataPaper = ({indexSelected, apiData, theme}) => {
+const DataPaper = ({indexSelected, apiData, materialTheme}) => {
 
   const classes = useStyles();
 
@@ -102,9 +102,9 @@ const DataPaper = ({indexSelected, apiData, theme}) => {
                 wind === '3' ? wind_3 :
                 wind === '4' ? wind_4 :
                 wind === '5' ? wind_5 :
-                wind === 'x' && theme.type === "dark" ? wind_error_dark :
+                wind === 'x' && materialTheme.type === "dark" ? wind_error_dark :
                 wind === 'x' ? wind_error :
-                theme.type === "dark" ? wind_default_dark :
+                materialTheme.type === "dark" ? wind_default_dark :
                 wind_default
               } 
               alt="image_wind"/>
@@ -125,9 +125,9 @@ const DataPaper = ({indexSelected, apiData, theme}) => {
                 snow === 'D' ? snow_D :
                 snow === 'E' ? snow_E :
                 snow === '0' ? snow_0 :
-                snow === 'x' && theme.type === "dark" ? snow_error_dark :
+                snow === 'x' && materialTheme.type === "dark" ? snow_error_dark :
                 snow === 'x' ? snow_error :
-                theme.type === "dark" ? snow_default_dark :
+                materialTheme.type === "dark" ? snow_default_dark :
                 snow_default
               }
               alt="image_wind" />
@@ -144,9 +144,9 @@ const DataPaper = ({indexSelected, apiData, theme}) => {
               seism === '3' ? seism_3 :
               seism === '4' ? seism_4 :
               seism === '5' ? seism_5 :
-              seism === 'x' && theme.type === "dark" ? seism_error_dark :
+              seism === 'x' && materialTheme.type === "dark" ? seism_error_dark :
               seism === 'x' ? seism_error :
-              theme.type === "dark" ? seism_default_dark :
+              materialTheme.type === "dark" ? seism_default_dark :
               seism_default
             }
             alt="image_wind" />
@@ -159,7 +159,7 @@ const DataPaper = ({indexSelected, apiData, theme}) => {
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.theme,
+    materialTheme: state.theme,
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities
   }

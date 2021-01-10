@@ -55,29 +55,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ThemeContainer({theme}) {
+function ThemeContainer({materialTheme}) {
   
   const classes = useStyles();
 
   const muiTheme = createMuiTheme({
       palette: {
-        type : theme.type,
+        type : materialTheme.type,
         primary: {
-          main: theme.mainPrimaryColor
+          main: materialTheme.mainPrimaryColor
         },
         secondary: {
-          main: theme.mainSecondaryColor
+          main: materialTheme.mainSecondaryColor
         }
       }
     }
   );
 
-  console.log(theme.background);
-
   return (
       <ThemeProvider theme={muiTheme}>
         <SearchAppBar/>
-        <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%', background: theme.background}}>
+        <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%', background: materialTheme.background}}>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paperL} elevation={3}>
               <CitiesList/>
@@ -96,7 +94,7 @@ function ThemeContainer({theme}) {
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.theme,
+    materialTheme: state.theme,
   }
 }
 
