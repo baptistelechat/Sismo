@@ -17,7 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
-import Pop from '../img/Pop_Baptiste.png'
+import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
+import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
 import logo from '../img/logo.png'
 
 
@@ -136,8 +137,12 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faFacebookMessenger} onClick={() => openLink(urlMessenger)}/>
       </div>
       <div className={classes.iconContainer}>
-          <img src={Pop} alt="Pop Baptiste" className={classes.pop}/>
+          <img src={Pop_Baptiste} alt="Pop Baptiste" className={classes.pop}/>
           <p style={{fontWeight: 'bold'}}>Baptiste LECHAT</p>
+      </div>
+      <div className={classes.iconContainer}>
+          <img src={Pop_Matthieu} alt="Pop Matthieu" className={classes.pop}/>
+          <p style={{fontWeight: 'bold'}}>Matthieu LECHAT</p>
       </div>
     </div>
   );
