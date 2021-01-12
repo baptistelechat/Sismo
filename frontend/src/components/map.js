@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState }from 'react';
 import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import toast from 'react-hot-toast'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import "leaflet/dist/leaflet.css";
@@ -9,10 +10,6 @@ import L from 'leaflet'
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-
-import OldCitySnackbar from './snackbars/oldCitySnackbar'
-import CitySelectedSnackbar from './snackbars/citySelectedSnackbar'
-import NoDataSnackbar from './snackbars/noDataSnackbar'
 
 import Georisques from './georisques'
 
@@ -39,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ReactMap = ({indexSelected, apiData, setIndex}) => {
+const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
 
   const layerGroupRef = useRef();
   const mapRef = useRef(null);
@@ -47,7 +44,6 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
   const classes = useStyles();
 
   const [showCompany, setShowCompany] = useState(true);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const defaultPosition = [46.539006,2.4298391];
   
@@ -161,12 +157,63 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
 
   const handleMarkerClick = (index) => {
     setIndex(index)
-    setOpenSnackbar(true)
-    console.log(index)
+    toastOutput(index)
+  }
+
+  const toastOutput = (index) => {
+    if (apiData[index].vent === "-") {
+      toast.error(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Données indisponible.`,
+        {duration: 5000,
+          style: {
+            background: '#e57373',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#b71c1c',
+            secondary: '#FFFFFF'
+          }
+        }
+      )
+    } else if (apiData[index].vent === "x") {
+      toast.error(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`,
+        {duration: 5000,
+          style: {
+            background: '#e57373',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#b71c1c',
+            secondary: '#FFFFFF'
+          }
+        }
+      )
+    } else {
+      toast.success(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+        {duration: 5000,
+          icon: '🏡',
+          style: {
+            background: materialTheme.toastColor,
+            color: '#FFFFFF',
+          },
+        }
+      )
+    }
   }
 
   const handleCompanyClick = (company) => {
-    setOpenSnackbar(true)
+    toast.success(
+      `${company.name} - ${company.cp} ${company.city}`,
+      {duration: 5000,
+        icon: '👷‍♂️👷‍♀️',
+        style: {
+          background: "#a1887f",
+          color: '#FFFFFF',
+        },
+      }
+    )
   }
 
   useEffect(() => {
@@ -206,7 +253,7 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
             <Marker key={index}
               position={company.position}
               icon={company.icon}
-              onClick={() => handleCompanyClick(index, company)}>
+              onClick={() => handleCompanyClick(company)}>
               <Popup>
                 <h3>{company.name}</h3>
                 <p>{company.adress}</p>
@@ -228,12 +275,6 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
               </Marker>) : null}
             </FeatureGroup>
       </Map>
-      {apiData[indexSelected] === undefined ? <div/> :
-      apiData[indexSelected].vent === "-" ?
-      <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> : 
-      apiData[indexSelected].vent === "x" ?
-      <OldCitySnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> :
-      <CitySelectedSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/>}
     </Grid>
   );
 }
@@ -242,7 +283,8 @@ const ReactMap = ({indexSelected, apiData, setIndex}) => {
 const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
-    apiData: state.cityApi.cities
+    apiData: state.cityApi.cities,
+    materialTheme: state.theme
   }
 }
 

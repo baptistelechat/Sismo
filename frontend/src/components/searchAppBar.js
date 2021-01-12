@@ -16,9 +16,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-import SuccessSearch from './snackbars/successSearch'
-import ErrorSearch from './snackbars/errorSearch'
-
 import MyDrawer from './drawer';
 
 import logo from '../img/logo.png'
@@ -105,18 +102,16 @@ const MyRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-function SearchAppBar({setIndex, apiData, citiesApiCall}) {
+function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall}) {
 
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = useState('');
   const [param, setParam] = useState('cp');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = () => {
     citiesApiCall(param, searchValue)
     setIndex(-1);
-    setOpenSnackbar(true)
   }
 
   const handleChange= (event) => {
@@ -173,18 +168,14 @@ function SearchAppBar({setIndex, apiData, citiesApiCall}) {
             </Fab>
           </Toolbar>
       </AppBar>
-      <div className={classes.snackbar}>
-        {apiData[0] !== "Aucune valeur correspondante à votre recherche" ? 
-        <SuccessSearch open={openSnackbar} setOpen={setOpenSnackbar} length={apiData.length} param={param} searchValue={searchValue}/> : 
-        <ErrorSearch open={openSnackbar} setOpen={setOpenSnackbar}/>}
-      </div>
     </div>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    apiData: state.cityApi.cities
+    apiData: state.cityApi.cities,
+    apiDataLength: state.cityApi.length
   }
 }
 

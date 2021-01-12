@@ -3,7 +3,7 @@ import { LOAD_CITIES_API, LOAD_CITIES_API_SUCCESS, LOAD_CITIES_API_ERROR } from 
 const initialStateCitiesData = {
   isLoading: false,
   cities: [],
-  error: ''
+  error: '',
 }
 
 const citiesDataReducer = (state = initialStateCitiesData, action) => {

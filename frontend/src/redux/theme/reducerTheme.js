@@ -4,8 +4,8 @@ const initialStateTheme = {
   type: "light",
   background: "#fafafa",
   mainPrimaryColor: "#3f51b5",
-  mainSecondaryColor: "#e91e63"
-
+  mainSecondaryColor: "#e91e63",
+  toastColor: "#7986cb"
 }
 
 const themeReducer = (state = initialStateTheme, action) => {
@@ -17,8 +17,8 @@ const themeReducer = (state = initialStateTheme, action) => {
         type: "dark",
         background: "#303030",
         mainPrimaryColor: "#3f51b5",
-        mainSecondaryColor: "#f06292"
-
+        mainSecondaryColor: "#f06292",
+        toastColor: "#7986cb"
       }
 
     case SET_LIGHT_THEME:
@@ -27,8 +27,8 @@ const themeReducer = (state = initialStateTheme, action) => {
         type: "light",
         background: "#fafafa",
         mainPrimaryColor: "#3f51b5",
-        mainSecondaryColor: "#e91e63"
-
+        mainSecondaryColor: "#e91e63",
+        toastColor: "#7986cb"
       }
 
     default:

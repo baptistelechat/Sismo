@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import toast from 'react-hot-toast'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,10 +11,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import ScrollArea from 'react-scrollbar'
 import { makeStyles } from '@material-ui/core/styles';
 import CheckIcon from '@material-ui/icons/Check';
-
-import OldCitySnackbar from './snackbars/oldCitySnackbar'
-import CitySelectedSnackbar from './snackbars/citySelectedSnackbar'
-import NoDataSnackbar from './snackbars/noDataSnackbar'
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
@@ -33,16 +30,56 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CitiesList({indexSelected, apiData, setIndex}) {
+function CitiesList({indexSelected, apiData, setIndex, materialTheme}) {
   
   const classes = useStyles();
 
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-
-  const listItemClicked = (index) => (event) => {
+  const listItemClicked = (index) => {
     setIndex(index)
-    setOpenSnackbar(true)
-    console.log(index)
+    toastOutput(index)
+  }
+
+  const toastOutput = (index) => {
+    if (apiData[index].vent === "-") {
+      toast.error(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Données indisponible`,
+        {duration: 5000,
+          style: {
+            background: '#e57373',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#b71c1c',
+            secondary: '#FFFFFF'
+          }
+        }
+      )
+    } else if (apiData[index].vent === "x") {
+      toast.error(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Ancienne commune française sélectionnée. Données indisponible`,
+        {duration: 5000,
+          style: {
+            background: '#ffb74d',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#e65100',
+            secondary: '#FFFFFF'
+          }
+        }
+      )
+    } else {
+      toast.success(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+        {duration: 5000,
+          icon: '🏡',
+          style: {
+            background: materialTheme.toastColor,
+            color: '#FFFFFF',
+          },
+        }
+      )
+    }
   }
  
     return (
@@ -61,7 +98,7 @@ function CitiesList({indexSelected, apiData, setIndex}) {
           </ListItem> : null}
           <List>
             {apiData.map((cities, index) => 
-            <ListItem button key={index} onClick={listItemClicked(index)}>
+            <ListItem button key={index} onClick={() => listItemClicked(index)}>
               <ListItemIcon>
                 {indexSelected === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
               </ListItemIcon>
@@ -73,12 +110,6 @@ function CitiesList({indexSelected, apiData, setIndex}) {
             </ListItem>)}
           </List>
         </ScrollArea>
-        {apiData[indexSelected] === undefined ? <div/> :
-        apiData[indexSelected].vent === "-" ?
-        <NoDataSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> : 
-        apiData[indexSelected].vent === "x" ?
-        <OldCitySnackbar open={openSnackbar} setOpen={setOpenSnackbar}/> :
-        <CitySelectedSnackbar open={openSnackbar} setOpen={setOpenSnackbar}/>}
       </div>
     );
 }
@@ -86,7 +117,8 @@ function CitiesList({indexSelected, apiData, setIndex}) {
 const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
-    apiData: state.cityApi.cities
+    apiData: state.cityApi.cities,
+    materialTheme: state.theme
   }
 }
 

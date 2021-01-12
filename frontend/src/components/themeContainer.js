@@ -8,6 +8,7 @@ import CitiesList from './citiesList'
 import ReactMap from './map';
 import DataPaper from './dataPaper'
 import { Helmet } from 'react-helmet';
+import { Toaster } from 'react-hot-toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,6 +87,10 @@ function ThemeContainer({materialTheme, indexSelected, apiData}) {
             }
           </title>
         </Helmet>
+        <Toaster
+          position="bottom-right"
+          reverseOrder={true}
+        />
         <SearchAppBar/>
         <Grid container spacing={2} className={classes.grid} style={{margin: 0,width: '100%', background: materialTheme.background}}>
           <Grid item xs={12} sm={6}>
