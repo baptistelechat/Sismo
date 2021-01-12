@@ -180,11 +180,11 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
         `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`,
         {duration: 5000,
           style: {
-            background: '#e57373',
+            background: '#ffb74d',
             color: '#FFFFFF',
           },
           iconTheme: {
-            primary: '#b71c1c',
+            primary: '#e65100',
             secondary: '#FFFFFF'
           }
         }
