@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: 'none',
-    [theme.breakpoints.up('myBreakpoint')]: {
+    [theme.breakpoints.up('tablet')]: {
       display: 'block',
     },
   },
@@ -44,7 +44,11 @@ const useStyles = makeStyles((theme) => ({
     },
     marginLeft: 0,
     width: '65%',
-    [theme.breakpoints.up('myBreakpoint')]: {
+    [theme.breakpoints.up('xs')]: {
+      marginLeft: theme.spacing(1),
+      width: '50%',
+    },
+    [theme.breakpoints.up('tablet')]: {
       marginLeft: theme.spacing(1),
       width: 'auto',
     },
@@ -93,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     height: '48px',
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(1),
-    [theme.breakpoints.up('myBreakpoint')]: {
+    [theme.breakpoints.up('tablet')]: {
       display: 'block'
     },
   },

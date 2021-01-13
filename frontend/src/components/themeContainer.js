@@ -75,7 +75,7 @@ function ThemeContainer({materialTheme, indexSelected, apiData}) {
         values: {
           xs: 0,
           sm: 600,
-          myBreakpoint:670,
+          tablet:670,
           md: 960,
           lg: 1280,
           xl: 1920,
