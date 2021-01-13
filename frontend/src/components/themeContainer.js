@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight:theme.spacing(3),
     paddingLeft:theme.spacing(3),
     [theme.breakpoints.between('xs', 'sm')]: {
-      paddingTop: theme.spacing(18),
+      paddingTop: theme.spacing(10),
     },
     [theme.breakpoints.between('sm', 'md')]: {
       paddingTop: theme.spacing(12),
@@ -70,7 +70,17 @@ function ThemeContainer({materialTheme, indexSelected, apiData}) {
         secondary: {
           main: materialTheme.mainSecondaryColor
         }
-      }
+      },
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 600,
+          myBreakpoint:670,
+          md: 960,
+          lg: 1280,
+          xl: 1920,
+        },
+      },
     }
   );
 

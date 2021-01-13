@@ -15,6 +15,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import MyDrawer from './drawer';
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('myBreakpoint')]: {
       display: 'block',
     },
   },
@@ -42,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: '65%',
+    [theme.breakpoints.up('myBreakpoint')]: {
       marginLeft: theme.spacing(1),
       width: 'auto',
     },
@@ -81,15 +82,45 @@ const useStyles = makeStyles((theme) => ({
       display:"none"
     },
   },
+  radioContainer: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display:"block"
+    },
+  },
   logo: {
     display: 'none',
     height: '48px',
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(1),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('myBreakpoint')]: {
       display: 'block'
     },
-  }
+  },
+  selectMenuContainer: {
+    display: 'block',
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    },
+  },
+  selectMenu: {
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    color: theme.palette.common.white,
+    '&:before': {
+      borderColor: theme.palette.common.white,
+    },
+    '&:after': {
+      borderColor: theme.palette.common.white,
+    }
+  },
+  childrenSelectMenu: {
+    padding: theme.spacing(1, 2),
+  },
+ iconSelectMenu: {
+    fill: theme.palette.common.white,
+ },
 }));
 
 const MyRadio = withStyles({
@@ -102,7 +133,7 @@ const MyRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
-function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall}) {
+function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, materialTheme}) {
 
   const classes = useStyles();
 
@@ -114,8 +145,14 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall}) {
     setIndex(-1);
   }
 
-  const handleChange= (event) => {
+  const handleChange = (event) => {
       setSearchValue(event.currentTarget.value)
+  }
+
+  const handleSelectChange = (event) => {
+    const param = event.target.value
+    setParam(param);
+    console.log(param)
   }
 
   const handleChangeRadio = (event) => {
@@ -140,13 +177,32 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall}) {
           <Typography className={classes.title} variant="h6" noWrap>
             Sismo
           </Typography>
-          <FormControl component="fieldset">
+          
+          <FormControl component="fieldset" className={classes.radioContainer}>
             <RadioGroup row aria-label="parameters" name="params" value={param} onChange={handleChangeRadio}>
               <FormControlLabel value="cp" control={<MyRadio/>} label="Code Postal"/>
               <FormControlLabel value="insee" control={<MyRadio/>} label="Code INSEE" />
               <FormControlLabel value="name" control={<MyRadio />} label="Nom" />
             </RadioGroup>
           </FormControl>
+          
+          <FormControl className={classes.selectMenuContainer}>
+            <Select
+              value={param}
+              onChange={handleSelectChange}
+              className={classes.selectMenu}
+              inputProps={{
+                  classes: {
+                      icon: classes.iconSelectMenu,
+                  },
+              }}
+            >
+              <option value={"cp"} className={classes.childrenSelectMenu}>Code Postal</option>
+              <option value={"insee"} className={classes.childrenSelectMenu}>Code INSEE</option>
+              <option value={"name"} className={classes.childrenSelectMenu}>Nom</option>
+            </Select>
+          </FormControl>
+          
           <div className={classes.search} onSubmit={handleSubmit}>
             <div className={classes.searchIcon}>
               <LocationOnIcon />
@@ -175,7 +231,8 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall}) {
 const mapStateToProps = (state) => {
   return {
     apiData: state.cityApi.cities,
-    apiDataLength: state.cityApi.length
+    apiDataLength: state.cityApi.length,
+    materialTheme: state.theme,
   }
 }
 
