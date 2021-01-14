@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: 'none',
+    color: theme.palette.common.white,
     [theme.breakpoints.up('tablet')]: {
       display: 'block',
     },
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
+    color: theme.palette.common.white,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -79,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   fab: {
+    color: theme.palette.common.white,
     marginLeft:theme.spacing(2),
     marginTop:theme.spacing(2),
     marginBottom:theme.spacing(2),
@@ -88,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
   radioContainer: {
     display: 'none',
+    color: theme.palette.common.white,
     [theme.breakpoints.up('md')]: {
       display:"block"
     },

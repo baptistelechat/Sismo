@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux'
-import { setDarkTheme, setLightTheme } from '../redux/theme/actionTheme'
+import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme } from '../redux/theme/actionTheme'
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,6 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
+import Fab from '@material-ui/core/Fab';
+import TextureIcon from '@material-ui/icons/Texture';
+
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
 import logo from '../img/logo.png'
@@ -32,8 +35,16 @@ const useStyles = makeStyles((theme) => ({
       width: '75vw',
     },
   },
-  h1: {
+  h2: {
     color: theme.palette.common.white
+  },
+  h3: {
+    color: theme.palette.text.primary,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+  menuButton: {
+    color: theme.palette.common.white,
   },
   iconHeader: {
     fontSize: 40,
@@ -58,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   pop: {
     height: '40px',
@@ -70,15 +81,58 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+  },
+  fab: {
+    color: theme.palette.common.white,
+    marginLeft:theme.spacing(1),
+    marginRight:theme.spacing(1),
+    marginTop:theme.spacing(1),
+    marginBottom:theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      
+    },
+  },
+  indigoPinkTheme: {
+    color: '#e91e63',
+    background: '#3f51b5',
+    '&:hover': {
+      color: '#3f51b5',
+    background: '#e91e63',
+    },
+  },
+  cyanAmberTheme: {
+    color: '#ffb300',
+    background: '#00acc1',
+    '&:hover': {
+      color: '#00acc1',
+    background: '#ffb300',
+    },
+  },
+  redBrownTheme: {
+    color: '#795548',
+    background: '#d32f2f',
+    '&:hover': {
+      color: '#d32f2f',
+    background: '#795548',
+    },
+  },
+  lightGreenBlueTheme: {
+    color: '#2196f3',
+    background: '#8bc34a',
+    '&:hover': {
+      color: '#8bc34a',
+    background: '#2196f3',
+    },
   }
 }));
 
-const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
+const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, materialTheme}) => {
 
   const classes = useStyles();
 
   const [openDrawer, setOpenDrawer] = useState(false)
-  const [light, setLight] = useState(false)
+  const [dark, setDark] = useState(false)
+  const [theme, setTheme] = useState(1)
 
   const urlLinkedin = 'https://www.linkedin.com/in/baptiste-lechat-3686a6174/'
   const urlGithub = 'https://github.com/baptistelechat'
@@ -93,15 +147,30 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
   };
 
   const handleThemeChange = () => {
-    setLight(!light)
-    setTheme()
+    setDark(!dark)
+    changeTheme(theme, !dark)
   };
 
-  const setTheme = () => {
-    if (!light) {
-      setDarkTheme()
-    } else {
-      setLightTheme()
+  const changeTheme = (id, dark) => {
+    switch (id) {
+      case 1: 
+        setIndigoPinkTheme(dark)
+        setTheme(1)
+        break
+      case 2:
+        setCyanAmberTheme(dark)
+        setTheme(2)
+        break
+      case 3:
+        setRedBrownTheme(dark)
+        setTheme(3)
+        break
+      case 4:
+        setLightGreenBlueTheme(dark)
+        setTheme(4)
+        break
+      default :
+        setIndigoPinkTheme(dark)
     }
   }
 
@@ -110,14 +179,7 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
     if (newWindow) newWindow.opener = null
   }
 
-  const list = () => (
-    <div
-      className={classes.list}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      {/* <div>
+  {/* <div>
         Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
       </div>
       <div>
@@ -129,7 +191,14 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
       <div>
         Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
       </div> */}
-      <Divider />
+
+  const list = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
       <div className={classes.iconContainer}>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faLinkedin} onClick={() => openLink(urlLinkedin)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faGithub} onClick={() => openLink(urlGithub)}/>
@@ -147,6 +216,22 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
     </div>
   );
 
+  const themeSelector = () => (
+    <div className={classes.iconContainer}>
+        <Fab className={`${classes.fab} ${classes.indigoPinkTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(1, dark)}>
+          <TextureIcon />
+        </Fab>
+        <Fab className={`${classes.fab} ${classes.cyanAmberTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(2, dark)}>
+          <TextureIcon />
+        </Fab>
+        <Fab className={`${classes.fab} ${classes.redBrownTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(3, dark)}>
+          <TextureIcon />
+        </Fab>
+        <Fab className={`${classes.fab} ${classes.lightGreenBlueTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(4, dark)}>
+          <TextureIcon />
+        </Fab>
+    </div>
+  );
 
   return (
     <div>
@@ -162,14 +247,22 @@ const MyDrawer = ({setDarkTheme, setLightTheme, materialTheme}) => {
       <Drawer anchor={'left'} open={openDrawer} onClose={toggleDrawer(false)}>
         <ListItem className={classes.ListItemHeader}>
           <ListItemIcon><MenuIcon className={classes.iconHeader}/></ListItemIcon>
-          <h2 className={classes.h1}>Sismo</h2>
+          <h2 className={classes.h2}>Sismo</h2>
           <img className={classes.logo} src={logo} alt="logo Sismo"/>
         </ListItem>
         <List>
+          <ListItem>
+              <h3 className={classes.h3}>Personnalisation</h3>
+          </ListItem>
           <ListItem button onClick={handleThemeChange}>
             <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
               <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
-              <Switch checked={light} onChange={handleThemeChange}/>
+              <Switch checked={dark} onChange={handleThemeChange}/>
+          </ListItem>
+          {themeSelector()}
+          <Divider />
+          <ListItem>
+              <h3 className={classes.h3}>Contact</h3>
           </ListItem>
           {list()}
         </List>
@@ -186,11 +279,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDarkTheme: () => {
-      dispatch(setDarkTheme())
+    setIndigoPinkTheme: (darkmode) => {
+      dispatch(setIndigoPinkTheme(darkmode))
     },
-    setLightTheme: () => {
-      dispatch(setLightTheme())
+    setCyanAmberTheme: (darkmode) => {
+      dispatch(setCyanAmberTheme(darkmode))
+    },
+    setRedBrownTheme: (darkmode) => {
+      dispatch(setRedBrownTheme(darkmode))
+    },
+    setLightGreenBlueTheme: (darkmode) => {
+      dispatch(setLightGreenBlueTheme(darkmode))
     }
   }
 }
