@@ -240,8 +240,6 @@ const MyDrawer = ({
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      {console.log(theme)}
-      {console.log(dark)}
       <div className={classes.iconContainer}>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faLinkedin} onClick={() => openLink(urlLinkedin)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faGithub} onClick={() => openLink(urlGithub)}/>
