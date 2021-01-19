@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux'
-import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme } from '../redux/theme/actionTheme'
+import {
+  setIndigoPinkTheme,
+  setCyanAmberTheme,
+  setRedBrownTheme,
+  setLightGreenBlueTheme,
+  setPersoTheme,
+} from '../redux/theme/actionTheme'
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,9 +23,10 @@ import Switch from "@material-ui/core/Switch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-
-import Fab from '@material-ui/core/Fab';
 import TextureIcon from '@material-ui/icons/Texture';
+import Fab from '@material-ui/core/Fab';
+import ColorPicker from './colorPicker'
+import convert from 'color-convert'
 
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
@@ -126,13 +134,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, materialTheme}) => {
+const MyDrawer = ({
+  primaryColorPicker,
+  secondaryColorPicker,
+  setIndigoPinkTheme,
+  setCyanAmberTheme,
+  setRedBrownTheme,
+  setLightGreenBlueTheme,
+  setPersoTheme,
+  setPrimaryColorPicker,
+  setSecondaryColorPicker,
+  materialTheme}) => {
 
   const classes = useStyles();
 
   const [openDrawer, setOpenDrawer] = useState(false)
   const [dark, setDark] = useState(false)
-  const [theme, setTheme] = useState(1)
+  const [theme, setTheme] = useState("indigo_pink")
 
   const urlLinkedin = 'https://www.linkedin.com/in/baptiste-lechat-3686a6174/'
   const urlGithub = 'https://github.com/baptistelechat'
@@ -153,21 +171,47 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
 
   const changeTheme = (id, dark) => {
     switch (id) {
-      case 1: 
+      case "indigo_pink": 
         setIndigoPinkTheme(dark)
-        setTheme(1)
+        setTheme("indigo_pink")
+        setPrimaryColorPicker('#3f51b5')
+        setSecondaryColorPicker('#e91e63')
         break
-      case 2:
+      case "cyan_amber":
         setCyanAmberTheme(dark)
-        setTheme(2)
+        setTheme("cyan_amber")
+        setPrimaryColorPicker('#00acc1')
+        setSecondaryColorPicker('#ffb300')
         break
-      case 3:
+      case "red_brown":
         setRedBrownTheme(dark)
-        setTheme(3)
+        setTheme("red_brown")
+        setPrimaryColorPicker('#d32f2f')
+        setSecondaryColorPicker('#795548')
         break
-      case 4:
+      case "light_green_blue":
         setLightGreenBlueTheme(dark)
-        setTheme(4)
+        setTheme("light_green_blue")
+        setPrimaryColorPicker('#8bc34a')
+        setSecondaryColorPicker('#2196f3')
+        break
+      case "perso":
+        let secondaryColorPickerDark = convert.hex.hsl(secondaryColorPicker)
+        const secondaryColorPickerDarkHue = secondaryColorPickerDark[0]
+        const secondaryColorPickerDarkSaturation = secondaryColorPickerDark[1]+5 >= 100 ? 100 : secondaryColorPickerDark[1]+5
+        const secondaryColorPickerDarkLightness = secondaryColorPickerDark[2]+20 >=85 ? 85 : secondaryColorPickerDark[2]+20
+        secondaryColorPickerDark = '#'+convert.hsl.hex([secondaryColorPickerDarkHue, secondaryColorPickerDarkSaturation, secondaryColorPickerDarkLightness])
+        
+        let toastColor = convert.hex.hsl(primaryColorPicker)
+        const toastColorHue = toastColor[0]
+        const toastColorSaturation = toastColor[1]+5 >= 100 ? 100 : toastColor[1]+5
+        const toastColorLightness = toastColor[2]+20 >=85 ? 85 : toastColor[2]+20
+        toastColor = '#'+convert.hsl.hex([toastColorHue, toastColorSaturation, toastColorLightness])
+        
+        setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, dark)
+        setTheme("perso")
+        setPrimaryColorPicker(primaryColorPicker)
+        setSecondaryColorPicker(secondaryColorPicker)
         break
       default :
         setIndigoPinkTheme(dark)
@@ -179,19 +223,19 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
     if (newWindow) newWindow.opener = null
   }
 
-  {/* <div>
-        Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-      </div>
-      <div>
-        Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-      </div>
-      <div>
-        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-      </div>
-      <div>
-        Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-      </div> */}
-
+    // <div>
+    //       Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    //     </div>
+    //     <div>
+    //       Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    //     </div>
+    //     <div>
+    //       Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    //     </div>
+    //     <div>
+    //       Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    //     </div>
+  
   const list = () => (
     <div
       className={classes.list}
@@ -199,6 +243,8 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
+      {console.log(theme)}
+      {console.log(dark)}
       <div className={classes.iconContainer}>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faLinkedin} onClick={() => openLink(urlLinkedin)}/>
         <FontAwesomeIcon className={classes.fontAwesomeIcon} icon={faGithub} onClick={() => openLink(urlGithub)}/>
@@ -217,24 +263,30 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
   );
 
   const themeSelector = () => (
-    <div className={classes.iconContainer}>
-        <Fab className={`${classes.fab} ${classes.indigoPinkTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(1, dark)}>
-          <TextureIcon />
-        </Fab>
-        <Fab className={`${classes.fab} ${classes.cyanAmberTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(2, dark)}>
-          <TextureIcon />
-        </Fab>
-        <Fab className={`${classes.fab} ${classes.redBrownTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(3, dark)}>
-          <TextureIcon />
-        </Fab>
-        <Fab className={`${classes.fab} ${classes.lightGreenBlueTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme(4, dark)}>
-          <TextureIcon />
-        </Fab>
+    <div>
+      <div className={classes.iconContainer}>
+          <Fab className={`${classes.fab} ${classes.indigoPinkTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("indigo_pink", dark)}>
+            <TextureIcon/>
+          </Fab>
+          <Fab className={`${classes.fab} ${classes.cyanAmberTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("cyan_amber", dark)}>
+            <TextureIcon/>
+          </Fab>
+          <Fab className={`${classes.fab} ${classes.redBrownTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("red_brown", dark)}>
+            <TextureIcon/>
+          </Fab>
+          <Fab className={`${classes.fab} ${classes.lightGreenBlueTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("light_green_blue", dark)}>
+            <TextureIcon />
+          </Fab>
+     </div>
+      <div className={classes.iconContainer}>
+        <ColorPicker className={classes.colorPicker} setTheme={setTheme}/>
+      </div>
     </div>
   );
 
   return (
     <div>
+      {console.log(theme)}
       <IconButton
             edge="start"
             className={classes.menuButton}
@@ -262,10 +314,11 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
           {themeSelector()}
           <Divider />
           <ListItem>
-              <h3 className={classes.h3}>Contact</h3>
+            <h3 className={classes.h3}>Contact</h3>
           </ListItem>
           {list()}
         </List>
+        <Divider />
       </Drawer>
     </div>
   );
@@ -274,6 +327,8 @@ const MyDrawer = ({setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setL
 const mapStateToProps = (state) => {
   return {
     materialTheme: state.theme,
+    primaryColorPicker: state.colorPicker.primaryColor,
+    secondaryColorPicker: state.colorPicker.secondaryColor,
   }
 }
 
@@ -290,7 +345,16 @@ const mapDispatchToProps = (dispatch) => {
     },
     setLightGreenBlueTheme: (darkmode) => {
       dispatch(setLightGreenBlueTheme(darkmode))
-    }
+    },
+    setPrimaryColorPicker: (primaryColor) => {
+      dispatch(setPrimaryColorPicker(primaryColor))
+    },
+    setSecondaryColorPicker: (secondaryColor) => {
+      dispatch(setSecondaryColorPicker(secondaryColor))
+    },
+    setPersoTheme: (primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, darkmode) => {
+      dispatch(setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, darkmode))
+    },
   }
 }
 

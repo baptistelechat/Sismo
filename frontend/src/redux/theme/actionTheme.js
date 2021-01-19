@@ -1,4 +1,10 @@
-import { SET_INDIGO_PINK_THEME, SET_CYAN_AMBER_THEME, SET_RED_BROWN_THEME, SET_LIGHT_GREEN_BLUE_THEME } from './typeTheme'
+import {
+  SET_INDIGO_PINK_THEME,
+  SET_CYAN_AMBER_THEME,
+  SET_RED_BROWN_THEME,
+  SET_LIGHT_GREEN_BLUE_THEME,
+  SET_PERSO_THEME,
+} from './typeTheme'
 
 export const setIndigoPinkTheme = (darkmode) => {
   return {
@@ -28,11 +34,13 @@ export const setLightGreenBlueTheme = (darkmode) => {
   }
 }
 
-// export const setPersoTheme = (primary, secondary, darkmode) => {
-//   return {
-//     type: SET_PERSO_THEME,
-//     payload: a
-//     payload: b
-//     payload: c
-//   }
-// }
+export const setPersoTheme = (primaryColorLight, secondaryColorLight, secondaryColorDark, toastColor, darkmode) => {
+  return {
+    type: SET_PERSO_THEME,
+    primaryColorLight: primaryColorLight,
+    secondaryColorLight: secondaryColorLight,
+    secondaryColorDark: secondaryColorDark,
+    toastColor: toastColor,
+    darkmode: darkmode
+  }
+}
