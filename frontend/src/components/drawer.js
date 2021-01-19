@@ -96,9 +96,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight:theme.spacing(1),
     marginTop:theme.spacing(1),
     marginBottom:theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      
-    },
   },
   indigoPinkTheme: {
     color: '#e91e63',

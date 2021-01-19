@@ -23,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
   fab: {
     color: theme.palette.common.white,
-    marginLeft: theme.spacing(4),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     marginBottom: theme.spacing(3),
-  },
+ },
   title: {
     color: theme.palette.text.primary,
   },
