@@ -26,8 +26,7 @@ Go to https://sismo.vercel.app to view the project.
 ### Darkmode 
 ![darkmode](./screenshot/darkmode.png)
 ### Responsive
-<img src="./screenshot/responsive1.png" height="450">
-<img src="./screenshot/responsive2.png" height="450">
+![responsive](./screenshot/responsive.png)
 
 ## ✨ Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
