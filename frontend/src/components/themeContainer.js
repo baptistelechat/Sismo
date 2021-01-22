@@ -29,21 +29,21 @@ const useStyles = makeStyles((theme) => ({
   },
   paperL: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(6),
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
     height:"84vh",
     [theme.breakpoints.down('sm')]: {
-      height: "133vh",
+      height: "155vh",
       paddingBottom: theme.spacing(10),
     },
     [theme.breakpoints.down('md')]: {
-      paddingBottom: theme.spacing(20),
+      paddingBottom: theme.spacing(22),
     },
   },
   paperR: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(6),
     paddingRight:theme.spacing(2),
     paddingLeft:theme.spacing(2),
     height:"84vh",
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(10),
     },
     [theme.breakpoints.down('md')]: {
-      paddingBottom: theme.spacing(20),
+      paddingBottom: theme.spacing(22),
     },
   },
 }));
@@ -76,6 +76,7 @@ function ThemeContainer({materialTheme, indexSelected, apiData}) {
           xs: 0,
           sm: 600,
           tablet:670,
+          clipboard: 795,
           md: 960,
           lg: 1280,
           xl: 1920,

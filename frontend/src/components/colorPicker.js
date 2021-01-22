@@ -105,7 +105,7 @@ const ColorPicker = ({
           className={classes.fab}
           onClick={handleClickOpen}
           >
-          <BrushIcon className={classes.extendedIcon}/>
+          <BrushIcon/>
           Créer son thème personnalisé
         </Fab>
       <Dialog open={openColorPicker} onClose={handleClose} aria-labelledby="form-dialog-title">

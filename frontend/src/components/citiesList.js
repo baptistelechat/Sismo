@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import toast from 'react-hot-toast'
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function CitiesList({indexSelected, apiData, setIndex, materialTheme}) {
   
   const classes = useStyles();
-
+  
   const listItemClicked = (index) => {
     setIndex(index)
     toastOutput(index)

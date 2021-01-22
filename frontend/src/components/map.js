@@ -243,7 +243,7 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
         ref={mapRef}
         center={defaultPosition}
         zoom={6}
-        style={{height: '77vh', width: '100%'}}
+        style={{height: '78vh', width: '100%'}}
       >
         <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
