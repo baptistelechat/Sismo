@@ -88,11 +88,12 @@ const useStyles = makeStyles((theme) => ({
     height: '40px',
     borderRadius: '50%',
     marginRight: theme.spacing(1),
+    
   },
   logo: {
     height: '48px',
     marginRight: theme.spacing(3),
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(4),
     paddingBottom: theme.spacing(1),
   },
   fab: {
