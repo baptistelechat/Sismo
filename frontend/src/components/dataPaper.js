@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import toast from 'react-hot-toast'
 
 // SEISM
 import seism_default from '../img/seism/seism-default.png'
@@ -134,6 +135,19 @@ const DataPaper = ({indexSelected, apiData, materialTheme}) => {
 • Neige : ${snow}
 • Sismicité : ${seism}`
 
+  const clipboardToast = () => {
+    toast.success(
+      `Résultats copiés dans le presse-papier`,
+      {duration: 5000,
+        icon: '📃',
+        style: {
+          background: materialTheme.toastColor,
+          color: '#FFFFFF',
+        },
+      }
+    )
+  }
+
   return (
     <div>
       {console.log(data)}
@@ -146,7 +160,7 @@ const DataPaper = ({indexSelected, apiData, materialTheme}) => {
         </IconButton>)
         :
         (<CopyToClipboard text={data}>
-          <IconButton color="secondary" aria-label="copy to clipboard" className={classes.iconButton}>
+          <IconButton color="secondary" aria-label="copy to clipboard" className={classes.iconButton} onClick={clipboardToast}>
             <FileCopyIcon fontSize='large'/>
           </IconButton>
         </CopyToClipboard>)}
@@ -155,7 +169,7 @@ const DataPaper = ({indexSelected, apiData, materialTheme}) => {
         (<div></div>)
         :
         (<CopyToClipboard text={data}>
-          <ListItem button className={classes.clipboard}>
+          <ListItem button className={classes.clipboard} onClick={clipboardToast}>
             <ListItemIcon><FileCopyIcon color="secondary" fontSize='large'/></ListItemIcon>
             <h3 className={classes.clipboardText}>Copier dans le presse-papier</h3>
           </ListItem>
