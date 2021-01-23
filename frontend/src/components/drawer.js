@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
 import {
   setIndigoPinkTheme,
@@ -27,6 +27,8 @@ import TextureIcon from '@material-ui/icons/Texture';
 import Fab from '@material-ui/core/Fab';
 import ColorPicker from './colorPicker'
 import convert from 'color-convert'
+import GetAppIcon from '@material-ui/icons/GetApp';
+import ShareIcon from '@material-ui/icons/Share';
 
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
@@ -34,7 +36,7 @@ import logo from '../img/logo.png'
 
 
 const useStyles = makeStyles((theme) => ({
-  list: {
+  contact: {
     width: '25vw',
     [theme.breakpoints.down('md')]: {
       width: '33vw',
@@ -42,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '75vw',
     },
+  },
+  list: {
+    marginBottom: theme.spacing(3)
   },
   h2: {
     color: theme.palette.common.white
@@ -149,10 +154,26 @@ const MyDrawer = ({
   const [dark, setDark] = useState(false)
   const [theme, setTheme] = useState("indigo_pink")
 
+  const [supportsPWA, setSupportsPWA] = useState(false);
+  // const [supportsPWA, setSupportsPWA] = useState(true);
+  const [promptInstall, setPromptInstall] = useState(null);
+
   const urlLinkedin = 'https://www.linkedin.com/in/baptiste-lechat-3686a6174/'
   const urlGithub = 'https://github.com/baptistelechat'
   const urlMail = 'mailto:baptistelechat@outlook.fr'
   const urlMessenger = 'https://m.me/baptistelechat72'
+
+  useEffect(() => {
+    const handler = e => {
+      e.preventDefault();
+      setSupportsPWA(true);
+      setPromptInstall(e);
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => window.removeEventListener("transitionend", handler);
+  }, []);
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -220,6 +241,17 @@ const MyDrawer = ({
     if (newWindow) newWindow.opener = null
   }
 
+  const install = (event) => {
+    event.preventDefault();
+    if (!promptInstall) {
+        return
+    }
+    promptInstall.prompt();
+}
+
+  const share = () => {
+
+  }
     // <div>
     //       Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     //     </div>
@@ -233,9 +265,9 @@ const MyDrawer = ({
     //       Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     //     </div>
   
-  const list = () => (
+  const contact = () => (
     <div
-      className={classes.list}
+      className={classes.contact}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -297,7 +329,7 @@ const MyDrawer = ({
           <h2 className={classes.h2}>Sismo</h2>
           <img className={classes.logo} src={logo} alt="logo Sismo"/>
         </ListItem>
-        <List>
+        <List className={classes.list}>
           <ListItem>
               <h3 className={classes.h3}>Personnalisation</h3>
           </ListItem>
@@ -311,9 +343,19 @@ const MyDrawer = ({
           <ListItem>
             <h3 className={classes.h3}>Contact</h3>
           </ListItem>
-          {list()}
+          {contact()}
+          <Divider />
+          <ListItem>
+            <h3 className={classes.h3}>Autres options de Sismo</h3>
+          </ListItem>
+          {supportsPWA ? 
+            (<ListItem button onClick={install}>
+              <ListItemIcon><GetAppIcon/></ListItemIcon>
+              <ListItemText primary={"Installer"} secondary={"Installer Sismo sur votre appareil"}/> 
+            </ListItem>) 
+          :
+          <div></div>}
         </List>
-        <Divider />
       </Drawer>
     </div>
   );

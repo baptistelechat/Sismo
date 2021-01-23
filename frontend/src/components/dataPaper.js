@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -120,8 +120,6 @@ const DataPaper = ({indexSelected, apiData, materialTheme}) => {
   const wind = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
   const snow = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
   const seism = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
-
-  const georisque = apiData[indexSelected] === undefined ? "" :`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${apiData[indexSelected].insee}&ign=false&CGU-commune=on&commune=${apiData[indexSelected].codePostal}+${apiData[indexSelected].nomCommuneExact}`
 
     const data = 
 `🏡 ${nomCommuneExact} (${codePostal}) :
