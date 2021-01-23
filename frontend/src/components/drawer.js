@@ -29,6 +29,8 @@ import ColorPicker from './colorPicker'
 import convert from 'color-convert'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import toast from 'react-hot-toast'
 
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
@@ -38,6 +40,7 @@ import logo from '../img/logo.png'
 const useStyles = makeStyles((theme) => ({
   contact: {
     width: '25vw',
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
       width: '33vw',
     },
@@ -164,6 +167,17 @@ const MyDrawer = ({
   const urlMail = 'mailto:baptistelechat@outlook.fr'
   const urlMessenger = 'https://m.me/baptistelechat72'
 
+  const clipboard = 
+`Sismo
+
+Visitez Sismo ! Un outil pour connaître les zones de neige, de vent et de sismicité en France (y compris les DROM-COM).
+
+Découvrez également d'autres fonctionnalités ...
+
+Application créée par Baptiste LECHAT et Matthieu LECHAT
+
+https://sismo.vercel.app/`
+
   useEffect(() => {
     const handler = e => {
       e.preventDefault();
@@ -251,7 +265,32 @@ const MyDrawer = ({
 }
 
   const share = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Sismo',
+        text: 
+        `Visitez Sismo ! Un outil pour connaître les zones de neige, de vent et de sismicité en France (y compris les DROM-COM).
 
+        Découvrez également d'autres fonctionnalités ...
+
+        Application créée par Baptiste LECHAT et Matthieu LECHAT`,
+        url: 'https://sismo.vercel.app/',
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error))
+    } else {
+      console.log('navigator.share not supported by the browser');
+      toast.success(
+        `Lien de partage copié dans le presse-papier`,
+        {duration: 5000,
+          icon: '📃',
+          style: {
+            background: materialTheme.toastColor,
+            color: '#FFFFFF',
+          },
+        }
+      )
+    }
   }
     // <div>
     //       Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
@@ -314,7 +353,6 @@ const MyDrawer = ({
 
   return (
     <div>
-      {console.log(theme)}
       <IconButton
             edge="start"
             className={classes.menuButton}
@@ -354,8 +392,22 @@ const MyDrawer = ({
               <ListItemIcon><GetAppIcon/></ListItemIcon>
               <ListItemText primary={"Installer"} secondary={"Installer Sismo sur votre appareil"}/> 
             </ListItem>) 
-          :
-          <div></div>}
+            :
+            <div></div>
+          }
+          {navigator.share ?
+            (<ListItem button onClick={share}>
+                <ListItemIcon><ShareIcon/></ListItemIcon>
+                <ListItemText primary={"Partager"} secondary={"Partager l'application autour de vous"}/>
+              </ListItem>)
+            :
+            (<CopyToClipboard text={clipboard}>
+              <ListItem button onClick={share}>
+                <ListItemIcon><ShareIcon/></ListItemIcon>
+                <ListItemText primary={"Partager"} secondary={"Partager l'application autour de vous"}/>
+              </ListItem>
+            </CopyToClipboard>)
+          }
         </List>
       </Drawer>
     </div>

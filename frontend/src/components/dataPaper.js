@@ -148,7 +148,6 @@ const DataPaper = ({indexSelected, apiData, materialTheme}) => {
 
   return (
     <div>
-      {console.log(data)}
       <ListItem>
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
         <h2 className={classes.h2}>{apiData[indexSelected] === undefined ? "Aucune ville sélectionnée" : apiData[indexSelected].nomCommune ? `${apiData[indexSelected].nomCommune} (${apiData[indexSelected].codePostal})` : "Aucune ville sélectionnée"}</h2>
