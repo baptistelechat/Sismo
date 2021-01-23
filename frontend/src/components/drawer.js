@@ -269,11 +269,11 @@ https://sismo.vercel.app/`
       navigator.share({
         title: 'Sismo',
         text: 
-        `Visitez Sismo ! Un outil pour connaître les zones de neige, de vent et de sismicité en France (y compris les DROM-COM).
+`Visitez Sismo ! Un outil pour connaître les zones de neige, de vent et de sismicité en France (y compris les DROM-COM).
 
-        Découvrez également d'autres fonctionnalités ...
+Découvrez également d'autres fonctionnalités ...
 
-        Application créée par Baptiste LECHAT et Matthieu LECHAT`,
+Application créée par Baptiste LECHAT et Matthieu LECHAT`,
         url: 'https://sismo.vercel.app/',
       })
         .then(() => console.log('Successful share'))
