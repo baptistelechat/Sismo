@@ -10,6 +10,18 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
 
+import toast from 'react-hot-toast'
+import Button from '@material-ui/core/Button';
+
+function updatePWA(registration) {
+  if (registration.waiting) {
+    // let waiting Service Worker know it should became active
+    registration.waiting.postMessage({type: 'SKIP_WAITING'})
+    window.location.reload(true);
+    console.log('📝 Upgrade ...');
+  }
+}
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -56,6 +68,14 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      // Check for updates at start.
+      registration.update();
+      // Check for updates every 1 min.
+        setInterval(() => {
+          registration.update();
+          console.debug("⏳ Checked for update...");
+        }, (1000 * 10));
+        
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -71,6 +91,28 @@ function registerValidSW(swUrl, config) {
                 'New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
+              toast.success(
+                (t) => (
+                  <span>
+                    Une mise à jour est disponible ...
+                    <Button
+                      variant="contained"
+                      color={"primary"}
+                      style={{marginTop: '6px'}}
+                      onClick={() => updatePWA(registration)}>
+                        Mettre à jour
+                    </Button>
+                  </span>
+                ),
+                {
+                  duration: 60000,
+                  icon: '🎁',
+                  style: {
+                    background: '#eceff1',
+                    color: '#000000',
+                  },
+                }
+              )
 
               // Execute callback
               if (config && config.onUpdate) {
@@ -135,3 +177,4 @@ export function unregister() {
       });
   }
 }
+

@@ -16,9 +16,48 @@
       "purpose": "maskable any"
     }
   ],
+  "screenshots" : [
+    {
+      "src": "../../screenshot/mainPage.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/searchResult.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/drawer.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/colorPicker.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/darkmode.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/responsive1.png",
+      "sizes": "357x590",
+      "type": "image/png"
+    },
+    {
+      "src": "../../screenshot/responsive2.png",
+      "sizes": "360x590",
+      "type": "image/png"
+    }
+  ],
   "start_url": ".",
   "lang": "en-US",
   "display": "standalone",
   "theme_color": "#3f51b5",
-  "background_color": "#3f51b5"
+  "background_color": "#3f51b5",
+  "orientation": "portrait-primary",
+  "categories": ["utilities", "productivity"]
 }
