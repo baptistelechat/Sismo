@@ -114,7 +114,7 @@ const ColorPicker = ({
           <DialogContentText className={classes.dialogContentText}>
             Sélectionner une couleur principale et secondaire
           </DialogContentText>
-          <Grid container spacing={2} className={classes.grid} style={{}}>
+          <Grid container spacing={2} className={classes.grid}>
             <Grid item xs={12} sm={6}>
               <HexColorPicker
                 color={primaryColorPicker}

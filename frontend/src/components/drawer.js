@@ -29,9 +29,9 @@ import ColorPicker from './colorPicker'
 import convert from 'color-convert'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
-import CopyrightIcon from '@material-ui/icons/Copyright';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast'
+import LicenceMIT from "./licenceMIT";
 
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
@@ -167,7 +167,6 @@ const MyDrawer = ({
   const urlGithub = 'https://github.com/baptistelechat'
   const urlMail = 'mailto:baptistelechat@outlook.fr'
   const urlMessenger = 'https://m.me/baptistelechat72'
-  const urlMIT = 'https://github.com/baptistelechat/Sismo/blob/main/LICENSE.txt'
 
   const clipboard = 
 `Sismo
@@ -382,11 +381,6 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
           {themeSelector()}
           <Divider />
           <ListItem>
-            <h3 className={classes.h3}>Contact</h3>
-          </ListItem>
-          {contact()}
-          <Divider />
-          <ListItem>
             <h3 className={classes.h3}>Autres options de Sismo</h3>
           </ListItem>
           {supportsPWA ? 
@@ -410,10 +404,12 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
               </ListItem>
             </CopyToClipboard>)
           }
-          <ListItem button onClick={() => openLink(urlMIT)}>
-            <ListItemIcon><CopyrightIcon/></ListItemIcon>
-            <ListItemText primary={"Licence MIT"} secondary={"Ce projet est sous licence MIT"}/>
+          <LicenceMIT/>
+          <Divider />
+          <ListItem>
+            <h3 className={classes.h3}>Contact</h3>
           </ListItem>
+          {contact()}
         </List>
       </Drawer>
     </div>
