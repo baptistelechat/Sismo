@@ -376,7 +376,7 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
           <ListItem button onClick={handleThemeChange}>
             <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
               <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
-              <Switch checked={dark} onChange={handleThemeChange}/>
+              <Switch checked={materialTheme.type === 'dark'} onChange={handleThemeChange}/>
           </ListItem>
           {themeSelector()}
           <Divider />

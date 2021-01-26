@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
 import BrushIcon from '@material-ui/icons/Brush';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -16,10 +17,18 @@ import TextField from '@material-ui/core/TextField';
 import { HexColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
 import convert from 'color-convert'
+import Divider from '@material-ui/core/Divider';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import SearchIcon from '@material-ui/icons/Search';
+import CheckIcon from '@material-ui/icons/Check';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import Switch from "@material-ui/core/Switch";
+import toast from 'react-hot-toast'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    marginRight: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
   fab: {
     color: theme.palette.common.white,
@@ -31,18 +40,25 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   dialogContentText: {
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(2)
   },
   colorPicker: {
     marginBottom: theme.spacing(3)
   },
   textField: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(2)
   },
   grid: {
     margin: 0,
     width: '100%',
     background: 'rgba(0,0,0,0)'
+  },
+  textExample: {
+    margin: 0,
+    paddingBottom: theme.spacing(1),
+  },
+  theme: {
+    marginLeft: theme.spacing(3)
   }
 }));
 
@@ -59,6 +75,7 @@ const ColorPicker = ({
   const classes = useStyles();
   
   const [openColorPicker, setOpenColorPicker] = useState(false)
+  const [dark, setDark] = useState(false)
   
   const handleClickOpen = () => {
     setOpenColorPicker(true);
@@ -76,23 +93,48 @@ const ColorPicker = ({
     setSecondaryColorPicker(event.target.value);
   };
 
-  const changeTheme = () => {
+  const secondaryColorPickerDark = () => {
     let secondaryColorPickerDark = convert.hex.hsl(secondaryColorPicker)
     const secondaryColorPickerDarkHue = secondaryColorPickerDark[0]
     const secondaryColorPickerDarkSaturation = secondaryColorPickerDark[1]+5 >= 100 ? 100 : secondaryColorPickerDark[1]+5
     const secondaryColorPickerDarkLightness = secondaryColorPickerDark[2]+20 >=85 ? 85 : secondaryColorPickerDark[2]+20
-    secondaryColorPickerDark = '#'+convert.hsl.hex([secondaryColorPickerDarkHue, secondaryColorPickerDarkSaturation, secondaryColorPickerDarkLightness])
-    
+    return secondaryColorPickerDark = '#'+convert.hsl.hex([secondaryColorPickerDarkHue, secondaryColorPickerDarkSaturation, secondaryColorPickerDarkLightness])
+  }
+
+  const toastColor = () => {
     let toastColor = convert.hex.hsl(primaryColorPicker)
     const toastColorHue = toastColor[0]
     const toastColorSaturation = toastColor[1]+5 >= 100 ? 100 : toastColor[1]+5
     const toastColorLightness = toastColor[2]+20 >=85 ? 85 : toastColor[2]+20
-    toastColor = '#'+convert.hsl.hex([toastColorHue, toastColorSaturation, toastColorLightness])
-    
-    const dark = materialTheme.type === "dark"
-    setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, dark)
+    return toastColor = '#'+convert.hsl.hex([toastColorHue, toastColorSaturation, toastColorLightness])
+  }
+
+  const changeTheme = (dark) => {
+    setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark(), toastColor(), dark)
     setTheme("perso")
+  }
+  
+  const closeDialog = () => {
     handleClose()
+    changeTheme(materialTheme.type === 'dark')
+  }
+
+  const handleThemeChange = () => {
+    setDark(!dark)
+    changeTheme(!dark)
+  };
+
+  const handleClick = () => {
+    toast.success(
+      `Ceci est une notification de test`,
+      {duration: 5000,
+        icon: '😉',
+        style: {
+          background: toastColor(),
+          color: '#FFFFFF',
+        },
+      }
+    )
   }
 
   return (
@@ -105,16 +147,19 @@ const ColorPicker = ({
           className={classes.fab}
           onClick={handleClickOpen}
           >
-          <BrushIcon/>
+          <BrushIcon className={classes.icon}/>
           Créer son thème personnalisé
         </Fab>
       <Dialog open={openColorPicker} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.title}>Créer son thème personnalisé</DialogTitle>
+        <DialogTitle id="form-dialog-title" className={classes.title}>
+          Créer son thème personnalisé
+          <Switch checked={materialTheme.type === 'dark'} onChange={handleThemeChange}/>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText className={classes.dialogContentText}>
             Sélectionner une couleur principale et secondaire
           </DialogContentText>
-          <Grid container spacing={2} className={classes.grid}>
+          <Grid container spacing={1} className={classes.grid}>
             <Grid item xs={12} sm={6}>
               <HexColorPicker
                 color={primaryColorPicker}
@@ -130,8 +175,6 @@ const ColorPicker = ({
                 onChange={handlePrimaryColorChange}
                 className={classes.textField}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <HexColorPicker
                   color={secondaryColorPicker}
                   onChange={setSecondaryColorPicker}
@@ -147,13 +190,59 @@ const ColorPicker = ({
                   className={classes.textField}
                   />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <h1 className={classes.textExample} style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}>Lorem ipsum</h1>
+                <h2 className={classes.textExample} style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}>Lorem ipsum</h2>
+                <h3 className={classes.textExample} style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}>Lorem ipsum</h3>
+                <h4 className={classes.textExample} style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}>Lorem ipsum</h4>
+                <h5 className={classes.textExample} style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}>Lorem ipsum</h5>
+                <h6 className={classes.textExample} style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}>Lorem ipsum</h6>
+                <p className={classes.textExample} style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus et quos aliquam porro atque tenetur ipsam qui, beatae iusto doloribus adipisci hic molestias excepturi repudiandae asperiores in at? Laudantium, harum!</p>
+                <Divider style={{marginTop: '8px', marginBottom: '16px'}}/>
+                <Fab
+                  variant="extended"
+                  size="medium"
+                  style={{backgroundColor: primaryColorPicker}}
+                  aria-label="add"
+                  className={classes.fab}
+                  onClick={handleClick}
+                  >
+                  <NotificationsActiveIcon className={classes.icon}/>
+                    Notification
+                  </Fab>
+                <Fab
+                  variant="extended"
+                  size="medium"
+                  style={{backgroundColor: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}
+                  aria-label="add"
+                  className={classes.fab}
+                  onClick={handleClick}
+                  >
+                  <NotificationsActiveIcon className={classes.icon}/>
+                    Notification
+                </Fab>
+                <div>
+                  <ChevronRightIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
+                  <SearchIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
+                  <CheckIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
+                  <LocationOnIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
+                  <FileCopyIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
+                </div>
+                <div>
+                  <ChevronRightIcon fontSize='large' style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}/>
+                  <SearchIcon fontSize='large' style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}/>
+                  <CheckIcon fontSize='large' style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}/>
+                  <LocationOnIcon fontSize='large' style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}/>
+                  <FileCopyIcon fontSize='large' style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}/>
+                </div>
+              </Grid>
             </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
             Annuler
           </Button>
-          <Button onClick={changeTheme} color="secondary">
+          <Button onClick={closeDialog} color="secondary">
             Valider
           </Button>
         </DialogActions>
