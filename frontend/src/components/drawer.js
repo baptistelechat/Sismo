@@ -175,7 +175,7 @@ Visitez Sismo ! Un outil pour connaître les zones de neige, de vent et de sismi
 
 Découvrez également d'autres fonctionnalités ...
 
-Application créée par Baptiste LECHAT et Matthieu LECHAT
+Application créée par Baptiste LECHAT et Matthieu LECHAT.
 
 https://sismo.vercel.app/`
 
