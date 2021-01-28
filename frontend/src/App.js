@@ -9,6 +9,7 @@ import ReactMap from './components/map';
 import DataPaper from './components/dataPaper'
 import { Helmet } from 'react-helmet';
 import { Toaster } from 'react-hot-toast';
+import Toolbox from './components/toolbox'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +77,6 @@ function App({materialTheme, indexSelected, apiData}) {
           xs: 0,
           sm: 600,
           tablet:670,
-          clipboard: 795,
           md: 960,
           lg: 1280,
           xl: 1920,
@@ -116,6 +116,7 @@ function App({materialTheme, indexSelected, apiData}) {
             </Paper>
           </Grid>
         </Grid>
+        <Toolbox/>
       </ThemeProvider>
 );
 }

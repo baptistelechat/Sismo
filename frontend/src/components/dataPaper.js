@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import toast from 'react-hot-toast'
+
 
 // SEISM
 import seism_default from '../img/seism/seism-default.png'
@@ -78,14 +75,6 @@ const useStyles = makeStyles((theme) => ({
       height: '12vh',
     },
   },
-  iconButton: {
-    display: 'none',
-    marginLeft: 'auto',
-    marginRight:theme.spacing(3),
-    [theme.breakpoints.up('clipboard')]: {
-      display: 'block',
-    },
-  },
   fab: {
     color: theme.palette.common.white,
     marginLeft: theme.spacing(1),
@@ -93,84 +82,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
  },
- clipboardText: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    color: theme.palette.secondary.main,
- },
- clipboard: {
-  [theme.breakpoints.up('clipboard')]: {
-    display: 'none',
-  },
- }
 }));
 
 const DataPaper = ({indexSelected, apiData, materialTheme}) => {
 
   const classes = useStyles();
 
-  const nomCommuneExact = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].nomCommuneExact
-  const codeInsee = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].insee
-  const codePostal = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codePostal
-  const latitude = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].latitude
-  const longitude = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].longitude
-  const codeDepartement = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codeDepartement
-  const departement = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].departement
-  const region = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].region
   const wind = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
   const snow = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
   const seism = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
-
-    const data = 
-`🏡 ${nomCommuneExact} (${codePostal}) :
-• Code INSEE : ${codeInsee}
-• Département : ${departement} (${codeDepartement})
-• Région : ${region}
-• Latitude : ${latitude}
-• Longitude : ${longitude}
-• Coordonnées : ${latitude},${longitude}
-• Vent : ${wind}
-• Neige : ${snow}
-• Sismicité : ${seism}`
-
-  const clipboardToast = () => {
-    toast.success(
-      `Résultats copiés dans le presse-papier`,
-      {duration: 5000,
-        icon: '📃',
-        style: {
-          background: materialTheme.toastColor,
-          color: '#FFFFFF',
-        },
-      }
-    )
-  }
 
   return (
     <div>
       <ListItem>
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
         <h2 className={classes.h2}>{apiData[indexSelected] === undefined ? "Aucune ville sélectionnée" : apiData[indexSelected].nomCommune ? `${apiData[indexSelected].nomCommune} (${apiData[indexSelected].codePostal})` : "Aucune ville sélectionnée"}</h2>
-        {apiData[indexSelected] === undefined ?
-        (<IconButton disabled color="secondary" aria-label="copy to clipboard" className={classes.iconButton}>
-          <FileCopyIcon fontSize='large'/>
-        </IconButton>)
-        :
-        (<CopyToClipboard text={data}>
-          <IconButton color="secondary" aria-label="copy to clipboard" className={classes.iconButton} onClick={clipboardToast}>
-            <FileCopyIcon fontSize='large'/>
-          </IconButton>
-        </CopyToClipboard>)}
       </ListItem>
-      {apiData[indexSelected] === undefined ?
-        (<div></div>)
-        :
-        (<CopyToClipboard text={data}>
-          <ListItem button className={classes.clipboard} onClick={clipboardToast}>
-            <ListItemIcon><FileCopyIcon color="secondary" fontSize='large'/></ListItemIcon>
-            <h3 className={classes.clipboardText}>Copier dans le presse-papier</h3>
-          </ListItem>
-        </CopyToClipboard>)}
+      
       <Grid container spacing={2} className={classes.grid} >
         <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.paper} elevation={3}>
@@ -243,7 +171,6 @@ const mapStateToProps = (state, props) => {
     materialTheme: state.theme,
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
-    clipboard: props.clipboard
   }
 }
 
