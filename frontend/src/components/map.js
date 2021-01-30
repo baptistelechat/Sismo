@@ -18,14 +18,9 @@ import toast from 'react-hot-toast'
 // COMPONENTS
 import Georisques from './georisques'
 // PICTURE
-import DefaultPin from '../img/icon/pinDefault.svg'
-import SelectedPin from '../img/icon/pinSelected.svg'
-import Abak from '../img/icon/abak-ingenierie.png'
-import Anjou from '../img/icon/anjou-structure.png'
-import Pezzo from '../img/icon/pezzo-ingenierie.png'
-import Exetera from '../img/icon/exetera-ingenierie.png'
-import Grif from '../img/icon/grif.png'
-import UdtStr from '../img/icon/123-structure.png'
+import DefaultPin from '../img/pin/pinDefault.svg'
+import SelectedPin from '../img/pin/pinSelected.svg'
+import BigCities from '../img/pin/pinBigCities.svg'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +44,7 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
 
   const classes = useStyles();
 
-  const [showCompany, setShowCompany] = useState(true);
+  const [showBigCities, setShowBigCities] = useState(true);
 
   const defaultPosition = [46.539006,2.4298391];
   
@@ -75,90 +70,44 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
     iconSize: 30,
   });
 
-  const AbakIcon = L.icon({
-    iconUrl: Abak,
-    iconRetinaUrl: Abak,
+  const BigCitiesIcon = L.icon({
+    iconUrl: BigCities,
+    iconRetinaUrl: BigCities,
     iconAnchor: null,
     popupAnchor: [0,-15],
     shadowUrl: null,
     shadowSize: null,
     shadowAnchor: null,
-    iconSize: [30,32.1],
+    iconSize: 30,
   });
 
-  const AnjouIcon = L.icon({
-    iconUrl: Anjou,
-    iconRetinaUrl: Anjou,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: [42.5,25],
-  });
+  const bigCities = [
+    {"name": "Strasbourg", "position": [48.5734798,7.7483326], "icon": BigCitiesIcon, "state": "Grand Est", "vent":"2", "neige":"C1", "seisme":"3"},
+    {"name": "Bordeaux", "position": [44.8457407,-0.6159378], "icon": BigCitiesIcon, "state": "Nouvelle-Aquitaine", "vent":"1", "neige":"A1", "seisme":"2"},
+    {"name": "Lyon", "position": [45.756295,4.8219779], "icon": BigCitiesIcon, "state": "Auvergne-Rhône-Alpes", "vent":"2", "neige":"A2", "seisme":"2"},
+    {"name": "Dijon", "position": [47.3218551,5.039368], "icon": BigCitiesIcon, "state": "Bourgogne-Franche-Comté", "vent":"1", "neige":"A1", "seisme":"1"},
+    {"name": "Toulouse", "position": [43.6045845,1.4417641], "icon": BigCitiesIcon, "state": "Occitanie", "vent":"1", "neige":"A2", "seisme":"1"},
+    {"name": "Lille", "position": [50.6317096,3.0686861], "icon": BigCitiesIcon, "state": "Hauts-de-France", "vent":"3", "neige":"A1", "seisme":"2"},
+    {"name": "Rouen", "position": [49.4449232,1.0561541], "icon": BigCitiesIcon, "state": "Normandie", "vent":"2", "neige":"A1", "seisme":"1"},
+    {"name": "Rennes", "position": [48.1117198,-1.6830272], "icon": BigCitiesIcon, "state": "Bretagne", "vent":"2", "neige":"A1", "seisme":"2"},
+    {"name": "Orléans", "position": [47.8990671,1.9031459], "icon": BigCitiesIcon, "state": "Centre-Val de Loire", "vent":"2", "neige":"A1", "seisme":"1"},
+    {"name": "Paris", "position": [48.8588589,2.3264165], "icon": BigCitiesIcon, "state": "Île-de-France", "vent":"2", "neige":"A1", "seisme":"1"},
+    {"name": "Nantes", "position": [47.2179379,-1.5567006], "icon": BigCitiesIcon, "state": "Pays de la Loire", "vent":"3", "neige":"A1", "seisme":"3"},
+    {"name": "Marseille", "position": [43.2969942,5.3620563], "icon": BigCitiesIcon, "state": "Provence-Alpes-Côte d’Azur", "vent":"2", "neige":"A2", "seisme":"3"},
+    {"name": "Ajaccio", "position": [41.9193354,8.7368399], "icon": BigCitiesIcon, "state": "Corse", "vent":"3", "neige":"A2", "seisme":"1"},
 
-  const PezzoIcon = L.icon({
-    iconUrl: Pezzo,
-    iconRetinaUrl: Pezzo,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: [30,39.9],
-  });
-
-  const ExeteraIcon = L.icon({
-    iconUrl: Exetera,
-    iconRetinaUrl: Exetera,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: [40,25],
-  });
-
-  const GrifIcon = L.icon({
-    iconUrl: Grif,
-    iconRetinaUrl: Grif,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: [40.2,30],
-  });
-
-  const UdtStrIcon = L.icon({
-    iconUrl: UdtStr,
-    iconRetinaUrl: UdtStr,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: 45,
-  });
-
-  const company = [
-    {"name": "ABAK Ingénierie Nantes", "position": [47.1948929,-1.5342012], "adress": "34 boulevard Joliot Curie", "cp": 44200,  "city": "NANTES", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Challans", "position": [46.834533,-1.880718], "adress": "48 rue Jean Perrin", "cp": 85300,  "city": "CHALLANS", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Aquitaine", "position": [44.8828594,-0.6108314], "adress": "26 avenue de l’Europe", "cp": 33520,  "city": "BRUGES", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Provence", "position": [43.5455061,5.3599446], "adress": "190 rue Corindon", "cp": 13150,  "city": "EGUILLES", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie IDF", "position": [48.852263,2.516225], "adress": "6 rue Vincent Van Gogh", "cp": 93360,  "city": "PARIS", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Clisson", "position": [47.0869951,-1.2830758], "adress": "18 Venelle de l’Escarpe", "cp": 44190,  "city": "CLISSON", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Lyon", "position": [45.7135679,4.8892344], "adress": "15 rue Marcel Pagnol", "cp": 69200,  "city": "VENISSIEUX", "size": 30, "icon": UdtStrIcon},
-    {"name": "ABAK Ingénierie Toulouse", "position": [43.6044622,1.4442469], "adress": "", "cp": 31000,  "city": "TOULOUSE", "size": 30, "icon": AbakIcon},
-    {"name": "ABAK Ingénierie Tours", "position": [47.3900474,0.6889268], "adress": "", "cp": 37000,  "city": "TOURS", "size": 30, "icon": AbakIcon},
-    {"name": "ANJOU Structure", "position": [47.4723274,-0.6111125], "adress": "9 rue Joseph Fourier", "cp": 49070,  "city": "BEAUCOUZE", "size": 30, "icon": AnjouIcon},
-    {"name": "PEZZO Ingénierie", "position": [47.2859271,-2.2963234], "adress": "39 Route de Fondeline", "cp": 44600,  "city": "ST NAZAIRE", "size": 30, "icon": PezzoIcon},
-    {"name": "EXETERA Ingénierie", "position": [47.298918,-1.757653], "adress": "ZA du Bois de la Noue", "cp": 44360,  "city": "ST ETIENNE DE MONTLUC", "size": 30, "icon": ExeteraIcon},
-    {"name": "GRIF", "position": [48.85247560954471,2.51714689365774], "adress": "6 Rue Vincent Van Gogh", "cp": 93360,  "city": "NEUILLY PLAISANCE", "size": 30, "icon": GrifIcon},
+    {"name": "Pointe-à-Pitre", "position": [16.2410492,-61.5355473], "icon": BigCitiesIcon, "state": "Guadeloupe", "vent":"5", "neige":"0", "seisme":"5"},
+    {"name": "Saint-Denis", "position": [-20.8964595,55.4350018], "icon": BigCitiesIcon, "state": "Réunion", "vent":"5", "neige":"0", "seisme":"2"},
+    {"name": "Mamoudzou", "position": [-12.7805816,45.2302623], "icon": BigCitiesIcon, "state": "Mayotte", "vent":"5", "neige":"0", "seisme":"3"},
+    {"name": "Cayenne", "position": [4.9381385,-52.3372119], "icon": BigCitiesIcon, "state": "Guyane", "vent":"1", "neige":"0", "seisme":"1"},
+    {"name": "Fort-de-France", "position": [14.6078336,-61.0758571], "icon": BigCitiesIcon, "state": "Martinique", "vent":"5", "neige":"0", "seisme":"5"},
+    {"name": "Saint-Pierre", "position": [46.7818297,-56.1764619], "icon": BigCitiesIcon, "state": "Saint-Pierre-et-Miquelon", "vent":"1", "neige":"0", "seisme":"1"},
+    {"name": "Papeete", "position": [-17.5373218,-149.5659196], "icon": BigCitiesIcon, "state": "Polynésie française", "vent":"-", "neige":"-", "seisme":"-"},
+    {"name": "Nouméa", "position": [-22.2703661,166.4369939], "icon": BigCitiesIcon, "state": " Nouvelle-Calédonie", "vent":"-", "neige":"-", "seisme":"-"},
   ];
 
   const companyVisibility = () => {
-    showCompany ? setShowCompany(false) : setShowCompany(true)
+    setShowBigCities(!showBigCities)
   }
 
   const handleMarkerClick = (index) => {
@@ -209,11 +158,11 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
     }
   }
 
-  const handleCompanyClick = (company) => {
+  const handleCompanyClick = (bigCities) => {
     toast.success(
-      `${company.name} - ${company.cp} ${company.city}`,
+      `${bigCities.name} - ${bigCities.state}`,
       {duration: 5000,
-        icon: '👷‍♂️👷‍♀️',
+        icon: '🏡',
         style: {
           background: "#a1887f",
           color: '#FFFFFF',
@@ -239,8 +188,8 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
         <FormControlLabel
           className={classes.formControlLabel}
           value="start"
-          control={<Switch color="secondary" checked={showCompany} onChange={companyVisibility}/>}
-          label="Afficher les agences"
+          control={<Switch color="secondary" checked={showBigCities} onChange={companyVisibility}/>}
+          label="Afficher les grandes villes"
           labelPlacement="start"
           />
       </FormControl>
@@ -255,15 +204,16 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-          {showCompany ? company.map((company, index) => 
+          {showBigCities ? bigCities.map((bigCities, index) => 
             <Marker key={index}
-              position={company.position}
-              icon={company.icon}
-              onClick={() => handleCompanyClick(company)}>
+              position={bigCities.position}
+              icon={bigCities.icon}
+              onClick={() => handleCompanyClick(bigCities)}>
               <Popup>
-                <h3>{company.name}</h3>
-                <p>{company.adress}</p>
-                <p>{company.cp} {company.city}</p>
+                <h3>{bigCities.name} - {bigCities.state}</h3>
+                <p>{`Vent : ${bigCities.vent}`}</p>
+                <p>{`Neige : ${bigCities.neige}`}</p>
+                <p>{`Séisme : ${bigCities.seisme}`}</p>
               </Popup>
             </Marker>) : null}
             <FeatureGroup ref={layerGroupRef}>
