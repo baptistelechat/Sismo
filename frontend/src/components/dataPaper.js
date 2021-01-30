@@ -1,12 +1,15 @@
+// REACT
 import React from 'react';
+// REDUX
 import { connect } from 'react-redux'
+// MATERIAL UI
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+// MATERIAL UI ICON
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-
 
 // SEISM
 import seism_default from '../img/seism/seism-default.png'
@@ -45,6 +48,7 @@ import wind_error from '../img/wind/wind-error.png'
 import wind_default_dark from '../img/wind/wind-default-dark.png'
 import wind_error_dark from '../img/wind/wind-error-dark.png'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(1),

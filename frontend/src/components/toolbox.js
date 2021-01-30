@@ -1,17 +1,23 @@
-import React from 'react';
+// REACT
+import React, { useState } from "react";
+// REDUX
 import { connect } from 'react-redux'
+// MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+// MATERIAL UI
 import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+// OTHER
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   root: {
     transform: 'translateZ(0px)',

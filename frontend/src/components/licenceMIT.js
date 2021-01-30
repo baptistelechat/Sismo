@@ -1,9 +1,11 @@
+// REACT
 import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';import CopyrightIcon from '@material-ui/icons/Copyright';
+// MATERIAL UI
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions'
@@ -11,7 +13,10 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import Button from '@material-ui/core/Button'
 import Fab from '@material-ui/core/Fab';
+// MATERIAL UI ICON
+import CopyrightIcon from '@material-ui/icons/Copyright';
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   listItem: {
     marginBottom: theme.spacing(3)
@@ -62,12 +67,11 @@ const LicenceMIT = () => {
 
   return (
     <div>
-
-    <ListItem button onClick={handleOpenDialog} className={classes.listItem}>
-      <ListItemIcon><CopyrightIcon/></ListItemIcon>
-      <ListItemText primary={"Licence MIT"} secondary={"Ce projet est sous licence MIT"}/>
-    </ListItem>
-    <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
+      <ListItem button onClick={handleOpenDialog} className={classes.listItem}>
+        <ListItemIcon><CopyrightIcon/></ListItemIcon>
+        <ListItemText primary={"Licence MIT"} secondary={"Ce projet est sous licence MIT"}/>
+      </ListItem>
+      <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" className={classes.title}>Licence MIT</DialogTitle>
         <DialogContent style={{paddingBottom: '16px'}}>
           <DialogContentText className={classes.dialogContentText}>

@@ -1,5 +1,6 @@
+// REACT
 import React, { useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+// REDUX
 import { connect } from 'react-redux'
 import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
 import {
@@ -9,28 +10,33 @@ import {
   setLightGreenBlueTheme,
   setPersoTheme,
 } from '../redux/theme/actionTheme'
+// MATERIAL UI
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import Fab from '@material-ui/core/Fab';
-import BrushIcon from '@material-ui/icons/Brush';
-import TextureIcon from '@material-ui/icons/Texture';
-import Button from '@material-ui/core/Button'
-import DialogActions from '@material-ui/core/DialogActions'
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
-import TextField from '@material-ui/core/TextField';
-import { HexColorPicker } from "react-colorful";
-import "react-colorful/dist/index.css";
-import convert from 'color-convert'
+import DialogActions from '@material-ui/core/DialogActions'
 import Switch from "@material-ui/core/Switch";
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Radio from '@material-ui/core/Radio';
+import TextField from '@material-ui/core/TextField';
+import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button'
+// MATERIAL UI ICON
+import BrushIcon from '@material-ui/icons/Brush';
+import TextureIcon from '@material-ui/icons/Texture';
 import HelpIcon from '@material-ui/icons/Help';
 import SampleComponent from './sampleComponent'
+// OTHER
+import { HexColorPicker } from "react-colorful";
+import "react-colorful/dist/index.css";
+import convert from 'color-convert'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   listItem: {
     marginBottom: theme.spacing(3)

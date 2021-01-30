@@ -1,18 +1,24 @@
+// REACT
 import React from 'react';
+// REDUX
 import { connect } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles';
 import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
-import convert from 'color-convert'
+// MATERIAL UI
+import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
-import toast from 'react-hot-toast'
+// MATERIAL UI ICON
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckIcon from '@material-ui/icons/Check';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+// OTHER
+import convert from 'color-convert'
+import toast from 'react-hot-toast'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   icon: {
     paddingRight: theme.spacing(1),

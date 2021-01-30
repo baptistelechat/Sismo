@@ -1,9 +1,14 @@
+// REACT
 import React from 'react';
+// REDUX
+import { connect } from 'react-redux'
+// MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
+// ICON
 import BuildIcon from '@material-ui/icons/Build';
-import { connect } from 'react-redux'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
     marginRight: theme.spacing(1),

@@ -1,26 +1,31 @@
+// REACT
 import React, { useState } from "react";
+// REDUX
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
+// MATERIAL UI
+import { withStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Select from '@material-ui/core/Select';
+// MATERIAL UI ICON
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Fab from '@material-ui/core/Fab';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
+// COMPONENTS
 import MyDrawer from './drawer';
-
+// PICTURES
 import logo from '../img/logo.png'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

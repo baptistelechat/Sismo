@@ -1,18 +1,23 @@
+// REACT
 import React, { useRef, useEffect, useState }from 'react';
-import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
+// REDUX
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
-import toast from 'react-hot-toast'
-import Grid from '@material-ui/core/Grid';
+// MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
-import "leaflet/dist/leaflet.css";
-import L from 'leaflet'
+import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-
+// LEAFLET
+import L from 'leaflet'
+import "leaflet/dist/leaflet.css";
+import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
+// OTHER
+import toast from 'react-hot-toast'
+// COMPONENTS
 import Georisques from './georisques'
-
+// PICTURE
 import DefaultPin from '../img/icon/pinDefault.svg'
 import SelectedPin from '../img/icon/pinSelected.svg'
 import Abak from '../img/icon/abak-ingenierie.png'
@@ -22,6 +27,7 @@ import Exetera from '../img/icon/exetera-ingenierie.png'
 import Grif from '../img/icon/grif.png'
 import UdtStr from '../img/icon/123-structure.png'
 
+// STYLE
 const useStyles = makeStyles((theme) => ({
   grid: {
     paddingTop:theme.spacing(1),

@@ -1,41 +1,42 @@
+// REACT
 import React, { useState, useEffect } from "react";
+// REDUX
 import { connect } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles';
 import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
-import {
-  setIndigoPinkTheme,
-  setCyanAmberTheme,
-  setRedBrownTheme,
-  setLightGreenBlueTheme,
-  setPersoTheme,
-} from '../redux/theme/actionTheme'
+import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, setPersoTheme } from '../redux/theme/actionTheme'
+// MATERIAL UI
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import Switch from "@material-ui/core/Switch";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+// MATERIAL UI ICON
 import MenuIcon from '@material-ui/icons/Menu';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import Switch from "@material-ui/core/Switch";
+import GetAppIcon from '@material-ui/icons/GetApp';
+import ShareIcon from '@material-ui/icons/Share';
+// FONT AWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+// COMPONENTS
 import ThemePicker from './themePicker'
-import GetAppIcon from '@material-ui/icons/GetApp';
-import ShareIcon from '@material-ui/icons/Share';
+import LicenceMIT from "./licenceMIT";
+// OTHER
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast'
 import convert from 'color-convert'
-import LicenceMIT from "./licenceMIT";
-
+// PICTURES
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
 import Pop_Matthieu from '../img/pop/Pop_Matthieu.png'
 import logo from '../img/logo.png'
 
-
+// STYLE
 const useStyles = makeStyles((theme) => ({
   contact: {
     width: '25vw',
