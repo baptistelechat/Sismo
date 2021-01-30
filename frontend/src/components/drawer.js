@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles';
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
 import {
   setIndigoPinkTheme,
   setCyanAmberTheme,
@@ -7,8 +9,6 @@ import {
   setLightGreenBlueTheme,
   setPersoTheme,
 } from '../redux/theme/actionTheme'
-import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -23,14 +23,12 @@ import Switch from "@material-ui/core/Switch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faGithub, faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import TextureIcon from '@material-ui/icons/Texture';
-import Fab from '@material-ui/core/Fab';
-import ColorPicker from './colorPicker'
-import convert from 'color-convert'
+import ThemePicker from './themePicker'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast'
+import convert from 'color-convert'
 import LicenceMIT from "./licenceMIT";
 
 import Pop_Baptiste from '../img/pop/Pop_Baptiste.png'
@@ -99,69 +97,29 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(4),
     paddingBottom: theme.spacing(1),
-  },
-  fab: {
-    color: theme.palette.common.white,
-    marginLeft:theme.spacing(1),
-    marginRight:theme.spacing(1),
-    marginTop:theme.spacing(1),
-    marginBottom:theme.spacing(3),
-  },
-  indigoPinkTheme: {
-    color: '#e91e63',
-    background: '#3f51b5',
-    '&:hover': {
-      color: '#3f51b5',
-    background: '#e91e63',
-    },
-  },
-  cyanAmberTheme: {
-    color: '#ffb300',
-    background: '#00acc1',
-    '&:hover': {
-      color: '#00acc1',
-    background: '#ffb300',
-    },
-  },
-  redBrownTheme: {
-    color: '#795548',
-    background: '#d32f2f',
-    '&:hover': {
-      color: '#d32f2f',
-    background: '#795548',
-    },
-  },
-  lightGreenBlueTheme: {
-    color: '#2196f3',
-    background: '#8bc34a',
-    '&:hover': {
-      color: '#8bc34a',
-    background: '#2196f3',
-    },
   }
 }));
 
 const MyDrawer = ({
+  materialTheme,
   primaryColorPicker,
   secondaryColorPicker,
+  setPersoTheme,
+  setThemeSelected,
   setIndigoPinkTheme,
   setCyanAmberTheme,
   setRedBrownTheme,
   setLightGreenBlueTheme,
-  setPersoTheme,
   setPrimaryColorPicker,
-  setSecondaryColorPicker,
-  materialTheme}) => {
+  setSecondaryColorPicker}) => {
 
   const classes = useStyles();
 
   const [openDrawer, setOpenDrawer] = useState(false)
-  const [dark, setDark] = useState(false)
-  const [theme, setTheme] = useState("indigo_pink")
-
-  const [supportsPWA, setSupportsPWA] = useState(false);
-  // const [supportsPWA, setSupportsPWA] = useState(true);
+  const [supportPWA, setSupportPWA] = useState(false);
   const [promptInstall, setPromptInstall] = useState(null);
+  const [dark, setDark] = useState(false);
+  const [theme, setTheme] = useState("indigo_pink")
 
   const urlLinkedin = 'https://www.linkedin.com/in/baptiste-lechat-3686a6174/'
   const urlGithub = 'https://github.com/baptistelechat'
@@ -182,7 +140,7 @@ https://sismo.vercel.app/`
   useEffect(() => {
     const handler = e => {
       e.preventDefault();
-      setSupportsPWA(true);
+      setSupportPWA(true);
       setPromptInstall(e);
     };
 
@@ -197,60 +155,6 @@ https://sismo.vercel.app/`
     }
     setOpenDrawer(open);
   };
-
-  const handleThemeChange = () => {
-    setDark(!dark)
-    changeTheme(theme, !dark)
-  };
-
-  const changeTheme = (id, dark) => {
-    switch (id) {
-      case "indigo_pink": 
-        setIndigoPinkTheme(dark)
-        setTheme("indigo_pink")
-        setPrimaryColorPicker('#3f51b5')
-        setSecondaryColorPicker('#e91e63')
-        break
-      case "cyan_amber":
-        setCyanAmberTheme(dark)
-        setTheme("cyan_amber")
-        setPrimaryColorPicker('#00acc1')
-        setSecondaryColorPicker('#ffb300')
-        break
-      case "red_brown":
-        setRedBrownTheme(dark)
-        setTheme("red_brown")
-        setPrimaryColorPicker('#d32f2f')
-        setSecondaryColorPicker('#795548')
-        break
-      case "light_green_blue":
-        setLightGreenBlueTheme(dark)
-        setTheme("light_green_blue")
-        setPrimaryColorPicker('#8bc34a')
-        setSecondaryColorPicker('#2196f3')
-        break
-      case "perso":
-        let secondaryColorPickerDark = convert.hex.hsl(secondaryColorPicker)
-        const secondaryColorPickerDarkHue = secondaryColorPickerDark[0]
-        const secondaryColorPickerDarkSaturation = secondaryColorPickerDark[1]+5 >= 100 ? 100 : secondaryColorPickerDark[1]+5
-        const secondaryColorPickerDarkLightness = secondaryColorPickerDark[2]+20 >=85 ? 85 : secondaryColorPickerDark[2]+20
-        secondaryColorPickerDark = '#'+convert.hsl.hex([secondaryColorPickerDarkHue, secondaryColorPickerDarkSaturation, secondaryColorPickerDarkLightness])
-        
-        let toastColor = convert.hex.hsl(primaryColorPicker)
-        const toastColorHue = toastColor[0]
-        const toastColorSaturation = toastColor[1]+5 >= 100 ? 100 : toastColor[1]+5
-        const toastColorLightness = toastColor[2]+20 >=85 ? 85 : toastColor[2]+20
-        toastColor = '#'+convert.hsl.hex([toastColorHue, toastColorSaturation, toastColorLightness])
-        
-        setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, dark)
-        setTheme("perso")
-        setPrimaryColorPicker(primaryColorPicker)
-        setSecondaryColorPicker(secondaryColorPicker)
-        break
-      default :
-        setIndigoPinkTheme(dark)
-    }
-  }
 
   const openLink = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -293,6 +197,59 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
       )
     }
   }
+  
+  const secondaryColorPickerDark = () => {
+    let secondaryColorPickerDark = convert.hex.hsl(secondaryColorPicker)
+    const secondaryColorPickerDarkHue = secondaryColorPickerDark[0]
+    const secondaryColorPickerDarkSaturation = secondaryColorPickerDark[1]+5 >= 100 ? 100 : secondaryColorPickerDark[1]+5
+    const secondaryColorPickerDarkLightness = secondaryColorPickerDark[2]+20 >=85 ? 85 : secondaryColorPickerDark[2]+20
+    return secondaryColorPickerDark = '#'+convert.hsl.hex([secondaryColorPickerDarkHue, secondaryColorPickerDarkSaturation, secondaryColorPickerDarkLightness])
+  }
+
+  const toastColor = () => {
+    let toastColor = convert.hex.hsl(primaryColorPicker)
+    const toastColorHue = toastColor[0]
+    const toastColorSaturation = toastColor[1]+5 >= 100 ? 100 : toastColor[1]+5
+    const toastColorLightness = toastColor[2]+20 >=85 ? 85 : toastColor[2]+20
+    return toastColor = '#'+convert.hsl.hex([toastColorHue, toastColorSaturation, toastColorLightness])
+  }
+
+  const changeTheme = () => {
+    setDark(!dark)
+    switch (theme) {
+      case "indigo_pink": 
+        setIndigoPinkTheme(!dark)
+        setTheme("indigo_pink")
+        setPrimaryColorPicker('#3f51b5')
+        setSecondaryColorPicker(!dark === false ? '#e91e63' : '#f06292')
+        break
+      case "cyan_amber":
+        setCyanAmberTheme(!dark)
+        setTheme("cyan_amber")
+        setPrimaryColorPicker('#00acc1')
+        setSecondaryColorPicker(!dark === false ?'#ffb300' : '#ffca28')
+        break
+      case "red_brown":
+        setRedBrownTheme(!dark)
+        setTheme("red_brown")
+        setPrimaryColorPicker('#d32f2f')
+        setSecondaryColorPicker(!dark === false ?'#795548' : '#a1887f')
+        break
+      case "light_green_blue":
+        setLightGreenBlueTheme(!dark)
+        setTheme("light_green_blue")
+        setPrimaryColorPicker('#8bc34a')
+        setSecondaryColorPicker(!dark === false ? '#2196f3' : '#64b5f6')
+        break
+      case "perso":
+        setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark(), toastColor(), !dark)
+        setTheme("perso")
+        break
+      default :
+        setIndigoPinkTheme(dark)
+    }   
+  };
+
     // <div>
     //       Icons made by <a href="https://www.flaticon.com/free-icon/wind_481476?related_item_id=481476&term=wind" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     //     </div>
@@ -332,25 +289,21 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
 
   const themeSelector = () => (
     <div>
-      <div className={classes.iconContainer}>
-          <Fab className={`${classes.fab} ${classes.indigoPinkTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("indigo_pink", dark)}>
-            <TextureIcon/>
-          </Fab>
-          <Fab className={`${classes.fab} ${classes.cyanAmberTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("cyan_amber", dark)}>
-            <TextureIcon/>
-          </Fab>
-          <Fab className={`${classes.fab} ${classes.redBrownTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("red_brown", dark)}>
-            <TextureIcon/>
-          </Fab>
-          <Fab className={`${classes.fab} ${classes.lightGreenBlueTheme}`} color="secondary" aria-label="add" size="small" onClick={() => changeTheme("light_green_blue", dark)}>
-            <TextureIcon />
-          </Fab>
-     </div>
-      <div className={classes.iconContainer}>
-        <ColorPicker className={classes.colorPicker} setTheme={setTheme}/>
-      </div>
+      <ListItem>
+        <h3 className={classes.h3}>Personnalisation</h3>
+      </ListItem>
+      <ListItem button  onClick={changeTheme}>
+      <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
+        <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
+        <Switch checked={materialTheme.type === 'dark'} onClick={changeTheme}/>
+      </ListItem>
+      <ThemePicker theme={theme} setTheme={setTheme} dark={dark} setDark={setDark}/>
+      <Divider />
+      <ListItem>
+        <h3 className={classes.h3}>Autres options de Sismo</h3>
+      </ListItem>
     </div>
-  );
+  )
 
   return (
     <div>
@@ -370,20 +323,8 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
           <img className={classes.logo} src={logo} alt="logo Sismo"/>
         </ListItem>
         <List className={classes.list}>
-          <ListItem>
-              <h3 className={classes.h3}>Personnalisation</h3>
-          </ListItem>
-          <ListItem button onClick={handleThemeChange}>
-            <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
-              <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
-              <Switch checked={materialTheme.type === 'dark'} onChange={handleThemeChange}/>
-          </ListItem>
           {themeSelector()}
-          <Divider />
-          <ListItem>
-            <h3 className={classes.h3}>Autres options de Sismo</h3>
-          </ListItem>
-          {supportsPWA ? 
+          {supportPWA ? 
             (<ListItem button onClick={install}>
               <ListItemIcon><GetAppIcon/></ListItemIcon>
               <ListItemText primary={"Installer"} secondary={"Installer Sismo sur votre appareil"}/> 
@@ -426,6 +367,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setPersoTheme: (primaryColorLight, secondaryColorLight, secondaryColorDark, toastColor, darkmode) => {
+      dispatch(setPersoTheme(primaryColorLight, secondaryColorLight, secondaryColorDark, toastColor, darkmode))
+    },
     setIndigoPinkTheme: (darkmode) => {
       dispatch(setIndigoPinkTheme(darkmode))
     },
@@ -443,10 +387,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     setSecondaryColorPicker: (secondaryColor) => {
       dispatch(setSecondaryColorPicker(secondaryColor))
-    },
-    setPersoTheme: (primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, darkmode) => {
-      dispatch(setPersoTheme(primaryColorPicker, secondaryColorPicker, secondaryColorPickerDark, toastColor, darkmode))
-    },
+    }
   }
 }
 
