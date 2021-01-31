@@ -1,5 +1,5 @@
 // REACT
-import React, { useState } from "react";
+import React from "react";
 // REDUX
 import { connect } from 'react-redux'
 // MATERIAL UI

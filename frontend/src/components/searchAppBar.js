@@ -5,8 +5,7 @@ import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
 // MATERIAL UI
-import { withStyles } from '@material-ui/core/styles';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +16,8 @@ import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 // MATERIAL UI ICON
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -146,6 +147,12 @@ const MyRadio = withStyles({
   checked: {},
 })((props) => <Radio color="default" {...props} />);
 
+const MyTooltip = withStyles((theme) => ({
+  tooltip: {
+    fontSize: '12px',
+  },
+}))(Tooltip);
+
 function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, materialTheme}) {
 
   const classes = useStyles();
@@ -232,10 +239,12 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, material
               onKeyUp={handleKeypress}
             />
           </div>
-          <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
-              <SearchIcon />
-            </Fab>
-          </Toolbar>
+          <MyTooltip title="Rechercher" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
+            <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
+                <SearchIcon />
+              </Fab>
+          </MyTooltip>
+        </Toolbar>
       </AppBar>
     </div>
   );

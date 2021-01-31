@@ -4,9 +4,11 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
 // MATERIAL UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 // MATERIAL UI ICON
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -34,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
   }
 }));
+
+const MyTooltip = withStyles((theme) => ({
+  tooltip: {
+    fontSize: '12px',
+  },
+}))(Tooltip);
 
 const SampleComponent = ({
   materialTheme, 
@@ -83,28 +91,32 @@ const SampleComponent = ({
       <h6 className={classes.textExample} style={{color: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}>Lorem ipsum</h6>
       <p className={classes.textExample} style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus et quos aliquam porro atque tenetur ipsam qui, beatae iusto doloribus adipisci hic molestias excepturi repudiandae asperiores in at? Laudantium, harum!</p>
       <Divider style={{marginTop: '8px', marginBottom: '16px'}}/>
-      <Fab
-        variant="extended"
-        size="medium"
-        style={{backgroundColor: primaryColorPicker}}
-        aria-label="add"
-        className={classes.fab}
-        onClick={handleClick}
-        >
-        <NotificationsActiveIcon className={classes.icon}/>
-          Notification
+      <MyTooltip title="Afficher une notification de test" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
+        <Fab
+          variant="extended"
+          size="medium"
+          style={{backgroundColor: primaryColorPicker}}
+          aria-label="add"
+          className={classes.fab}
+          onClick={handleClick}
+          >
+          <NotificationsActiveIcon className={classes.icon}/>
+            Notification
         </Fab>
-      <Fab
-        variant="extended"
-        size="medium"
-        style={{backgroundColor: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}
-        aria-label="add"
-        className={classes.fab}
-        onClick={handleClick}
-        >
-        <NotificationsActiveIcon className={classes.icon}/>
-          Notification
-      </Fab>
+      </MyTooltip>
+      <MyTooltip title="Afficher une notification de test" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
+        <Fab
+          variant="extended"
+          size="medium"
+          style={{backgroundColor: materialTheme.type === 'light' ? secondaryColorPicker : secondaryColorPickerDark()}}
+          aria-label="add"
+          className={classes.fab}
+          onClick={handleClick}
+          >
+          <NotificationsActiveIcon className={classes.icon}/>
+            Notification
+        </Fab>
+      </MyTooltip>
       <div>
         <ChevronRightIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
         <SearchIcon fontSize='large' style={{color: materialTheme.type === 'light' ? primaryColorPicker : '#ffffff'}}/>
