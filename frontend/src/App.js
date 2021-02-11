@@ -98,6 +98,7 @@ function App({materialTheme, indexSelected, apiData}) {
             }
           </title>
           <meta name="description" content="Un outil pour obtenir les zones de neige, de vent et de sismicité en France (y compris DROM-COM)"/>
+          <meta name="google-site-verification" content="dUKJG55WfbB-QT1tXN_oHcktXdsSLnP3lYEI5XKDKOI"/>
         </Helmet>
         <Toaster
           position="bottom-right"
