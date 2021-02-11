@@ -97,6 +97,7 @@ function App({materialTheme, indexSelected, apiData}) {
               "Sismo"
             }
           </title>
+          <meta name="description" content="Un outil pour obtenir les zones de neige, de vent et de sismicité en France (y compris DROM-COM)"/>
         </Helmet>
         <Toaster
           position="bottom-right"
