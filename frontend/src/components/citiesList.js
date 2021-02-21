@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CitiesList({indexSelected, apiData, setIndex, materialTheme}) {
+function CitiesList({indexSelected, apiData, geoData, setIndex, materialTheme}) {
   
   const classes = useStyles();
   
@@ -95,7 +95,7 @@ function CitiesList({indexSelected, apiData, setIndex, materialTheme}) {
         <h2 className={classes.h2}>{apiData.length>1 ? 'Résultats de votre recherche' : 'Résultat de votre recherche'}</h2>
       </ListItem>
       <ScrollArea className={classes.scrollbar}>
-        {apiData.length === 0 ?
+        {apiData.length === 0 && geoData.length === 0 ?
         <ListItem>
           <ListItemIcon>
             <ChevronRightIcon />
@@ -103,17 +103,26 @@ function CitiesList({indexSelected, apiData, setIndex, materialTheme}) {
           <ListItemText className={classes.p} primary="Veuillez saisir une valeur dans le champ de recherche" secondary=""/>
         </ListItem> : null}
         <List>
-          {apiData.map((cities, index) => 
-          <ListItem button key={index} onClick={() => listItemClicked(index)}>
-            <ListItemIcon>
-              {indexSelected === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
-            </ListItemIcon>
-            {indexSelected === index ?
-              <ListItemText className={classes.selected} primary={cities.nomCommune} secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}/>
-              : 
-              <ListItemText className={classes.p} primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
-            }
-          </ListItem>)}
+          {geoData.length === 0 ?
+            (apiData.map((cities, index) => 
+            <ListItem button key={index} onClick={() => listItemClicked(index)}>
+              <ListItemIcon>
+                {indexSelected === index ? <CheckIcon color="secondary"/> : <ChevronRightIcon/>}
+              </ListItemIcon>
+              {indexSelected === index ?
+                <ListItemText className={classes.selected} primary={cities.nomCommune} secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}/>
+                : 
+                <ListItemText className={classes.p} primary={cities.codePostal ? cities.nomCommune : "Aucune valeur correspondante à votre recherche"} secondary={cities.codePostal ? `Code postal : ${cities.codePostal} - INSEE : ${cities.insee}` : null}/>
+              }
+            </ListItem>))
+            :
+            (<ListItem>
+              <ListItemIcon>
+                <CheckIcon color="secondary"/>
+              </ListItemIcon>
+                <ListItemText className={classes.selected} primary={geoData.nomCommune} secondary={`INSEE : ${geoData.insee}`}/>
+            </ListItem>)
+          }
         </List>
       </ScrollArea>
     </div>
@@ -124,6 +133,7 @@ const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
+    geoData: state.geoApi.city,
     materialTheme: state.theme
   }
 }

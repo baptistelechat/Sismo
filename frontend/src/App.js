@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({materialTheme, indexSelected, apiData}) {
+function App({materialTheme, indexSelected, apiData, geoData}) {
   
   const classes = useStyles();
 
@@ -90,7 +90,9 @@ function App({materialTheme, indexSelected, apiData}) {
         <Helmet>
           <title>
             {
-              indexSelected !== -1 ?
+              geoData.length != 0 ? 
+              `Sismo | ${geoData.nomCommuneExact}` :
+              indexSelected != -1 ?
               `Sismo | ${apiData[indexSelected].nomCommuneExact} (${apiData[indexSelected].codePostal})` :
               apiData.length === 1 ? `Sismo | ${apiData.length} résultat trouvé` :
               apiData.length > 0 ? `Sismo | ${apiData.length} résultats trouvés` :
@@ -127,7 +129,8 @@ const mapStateToProps = (state) => {
   return {
     materialTheme: state.theme,
     indexSelected: state.index.indexSelected,
-    apiData: state.cityApi.cities
+    apiData: state.cityApi.cities,
+    geoData: state.geoApi.city
   }
 }
 

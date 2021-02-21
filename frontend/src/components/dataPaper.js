@@ -88,19 +88,27 @@ const useStyles = makeStyles((theme) => ({
  },
 }));
 
-const DataPaper = ({indexSelected, apiData, materialTheme}) => {
+const DataPaper = ({indexSelected, apiData, geoData, materialTheme}) => {
 
   const classes = useStyles();
 
-  const wind = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
-  const snow = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
-  const seism = apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
+  const wind = geoData.length != 0 ? geoData.vent : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
+  const snow = geoData.length != 0 ? geoData.neige : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
+  const seism = geoData.length != 0 ? geoData.seisme : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
 
   return (
     <div>
       <ListItem>
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
-        <h2 className={classes.h2}>{apiData[indexSelected] === undefined ? "Aucune ville sélectionnée" : apiData[indexSelected].nomCommune ? `${apiData[indexSelected].nomCommune} (${apiData[indexSelected].codePostal})` : "Aucune ville sélectionnée"}</h2>
+        <h2 className={classes.h2}>{
+          geoData.length != 0 ?
+            `${geoData.nomCommune}` :
+          apiData[indexSelected] === undefined ?
+            "Aucune ville sélectionnée" :
+          apiData[indexSelected].nomCommune ?
+            `${apiData[indexSelected].nomCommune} (${apiData[indexSelected].codePostal})` :
+          "Aucune ville sélectionnée"
+          }</h2>
       </ListItem>
       
       <Grid container spacing={2} className={classes.grid} >
@@ -175,6 +183,7 @@ const mapStateToProps = (state, props) => {
     materialTheme: state.theme,
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
+    geoData: state.geoApi.city
   }
 }
 

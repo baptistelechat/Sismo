@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
+import { geoApiCall, geoApiReset } from '../redux/geoData/actionGeoData'
 // MATERIAL UI
 import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,10 +22,13 @@ import Zoom from '@material-ui/core/Zoom';
 // MATERIAL UI ICON
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
 // COMPONENTS
 import MyDrawer from './drawer';
 // PICTURES
 import logo from '../img/logo.png'
+// OTHER
+import axios from 'axios'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -153,7 +157,7 @@ const MyTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, materialTheme}) {
+function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset, materialTheme}) {
 
   const classes = useStyles();
 
@@ -162,11 +166,12 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, material
 
   const handleSubmit = () => {
     citiesApiCall(param, searchValue)
+    geoApiReset()
     setIndex(-1);
   }
 
   const handleChange = (event) => {
-      setSearchValue(event.currentTarget.value)
+    setSearchValue(event.currentTarget.value)
   }
 
   const handleSelectChange = (event) => {
@@ -187,6 +192,14 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, material
       handleSubmit();
     }
   };
+
+  const handleGeolocation = () => {
+    geoApiCall()
+    setSearchValue('')
+    setIndex(-1);
+  }
+
+    
 
   return (
     <div className={classes.root}>
@@ -244,6 +257,11 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, material
                 <SearchIcon />
               </Fab>
           </MyTooltip>
+          <MyTooltip title="Me géolocaliser" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
+            <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleGeolocation}>
+                <MyLocationIcon />
+              </Fab>
+          </MyTooltip>
         </Toolbar>
       </AppBar>
     </div>
@@ -253,7 +271,6 @@ function SearchAppBar({setIndex, apiData, apiDataLength, citiesApiCall, material
 const mapStateToProps = (state) => {
   return {
     apiData: state.cityApi.cities,
-    apiDataLength: state.cityApi.length,
     materialTheme: state.theme,
   }
 }
@@ -265,6 +282,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     citiesApiCall: (param, searchValue) => {
       dispatch(citiesApiCall(param, searchValue))
+    },
+    geoApiCall: () => {
+      dispatch(geoApiCall())
+    },
+    geoApiReset: () => {
+      dispatch(geoApiReset())
     }
   }
 }

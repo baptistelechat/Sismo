@@ -28,11 +28,15 @@ const MyTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const Georisques = ({indexSelected, apiData}) => {
+const Georisques = ({indexSelected, apiData, geoData}) => {
 
   const classes = useStyles();
+
+  const codeInsee = geoData.length != 0 ? geoData.insee : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].insee
+  const codePostal = geoData.length != 0 ? geoData.codePostal : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codePostal
+  const nomCommuneExact = geoData.length != 0 ? geoData.nomCommuneExact : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].nomCommuneExact
   
-  const url = apiData[indexSelected] === undefined ? "" :`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${apiData[indexSelected].insee}&ign=false&CGU-commune=on&commune=${apiData[indexSelected].codePostal}+${apiData[indexSelected].nomCommuneExact}`
+  const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`
 
   const openInNewTab = () => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -41,7 +45,7 @@ const Georisques = ({indexSelected, apiData}) => {
 
   return (
     <div>
-      {indexSelected !== -1 && apiData[indexSelected].vent !== 'x' ?
+      {(indexSelected !== -1 && apiData[indexSelected].vent !== 'x') || geoData.length != 0 ?
         <MyTooltip title="Accéder au site Géorisques" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
           <Fab
             variant="extended"
@@ -77,7 +81,8 @@ const Georisques = ({indexSelected, apiData}) => {
 const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
-    apiData: state.cityApi.cities
+    apiData: state.cityApi.cities,
+    geoData: state.geoApi.city
   }
 }
 

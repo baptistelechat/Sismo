@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
+const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) => {
 
   const layerGroupRef = useRef();
   const mapRef = useRef(null);
@@ -217,7 +217,19 @@ const ReactMap = ({indexSelected, apiData, setIndex, materialTheme}) => {
               </Popup>
             </Marker>) : null}
             <FeatureGroup ref={layerGroupRef}>
-              {apiData[0] !== 'Aucune valeur correspondante à votre recherche' ? apiData.map((cities, index) => 
+              {geoData.length != 0 ? 
+                (<Marker
+                  position={[geoData.latitude, geoData.longitude]}
+                  icon={SelectedIcon}>
+                  <Popup>
+                    <h3>{`📍 Vous êtes ici - ${geoData.nomCommune}`}</h3>
+                    <p>{`Vent : ${geoData.vent}`}</p>
+                    <p>{`Neige : ${geoData.neige}`}</p>
+                    <p>{`Séisme : ${geoData.seisme}`}</p>
+                  </Popup>
+                </Marker>)
+              :
+              apiData[0] !== 'Aucune valeur correspondante à votre recherche' ? apiData.map((cities, index) => 
               <Marker key={index}
                 position={[cities.latitude, cities.longitude]}
                 icon={indexSelected === index ? SelectedIcon : DefaultIcon}
@@ -240,6 +252,7 @@ const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
+    geoData: state.geoApi.city,
     materialTheme: state.theme
   }
 }
