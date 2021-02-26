@@ -92,16 +92,16 @@ const DataPaper = ({indexSelected, apiData, geoData, materialTheme}) => {
 
   const classes = useStyles();
 
-  const wind = geoData.length != 0 ? geoData.vent : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
-  const snow = geoData.length != 0 ? geoData.neige : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
-  const seism = geoData.length != 0 ? geoData.seisme : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
+  const wind = geoData.length !== 0 ? geoData.vent : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
+  const snow = geoData.length !== 0 ? geoData.neige : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
+  const seism = geoData.length !== 0 ? geoData.seisme : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
 
   return (
     <div>
       <ListItem>
         <ListItemIcon><LocationOnIcon color="secondary" fontSize='large'/></ListItemIcon>
         <h2 className={classes.h2}>{
-          geoData.length != 0 ?
+          geoData.length !== 0 ?
             `${geoData.nomCommune}` :
           apiData[indexSelected] === undefined ?
             "Aucune ville sélectionnée" :

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { geoApiCall } from '../redux/geoData/actionGeoData'
 // MATERIAL UI
-import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
@@ -79,20 +79,20 @@ const Toolbox = ({indexSelected, apiData, geoData, geoApiCall, materialTheme}) =
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   
-  const nomCommuneExact = geoData.length != 0 ? geoData.nomCommuneExact : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].nomCommuneExact
-  const codeInsee = geoData.length != 0 ? geoData.insee : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].insee
-  const codePostal = geoData.length != 0 ? "-" : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codePostal
-  const latitude = geoData.length != 0 ? geoData.latitude : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].latitude
-  const longitude = geoData.length != 0 ? geoData.longitude : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].longitude
-  const codeDepartement = geoData.length != 0 ? geoData.codeDepartement : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codeDepartement
-  const departement = geoData.length != 0 ? geoData.departement : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].departement
-  const region = geoData.length != 0 ? geoData.region : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].region
-  const wind = geoData.length != 0 ? geoData.vent : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
-  const snow = geoData.length != 0 ? geoData.neige : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
-  const seism = geoData.length != 0 ? geoData.seisme : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
+  const nomCommuneExact = geoData.length !== 0 ? geoData.nomCommuneExact : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].nomCommuneExact
+  const codeInsee = geoData.length !== 0 ? geoData.insee : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].insee
+  const codePostal = geoData.length !== 0 ? "-" : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codePostal
+  const latitude = geoData.length !== 0 ? geoData.latitude : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].latitude
+  const longitude = geoData.length !== 0 ? geoData.longitude : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].longitude
+  const codeDepartement = geoData.length !== 0 ? geoData.codeDepartement : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codeDepartement
+  const departement = geoData.length !== 0 ? geoData.departement : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].departement
+  const region = geoData.length !== 0 ? geoData.region : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].region
+  const wind = geoData.length !== 0 ? geoData.vent : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].vent;
+  const snow = geoData.length !== 0 ? geoData.neige : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].neige;
+  const seism = geoData.length !== 0 ? geoData.seisme : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].seisme;
 
   const data = 
-  geoData.length != 0 ?
+  geoData.length !== 0 ?
 `🏡 ${nomCommuneExact} :
 • Code INSEE : ${codeInsee}
 • Département : ${departement} (${codeDepartement})
@@ -152,7 +152,7 @@ const Toolbox = ({indexSelected, apiData, geoData, geoApiCall, materialTheme}) =
   const share = () => {
     if (navigator.share) {
       navigator.share({
-        title: geoData.length != 0 ? `🏡 Sismo - ${nomCommuneExact}` : `🏡 Sismo - ${nomCommuneExact} (${codePostal})`,
+        title: geoData.length !== 0 ? `🏡 Sismo - ${nomCommuneExact}` : `🏡 Sismo - ${nomCommuneExact} (${codePostal})`,
         text: data
       })
         .then(() => console.log('Successful share'))

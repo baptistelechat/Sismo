@@ -95,7 +95,6 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
     {"name": "Nantes", "position": [47.2179379,-1.5567006], "icon": BigCitiesIcon, "state": "Pays de la Loire", "vent":"3", "neige":"A1", "seisme":"3"},
     {"name": "Marseille", "position": [43.2969942,5.3620563], "icon": BigCitiesIcon, "state": "Provence-Alpes-Côte d’Azur", "vent":"2", "neige":"A2", "seisme":"3"},
     {"name": "Ajaccio", "position": [41.9193354,8.7368399], "icon": BigCitiesIcon, "state": "Corse", "vent":"3", "neige":"A2", "seisme":"1"},
-
     {"name": "Pointe-à-Pitre", "position": [16.2410492,-61.5355473], "icon": BigCitiesIcon, "state": "Guadeloupe", "vent":"5", "neige":"0", "seisme":"5"},
     {"name": "Saint-Denis", "position": [-20.8964595,55.4350018], "icon": BigCitiesIcon, "state": "Réunion", "vent":"5", "neige":"0", "seisme":"2"},
     {"name": "Mamoudzou", "position": [-12.7805816,45.2302623], "icon": BigCitiesIcon, "state": "Mayotte", "vent":"5", "neige":"0", "seisme":"3"},
@@ -113,6 +112,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
   const handleMarkerClick = (index) => {
     setIndex(index)
     toastOutput(index)
+    console.log(apiData[index])
   }
 
   const toastOutput = (index) => {
@@ -217,7 +217,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
               </Popup>
             </Marker>) : null}
             <FeatureGroup ref={layerGroupRef}>
-              {geoData.length != 0 ? 
+              {geoData.length !== 0 ? 
                 (<Marker
                   position={[geoData.latitude, geoData.longitude]}
                   icon={SelectedIcon}>

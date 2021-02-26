@@ -90,9 +90,9 @@ function App({materialTheme, indexSelected, apiData, geoData}) {
         <Helmet>
           <title>
             {
-              geoData.length != 0 ? 
+              geoData.length !== 0 ? 
               `Sismo | ${geoData.nomCommuneExact}` :
-              indexSelected != -1 ?
+              indexSelected !== -1 ?
               `Sismo | ${apiData[indexSelected].nomCommuneExact} (${apiData[indexSelected].codePostal})` :
               apiData.length === 1 ? `Sismo | ${apiData.length} résultat trouvé` :
               apiData.length > 0 ? `Sismo | ${apiData.length} résultats trouvés` :

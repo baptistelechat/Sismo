@@ -27,8 +27,6 @@ import MyLocationIcon from '@material-ui/icons/MyLocation';
 import MyDrawer from './drawer';
 // PICTURES
 import logo from '../img/logo.png'
-// OTHER
-import axios from 'axios'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({

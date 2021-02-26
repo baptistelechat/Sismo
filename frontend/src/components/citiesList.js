@@ -43,6 +43,7 @@ function CitiesList({indexSelected, apiData, geoData, setIndex, materialTheme}) 
   const listItemClicked = (index) => {
     setIndex(index)
     toastOutput(index)
+    console.log(apiData[index])
   }
 
   const toastOutput = (index) => {

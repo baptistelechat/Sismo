@@ -56,12 +56,14 @@ export const geoApiCall = () => {
       })
       .then((data) => {
         axios.get(`https://sismo-api.vercel.app/api/v1/city/insee/${data.insee}`)
+        // axios.get(`http://localhost:8000/api/v1/city/insee/${data.insee}`)
         .then((res)=>{
           const city = {
             ...res.data[0],
             "latitude": latitude.toString(),
             "longitude": longitude.toString()
           }
+          console.log(city)
           dispatch(loadGeoApiSuccess(city))
           toast.dismiss(geoToast)
           toast.success(`📍 Vous êtes à ${city.nomCommuneExact}`, {
@@ -95,7 +97,7 @@ export const geoApiCall = () => {
       })
     }
 
-    const geo = navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
       successGeolocation,
       () => {
         console.log("Accès refusé ...")
