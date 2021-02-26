@@ -1,15 +1,13 @@
 // Modules
-import express from 'express'
-import chalk from 'chalk'
-import cors from 'cors'
-import path from 'path'
-import csv from 'csvtojson'
-import { deserialize } from 'v8'
-import axios from 'axios'
+const express = require('express')
+const chalk = require('chalk')
+const cors = require('cors')
+const csv = require('csvtojson')
+const path = require('path')
+const axios = require('axios')
 
 // Constants
 const app = express()
-const __dirname = path.resolve(path.dirname(''));
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(cors())
 const PORT = 8000
