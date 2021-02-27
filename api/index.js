@@ -15,32 +15,39 @@ const csvFilePath = path.join(__dirname, '/public/data.csv')
 const APIversion = '/api/v1'
 
 const dataGouv = (insee) => {
+
   return axios.get(`https://geo.api.gouv.fr/communes?code=${insee}&fields=code,nom,codeDepartement,departement,codeRegion,region,contour,centre,surface,population,codesPostaux`)
   .then((dataGouv) => {
-    const obj = {
-      "nomCommuneExact": dataGouv.data[0].nom,
-      "insee": dataGouv.data[0].code,
-      "population": "-",
-      "surface": "-",
-      "border": "-",
-      "latitude": "-",
-      "longitude": "-",
+
+    if (dataGouv.data[0]!== undefined) {
+      const obj = {
+        "insee": dataGouv.data[0].code,
+        "population": "-",
+        "surface": "-",
+        "border": "-",
+        "latitude": "-",
+        "longitude": "-",
+      }
+  
+      if (dataGouv.data.length !== 0) {
+        dataGouv.data[0].population !== undefined ? obj.population = dataGouv.data[0].population.toString() : obj.population = '-'
+        dataGouv.data[0].surface !== undefined ? obj.surface = dataGouv.data[0].surface.toString() : obj.surface = '-'
+        dataGouv.data[0].contour !== undefined ? obj.border = dataGouv.data[0].contour : obj.border = '-'
+        if (dataGouv.data[0].centre !== undefined) {
+          obj.longitude = dataGouv.data[0].centre.coordinates[0].toString()
+          obj.latitude = dataGouv.data[0].centre.coordinates[1].toString()
+        }
+      } else {
+        obj.population = '-'
+        obj.surface = '-'
+        obj.border = '-'
+      }
+      return obj
+    } else {
+      return null
     }
 
-    if (dataGouv.data.length !== 0) {
-      dataGouv.data[0].population !== undefined ? obj.population = dataGouv.data[0].population.toString() : obj.population = '-'
-      dataGouv.data[0].surface !== undefined ? obj.surface = dataGouv.data[0].surface.toString() : obj.surface = '-'
-      dataGouv.data[0].contour !== undefined ? obj.border = dataGouv.data[0].contour : obj.border = '-'
-      if (dataGouv.data[0].centre !== undefined) {
-        obj.longitude = dataGouv.data[0].centre.coordinates[0].toString()
-        obj.latitude = dataGouv.data[0].centre.coordinates[1].toString()
-      }
-    } else {
-      obj.population = '-'
-      obj.surface = '-'
-      obj.border = '-'
-    }
-    return obj
+    
   })
 }
 
@@ -77,15 +84,17 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
           const city = match[i];
           const insee = match[i].insee
           await dataGouv(insee).then(e => {
-            if (insee === e.insee) {
-              match[i].population = e.population
-              match[i].surface = e.surface
-              match[i].border = e.border
-              if (e.latitude !== "-" && e.insee !== "13055" && e.insee !== "75056" && e.insee !== "69123") {
-                match[i].latitude = e.latitude
-                match[i].longitude = e.longitude
+            if (e !== null) {
+              if (insee === e.insee) {
+                match[i].population = e.population
+                match[i].surface = e.surface
+                match[i].border = e.border
+                if (e.latitude !== "-" && e.insee !== "13055" && e.insee !== "75056" && e.insee !== "69123") {
+                  match[i].latitude = e.latitude
+                  match[i].longitude = e.longitude
+                }
               }
-            }
+            }            
             data.push(match[i])
             if (i === (match.length)-1) {
               const id = req.params.id
