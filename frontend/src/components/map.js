@@ -12,7 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 // LEAFLET
 import L from 'leaflet'
 import "leaflet/dist/leaflet.css";
-import { Map, Marker, Popup, TileLayer, FeatureGroup} from "react-leaflet";
+import { Map, Marker, Popup, TileLayer, FeatureGroup, GeoJSON} from "react-leaflet";
 // OTHER
 import toast from 'react-hot-toast'
 // COMPONENTS
@@ -240,6 +240,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
                   <p>{`Neige : ${cities.neige}`}</p>
                   <p>{`Séisme : ${cities.seisme}`}</p>
                 </Popup>
+                <GeoJSON key={index} data={cities.border} />
               </Marker>) : null}
             </FeatureGroup>
       </Map>
