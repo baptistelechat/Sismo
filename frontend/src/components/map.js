@@ -10,7 +10,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 // LEAFLET
-import L from 'leaflet'
+import L, { geoJSON } from 'leaflet'
 import "leaflet/dist/leaflet.css";
 import { Map, Marker, Popup, TileLayer, FeatureGroup, GeoJSON} from "react-leaflet";
 // OTHER
@@ -37,7 +37,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) => {
+//create your forceUpdate hook
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
+
+const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, materialTheme}) => {
+
+  const forceUpdate = useForceUpdate();
 
   const layerGroupRef = useRef();
   const mapRef = useRef(null);
@@ -48,6 +56,22 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
 
   const defaultPosition = [46.539006,2.4298391];
   
+  const data = []
+
+  for (let i = 0; i < apiData.length; i++) {
+    const sismo = apiData[i]
+    const gouv = gouvData[i]
+    if (apiData[0] === 'Aucune valeur correspondante à votre recherche') {
+      data.push(sismo)
+    } else {
+      const obj = {
+        ...sismo,
+        "border": gouv
+      }
+      data.push(obj)    
+    }
+  }
+
   const DefaultIcon = L.icon({
     iconUrl: DefaultPin,
     iconRetinaUrl: DefaultPin,
@@ -179,7 +203,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
       if (bounds.isValid()) {
         map.fitBounds(bounds);
       }
-    } 
+    }
   })
 
   return (
@@ -227,9 +251,10 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
                     <p>{`Neige : ${geoData.neige}`}</p>
                     <p>{`Séisme : ${geoData.seisme}`}</p>
                   </Popup>
+                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border}/> : null}
                 </Marker>)
               :
-              apiData[0] !== 'Aucune valeur correspondante à votre recherche' ? apiData.map((cities, index) => 
+              data[0] !== 'Aucune valeur correspondante à votre recherche' ? data.map((cities, index) => 
               <Marker key={index}
                 position={[cities.latitude, cities.longitude]}
                 icon={indexSelected === index ? SelectedIcon : DefaultIcon}
@@ -240,7 +265,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, materialTheme}) =>
                   <p>{`Neige : ${cities.neige}`}</p>
                   <p>{`Séisme : ${cities.seisme}`}</p>
                 </Popup>
-                <GeoJSON key={index} data={cities.border} />
+                {data[index].border !== "-" ? <GeoJSON key={index} data={data[index].border}/> : null}
               </Marker>) : null}
             </FeatureGroup>
       </Map>
@@ -254,6 +279,7 @@ const mapStateToProps = (state) => {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
     geoData: state.geoApi.city,
+    gouvData: state.gouvApi.borders,
     materialTheme: state.theme
   }
 }

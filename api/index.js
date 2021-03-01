@@ -16,15 +16,14 @@ const APIversion = '/api/v1'
 
 const dataGouv = (insee) => {
 
-  return axios.get(`https://geo.api.gouv.fr/communes?code=${insee}&fields=code,nom,codeDepartement,departement,codeRegion,region,contour,centre,surface,population,codesPostaux`)
+  return axios.get(`https://geo.api.gouv.fr/communes?code=${insee}&fields=code,nom,codeDepartement,departement,codeRegion,region,centre,surface,population,codesPostaux`)
   .then((dataGouv) => {
 
-    if (dataGouv.data[0]!== undefined) {
+    if (dataGouv.data[0] !== undefined) {
       const obj = {
         "insee": dataGouv.data[0].code,
         "population": "-",
         "surface": "-",
-        "border": "-",
         "latitude": "-",
         "longitude": "-",
       }
@@ -32,7 +31,7 @@ const dataGouv = (insee) => {
       if (dataGouv.data.length !== 0) {
         dataGouv.data[0].population !== undefined ? obj.population = dataGouv.data[0].population.toString() : obj.population = '-'
         dataGouv.data[0].surface !== undefined ? obj.surface = dataGouv.data[0].surface.toString() : obj.surface = '-'
-        dataGouv.data[0].contour !== undefined ? obj.border = dataGouv.data[0].contour : obj.border = '-'
+        // dataGouv.data[0].contour !== undefined ? obj.border = dataGouv.data[0].contour : obj.border = '-'
         if (dataGouv.data[0].centre !== undefined) {
           obj.longitude = dataGouv.data[0].centre.coordinates[0].toString()
           obj.latitude = dataGouv.data[0].centre.coordinates[1].toString()
@@ -40,14 +39,11 @@ const dataGouv = (insee) => {
       } else {
         obj.population = '-'
         obj.surface = '-'
-        obj.border = '-'
       }
       return obj
     } else {
       return null
     }
-
-    
   })
 }
 
@@ -88,7 +84,6 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
               if (insee === e.insee) {
                 match[i].population = e.population
                 match[i].surface = e.surface
-                match[i].border = e.border
                 if (e.latitude !== "-" && e.insee !== "13055" && e.insee !== "75056" && e.insee !== "69123") {
                   match[i].latitude = e.latitude
                   match[i].longitude = e.longitude
@@ -98,6 +93,7 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
             data.push(match[i])
             if (i === (match.length)-1) {
               const id = req.params.id
+              
               res.send(data)
               console.log(chalk.bgBlue.black(`Get by Code_postal : ${id}`))
             }
@@ -139,7 +135,6 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
             if (insee === e.insee) {
               match[i].population = e.population
               match[i].surface = e.surface
-              match[i].border = e.border
               if (e.latitude !== "-" && e.insee !== "13055" && e.insee !== "75056" && e.insee !== "69123") {
                 match[i].latitude = e.latitude
                 match[i].longitude = e.longitude
@@ -162,6 +157,7 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
 // ------------------- GET /api/v1/city/name/:id -------------------
 // -----------------------------------------------------------------
 app.get(`${APIversion}/city/name/:id`, (req, res) => {
+
   const dataCsv = csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
@@ -188,7 +184,6 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
             if (insee === e.insee) {
               match[i].population = e.population
               match[i].surface = e.surface
-              match[i].border = e.border
               if (e.latitude !== "-" && e.insee !== "13055" && e.insee !== "75056" && e.insee !== "69123") {
                 match[i].latitude = e.latitude
                 match[i].longitude = e.longitude
@@ -200,6 +195,11 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
               res.send(data)
               console.log(chalk.bgBlue.black(`Get by Nom_commune : ${id}`))
             }
+          })
+          .catch((err, e) => {
+            err.message === "Cannot read property 'insee' of null" ? res.send(match) : res.send(err.message)
+            const id = req.params.id
+            console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`))
           })
         }
       }

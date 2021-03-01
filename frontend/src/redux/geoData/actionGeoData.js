@@ -45,12 +45,11 @@ export const geoApiCall = () => {
     const successGeolocation = (position) => {
       const latitude = position.coords.latitude
       const longitude = position.coords.longitude
-      axios.get(`https://geo.api.gouv.fr/communes?lat=${latitude}&lon=${longitude}&fields=code,nom,codesPostaux`)
+      axios.get(`https://geo.api.gouv.fr/communes?lat=${latitude}&lon=${longitude}&fields=code,contour,nom,codesPostaux`)
       .then((res) => {
         const data = {
-          "nomCommune": res.data[0].nom,
-          "codePostal": res.data[0].codesPostaux,
-          "insee": res.data[0].code
+          "insee": res.data[0].code,
+          "border": res.data[0].contour
         }
         return data
       })
@@ -60,10 +59,12 @@ export const geoApiCall = () => {
         .then((res)=>{
           const city = {
             ...res.data[0],
+            "border": data.border,
             "latitude": latitude.toString(),
             "longitude": longitude.toString()
           }
           console.log(city)
+
           dispatch(loadGeoApiSuccess(city))
           toast.dismiss(geoToast)
           toast.success(`📍 Vous êtes à ${city.nomCommuneExact}`, {

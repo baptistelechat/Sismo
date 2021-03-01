@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { setIndex } from '../redux/indexSelected/actionIndexSelected'
 import { citiesApiCall } from '../redux/citiesData/actionCitiesData'
 import { geoApiCall, geoApiReset } from '../redux/geoData/actionGeoData'
+import { gouvApiCall } from '../redux/gouvData/actionGouvData'
 // MATERIAL UI
 import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -155,17 +156,18 @@ const MyTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset, materialTheme}) {
+function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset, gouvApiCall, materialTheme}) {
 
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = useState('');
   const [param, setParam] = useState('cp');
 
-  const handleSubmit = () => {
-    citiesApiCall(param, searchValue)
-    geoApiReset()
+  const handleSubmit = async () => {
     setIndex(-1);
+    geoApiReset()
+    await gouvApiCall(param, searchValue)
+    await citiesApiCall(param, searchValue)
   }
 
   const handleChange = (event) => {
@@ -191,8 +193,9 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
     }
   };
 
-  const handleGeolocation = () => {
-    geoApiCall()
+  const handleGeolocation = async () => {
+    await geoApiCall()
+    await 
     setSearchValue('')
     setIndex(-1);
   }
@@ -286,6 +289,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     geoApiReset: () => {
       dispatch(geoApiReset())
+    },
+    gouvApiCall: (param, searchValue) => {
+      dispatch(gouvApiCall(param, searchValue))
     }
   }
 }
