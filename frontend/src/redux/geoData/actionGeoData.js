@@ -54,8 +54,8 @@ export const geoApiCall = () => {
         return data
       })
       .then((data) => {
-        axios.get(`https://sismo-api.vercel.app/api/v1/city/insee/${data.insee}`)
-        // axios.get(`http://localhost:8000/api/v1/city/insee/${data.insee}`)
+        // axios.get(`https://sismo-api.vercel.app/api/v1/city/insee/${data.insee}`)
+        axios.get(`http://localhost:8000/api/v1/city/insee/${data.insee}`)
         .then((res)=>{
           const city = {
             ...res.data[0],
@@ -82,10 +82,12 @@ export const geoApiCall = () => {
       })
       .catch((err) => {
         dispatch(loadGeoApiError(err.message))
+        console.log(err.message)
         
         toast.dismiss(geoToast)
         
         toast.error(err.message, {
+          duration: 5000,
           style: {
             background: '#e57373',
             color: '#FFFFFF',

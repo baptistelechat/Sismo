@@ -197,7 +197,22 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
             }
           })
           .catch((err, e) => {
-            err.message === "Cannot read property 'insee' of null" ? res.send(match) : res.send(err.message)
+            switch (err.message) {
+              case "Cannot read property 'insee' of null":
+                res.send(match)
+                console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`))
+                break;
+
+              case "Request failed with status code 504":
+                res.send("Limite du nombre de résultats atteint. Merci de préciser votre recherche.")
+                console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`))
+                break;
+            
+              default:
+                res.send(err.message)
+                console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`))
+                break;
+            }
             const id = req.params.id
             console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`))
           })
