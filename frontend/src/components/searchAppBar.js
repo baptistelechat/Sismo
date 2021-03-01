@@ -24,6 +24,8 @@ import Zoom from '@material-ui/core/Zoom';
 import SearchIcon from '@material-ui/icons/Search';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
+// OTHER
+import toast from 'react-hot-toast'
 // COMPONENTS
 import MyDrawer from './drawer';
 // PICTURES
@@ -91,6 +93,18 @@ const useStyles = makeStyles((theme) => ({
   },
   fab: {
     color: theme.palette.common.white,
+    marginLeft:theme.spacing(2),
+    marginTop:theme.spacing(2),
+    marginBottom:theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      display:"none"
+    },
+  },
+  fabDisable: {
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
     marginLeft:theme.spacing(2),
     marginTop:theme.spacing(2),
     marginBottom:theme.spacing(2),
@@ -170,6 +184,22 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
     await citiesApiCall(param, searchValue)
   }
 
+  const handleSubmitDisable = () => {
+    toast.error(
+      `Champs de recherche vide. Veuillez saisir une valeur.`,
+      {duration: 5000,
+        style: {
+          background: '#e57373',
+          color: '#FFFFFF',
+        },
+        iconTheme: {
+          primary: '#b71c1c',
+          secondary: '#FFFFFF'
+        }
+      }
+    )
+  }
+
   const handleChange = (event) => {
     setSearchValue(event.currentTarget.value)
   }
@@ -207,8 +237,8 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
       <AppBar position="fixed">
         <Toolbar>
           <MyDrawer/>
-          <img className={classes.logo} src={logo} alt="logo Sismo"/>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <img className={classes.logo} src={logo} alt="logo Sismo" onClick={() => document.location.reload()}/>
+          <Typography className={classes.title} variant="h6" noWrap onClick={() => document.location.reload()}>
             Sismo
           </Typography>
           
@@ -254,14 +284,20 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
             />
           </div>
           <MyTooltip title="Rechercher" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
-            <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
-                <SearchIcon />
-              </Fab>
+            {searchValue.length > 0 ? 
+            (<Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleSubmit}>
+              <SearchIcon />
+            </Fab>)
+            :
+            (<Fab className={classes.fabDisable} color="secondary" aria-label="add" size="small" onClick={handleSubmitDisable}>
+              <SearchIcon />
+            </Fab>)}
+            
           </MyTooltip>
           <MyTooltip title="Me géolocaliser" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
             <Fab className={classes.fab} color="secondary" aria-label="add" size="small" onClick={handleGeolocation}>
-                <MyLocationIcon />
-              </Fab>
+              <MyLocationIcon />
+            </Fab>
           </MyTooltip>
         </Toolbar>
       </AppBar>

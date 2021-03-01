@@ -320,8 +320,8 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
       <Drawer anchor={'left'} open={openDrawer} onClose={toggleDrawer(false)}>
         <ListItem className={classes.ListItemHeader}>
           <ListItemIcon><MenuIcon className={classes.iconHeader}/></ListItemIcon>
-          <h2 className={classes.h2}>Sismo</h2>
-          <img className={classes.logo} src={logo} alt="logo Sismo"/>
+          <h2 className={classes.h2} onClick={() => document.location.reload()}>Sismo</h2>
+          <img className={classes.logo} src={logo} alt="logo Sismo" onClick={() => document.location.reload()}/>
         </ListItem>
         <List className={classes.list}>
           {themeSelector()}
