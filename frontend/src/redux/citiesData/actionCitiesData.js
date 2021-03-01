@@ -64,59 +64,46 @@ export const citiesApiCall = (param, searchValue) => {
         }
       }
 
-      if (res.data[0] !== "Limite du nombre de résultats atteint. Merci de préciser votre recherche.") {
-        if (res.data[0] !== 'Aucune valeur correspondante à votre recherche') {
-          toast.dismiss(searchToast)
-          toast.success(successToastText(), {
-            duration: 5000,
-            style: {
-              background: '#81c784',
-              color: '#FFFFFF',
-            },
-            iconTheme: {
-              primary: '#1b5e20',
-              secondary: '#FFFFFF'
-            },
-          })
-        } else {
-          toast.dismiss(searchToast)
-          toast.error(`Aucune valeur correspondante à votre recherche`, {
-            duration: 5000,
-            style: {
-              background: '#e57373',
-              color: '#FFFFFF',
-            },
-            iconTheme: {
-              primary: '#b71c1c',
-              secondary: '#FFFFFF'
-            },
-          })
-        }
+      if (res.data[0] !== 'Aucune valeur correspondante à votre recherche') {
+        toast.dismiss(searchToast)
+        toast.success(successToastText(), {
+          duration: 5000,
+          style: {
+            background: '#81c784',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#1b5e20',
+            secondary: '#FFFFFF'
+          },
+        })
       } else {
         toast.dismiss(searchToast)
-          toast.error(`Impossible d'afficher de la donnée. Limite du nombre de résultats atteint. Merci de préciser votre recherche.`, {
-            duration: 5000,
-            style: {
-              background: '#e57373',
-              color: '#FFFFFF',
-            },
-            iconTheme: {
-              primary: '#b71c1c',
-              secondary: '#FFFFFF'
-            },
-          })
+        toast.error(`Aucune valeur correspondante à votre recherche`, {
+          duration: 5000,
+          style: {
+            background: '#e57373',
+            color: '#FFFFFF',
+          },
+          iconTheme: {
+            primary: '#b71c1c',
+            secondary: '#FFFFFF'
+          },
+        })
       }
 
 
     })
     .catch((err) => {
 
-      dispatch(loadCitiesApiError(err.message))
-      console.log(err.message)
+      const message = err.message === 'Request failed with status code 504' ? `Impossible d'afficher de la donnée. Limite du nombre de résultats atteint. Merci de préciser votre recherche.` : err.message
+
+      dispatch(loadCitiesApiError(message))
+      console.log(message)
       
       toast.dismiss(searchToast)
       
-      toast.error(err.message, {
+      toast.error(message, {
         duration: 5000,
         style: {
           background: '#e57373',

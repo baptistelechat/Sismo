@@ -81,12 +81,14 @@ export const geoApiCall = () => {
         })
       })
       .catch((err) => {
-        dispatch(loadGeoApiError(err.message))
-        console.log(err.message)
+        const message = err.message === 'Request failed with status code 504' ? `Impossible d'afficher de la donnée. Limite du nombre de résultats atteint. Merci de préciser votre recherche.` : err.message
+
+        dispatch(loadGeoApiError(message))
+        console.log(message)
         
         toast.dismiss(geoToast)
         
-        toast.error(err.message, {
+        toast.error(message, {
           duration: 5000,
           style: {
             background: '#e57373',
