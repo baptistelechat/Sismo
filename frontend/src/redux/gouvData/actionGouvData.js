@@ -31,12 +31,14 @@ export const gouvApiCall = (param, searchValue) => {
       const border = []
 
       for (let i = 0; i < res.data.length; i++) {
-          axios.get(`https://geo.api.gouv.fr/communes?code=${res.data[i].insee}&fields=contour`)
+          axios.get(`https://geo.api.gouv.fr/communes?code=${res.data[i].insee}&fields=code,contour,nom`)
           .then((dataGouv) => {
         
             if (dataGouv.data[0] !== undefined) {
               const obj = {
                 "border": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
+                "insee": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
+                "nomCommuneExact": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
               }
               border.push(obj.border)
               if (i === (res.data.length)-1) {
@@ -45,6 +47,8 @@ export const gouvApiCall = (param, searchValue) => {
             } else {
               const obj = {
                 "border": '-',
+                "insee": res.data[0].insee,
+                "nomCommuneExacte": res.data[0].nomCommuneExacte,
               }
               border.push(obj.border)
               if (i === (res.data.length)-1) {

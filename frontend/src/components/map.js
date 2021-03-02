@@ -64,6 +64,22 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     }
   }
 
+  const border = (data, index) => {
+    if (data[index].border !== "-") {
+      if (index !== 0) {
+        if (data[index-1].insee !== data[index].insee) {
+          return <GeoJSON key={index} data={data[index].border}/>
+        } else {
+          return null
+        }
+      } else {
+        return <GeoJSON key={index} data={data[index].border}/>
+      }
+    } else {
+      return null
+    }
+  }
+
   const DefaultIcon = L.icon({
     iconUrl: DefaultPin,
     iconRetinaUrl: DefaultPin,
@@ -257,7 +273,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
                   <p>{`Neige : ${cities.neige}`}</p>
                   <p>{`Séisme : ${cities.seisme}`}</p>
                 </Popup>
-                {data[index].border !== "-" ? <GeoJSON key={index} data={data[index].border}/> : null}
+                {border(data, index)}
               </Marker>) : null}
             </FeatureGroup>
       </Map>
