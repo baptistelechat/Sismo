@@ -30,6 +30,9 @@ import Button from '@material-ui/core/Button'
 import BrushIcon from '@material-ui/icons/Brush';
 import TextureIcon from '@material-ui/icons/Texture';
 import HelpIcon from '@material-ui/icons/Help';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
+// COMPONENTS
 import SampleComponent from './sampleComponent'
 // OTHER
 import { HexColorPicker } from "react-colorful";
@@ -65,7 +68,12 @@ const useStyles = makeStyles((theme) => ({
     background: 'rgba(0,0,0,0)'
   },
   theme: {
-    marginLeft: theme.spacing(3)
+    width: '55%',
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+    },
   },
   indigoPinkTheme: {
     color: '#e91e63',
@@ -308,8 +316,12 @@ const ThemePicker = ({
       <Dialog open={openThemePicker} onClose={confirm} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" className={classes.title}>
           Choisir son thème
-          <Switch checked={materialTheme.type === 'dark'} onChange={handleThemeChange}/>
         </DialogTitle>
+        <ListItem button onClick={handleThemeChange} className={classes.theme}>
+          <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
+          <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
+          <Switch checked={materialTheme.type === 'dark'} onChange={handleThemeChange}/>
+        </ListItem>
         <DialogContent>
           <DialogContentText className={classes.dialogContentText} onClick={() => {setParam('prédéfini'); setTheme('indigo_pink'); changeTheme('indigo_pink', dark)}}>
             <Radio

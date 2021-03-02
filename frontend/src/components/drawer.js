@@ -294,7 +294,7 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
         <h3 className={classes.h3}>Personnalisation</h3>
       </ListItem>
       <ListItem button  onClick={changeTheme}>
-      <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
+        <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>
         <ListItemText primary={materialTheme.type === "light" ? "Thème Clair" : "Thème Sombre"} />
         <Switch checked={materialTheme.type === 'dark'} onClick={changeTheme}/>
       </ListItem>

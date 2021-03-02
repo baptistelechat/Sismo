@@ -1,5 +1,4 @@
 import axios from 'axios'
-import toast from 'react-hot-toast'
 import { LOAD_GOUV_API, LOAD_GOUV_API_SUCCESS, LOAD_GOUV_API_ERROR } from './typeGouvData'
 
 export const loadGouvApi = () => {
