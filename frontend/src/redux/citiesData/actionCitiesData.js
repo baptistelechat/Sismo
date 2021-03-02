@@ -96,7 +96,7 @@ export const citiesApiCall = (param, searchValue) => {
     })
     .catch((err) => {
 
-      const message = err.message === 'Request failed with status code 504' ? `Impossible d'afficher de la donnée. Limite du nombre de résultats atteint. Merci de préciser votre recherche.` : err.message
+      const message = err.message === 'Request failed with status code 504' ? `Impossible d'afficher de la donnée. Limite de résultats atteinte. Merci de préciser votre recherche.` : err.message === 'Request failed with status code 500' ? `Aucune valeur correspondante à votre recherche` : err.message
 
       dispatch(loadCitiesApiError(message))
       console.log(message)

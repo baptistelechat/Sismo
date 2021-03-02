@@ -186,7 +186,7 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
 
   const handleSubmitDisable = () => {
     toast.error(
-      `Champs de recherche vide. Veuillez saisir une valeur.`,
+      `Champ de recherche vide. Veuillez saisir une valeur.`,
       {duration: 5000,
         style: {
           background: '#e57373',
@@ -219,7 +219,11 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
   const handleKeypress = (event) => {
     //it triggers by pressing the enter key
     if (event.keyCode === 13) {
-      handleSubmit();
+      if (searchValue !== '') {
+        handleSubmit();
+      } else {
+        handleSubmitDisable()
+      }
     }
   };
 
