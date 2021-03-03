@@ -64,22 +64,6 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     }
   }
 
-  const border = (data, index) => {
-    if (data[index].border !== "-") {
-      if (index !== 0) {
-        if (data[index-1].insee !== data[index].insee) {
-          return <GeoJSON key={index} data={data[index].border}/>
-        } else {
-          return null
-        }
-      } else {
-        return <GeoJSON key={index} data={data[index].border}/>
-      }
-    } else {
-      return null
-    }
-  }
-
   const DefaultIcon = L.icon({
     iconUrl: DefaultPin,
     iconRetinaUrl: DefaultPin,
@@ -203,6 +187,50 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     )
   }
 
+  const handleGeolocalisationClick = (nomCommuneExact) => {
+    toast.success(`📍 Vous êtes à ${nomCommuneExact}`, {
+      duration: 5000,
+      style: {
+        background: '#81c784',
+        color: '#FFFFFF',
+      },
+      iconTheme: {
+        primary: '#1b5e20',
+        secondary: '#FFFFFF'
+      },
+    })
+  }
+
+  const handleGeoJsonClick = (index) => {
+    setIndex(index);
+    toast.success(
+      `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+      {duration: 5000,
+        icon: '🏡',
+        style: {
+          background: materialTheme.toastColor,
+          color: '#FFFFFF',
+        },
+      }
+    )
+  }
+
+  const border = (data, index) => {
+    if (data[index].border !== "-") {
+      if (index !== 0) {
+        if (data[index-1].insee !== data[index].insee) {
+          return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)}/>
+        } else {
+          return null
+        }
+      } else {
+        return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)}/>
+      }
+    } else {
+      return null
+    }
+  }
+
   useEffect(() => {
     if (apiData[0] !== undefined) {
       const map = mapRef.current.leafletElement;
@@ -252,14 +280,15 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
               {geoData.length !== 0 ? 
                 (<Marker
                   position={[geoData.latitude, geoData.longitude]}
-                  icon={SelectedIcon}>
+                  icon={SelectedIcon}
+                  onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)}>
                   <Popup>
                     <h3>{`📍 Vous êtes ici - ${geoData.nomCommune}`}</h3>
                     <p>{`Vent : ${geoData.vent}`}</p>
                     <p>{`Neige : ${geoData.neige}`}</p>
                     <p>{`Séisme : ${geoData.seisme}`}</p>
                   </Popup>
-                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border}/> : null}
+                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)}/> : null}
                 </Marker>)
               :
               data[0] !== 'Aucune valeur correspondante à votre recherche' ? data.map((cities, index) => 

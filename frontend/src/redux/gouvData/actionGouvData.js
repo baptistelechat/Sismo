@@ -28,6 +28,8 @@ export const gouvApiCall = (param, searchValue) => {
     // axios.get(`http://localhost:8000/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
     .then((res) => {
 
+      console.log(res.data)
+
       const border = []
 
       for (let i = 0; i < res.data.length; i++) {
@@ -37,21 +39,19 @@ export const gouvApiCall = (param, searchValue) => {
             if (dataGouv.data[0] !== undefined) {
               const obj = {
                 "border": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
-                "insee": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
-                "nomCommuneExact": dataGouv.data[0].contour !== undefined ? dataGouv.data[0].contour : '-',
               }
-              border.push(obj.border)
+              border[i] = obj.border
               if (i === (res.data.length)-1) {
+                console.log(border)
                 dispatch(loadGouvApiSuccess(border))
               }
             } else {
               const obj = {
                 "border": '-',
-                "insee": res.data[0].insee,
-                "nomCommuneExacte": res.data[0].nomCommuneExacte,
               }
-              border.push(obj.border)
+              border[i] = obj.border
               if (i === (res.data.length)-1) {
+                console.log(border)
                 dispatch(loadGouvApiSuccess(border))
               }
             }
