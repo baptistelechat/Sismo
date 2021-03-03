@@ -27,6 +27,7 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 // COMPONENTS
 import ThemePicker from './themePicker'
 import LicenceMIT from "./licenceMIT";
+import CGU from "./cgu";
 // OTHER
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast'
@@ -347,6 +348,7 @@ Application créée par Baptiste LECHAT et Matthieu LECHAT`,
             </CopyToClipboard>)
           }
           <LicenceMIT/>
+          <CGU/>
           <Divider />
           <ListItem>
             <h3 className={classes.h3}>Contact</h3>
