@@ -21,6 +21,7 @@ import Georisques from './georisques'
 import DefaultPin from '../img/pin/pinDefault.svg'
 import SelectedPin from '../img/pin/pinSelected.svg'
 import BigCities from '../img/pin/pinBigCities.svg'
+import OldCity from '../img/pin/pinOldCity.svg'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +90,17 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
   const BigCitiesIcon = L.icon({
     iconUrl: BigCities,
     iconRetinaUrl: BigCities,
+    iconAnchor: null,
+    popupAnchor: [0,-15],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 30,
+  });
+
+  const OldCityIcon = L.icon({
+    iconUrl: OldCity,
+    iconRetinaUrl: OldCity,
     iconAnchor: null,
     popupAnchor: [0,-15],
     shadowUrl: null,
@@ -219,12 +231,13 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     if (data[index].border !== "-") {
       if (index !== 0) {
         if (data[index-1].insee !== data[index].insee) {
-          return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)}/>
+          return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)} style={{color:materialTheme.mainPrimaryColor}}/>
         } else {
           return null
         }
       } else {
-        return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)}/>
+        return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)} style={{color:materialTheme.mainPrimaryColor}}/>
+
       }
     } else {
       return null
@@ -288,13 +301,13 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
                     <p>{`Neige : ${geoData.neige}`}</p>
                     <p>{`Séisme : ${geoData.seisme}`}</p>
                   </Popup>
-                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)}/> : null}
+                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)} style={{color:materialTheme.mainPrimaryColor}}/> : null}
                 </Marker>)
               :
               data[0] !== 'Aucune valeur correspondante à votre recherche' ? data.map((cities, index) => 
               <Marker key={index}
                 position={[cities.latitude, cities.longitude]}
-                icon={indexSelected === index ? SelectedIcon : DefaultIcon}
+                icon={indexSelected === index ? SelectedIcon : cities.vent === "x" ? OldCityIcon : DefaultIcon}
                 onClick={() => handleMarkerClick(index)}>
                 <Popup>
                   <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
