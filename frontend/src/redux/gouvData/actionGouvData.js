@@ -28,8 +28,6 @@ export const gouvApiCall = (param, searchValue) => {
     // axios.get(`http://localhost:8000/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
     .then((res) => {
 
-      console.log(res.data)
-
       const border = []
 
       for (let i = 0; i < res.data.length; i++) {
@@ -42,7 +40,6 @@ export const gouvApiCall = (param, searchValue) => {
               }
               border[i] = obj.border
               if (i === (res.data.length)-1) {
-                console.log(border)
                 dispatch(loadGouvApiSuccess(border))
               }
             } else {
@@ -51,7 +48,6 @@ export const gouvApiCall = (param, searchValue) => {
               }
               border[i] = obj.border
               if (i === (res.data.length)-1) {
-                console.log(border)
                 dispatch(loadGouvApiSuccess(border))
               }
             }

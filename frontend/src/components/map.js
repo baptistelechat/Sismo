@@ -213,8 +213,26 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     })
   }
 
-  const handleGeoJsonClick = (index) => {
+  const handleGeoJsonClick = (e, index) => {
     setIndex(index);
+    e.target.setStyle({
+      color: materialTheme.mainSecondaryColor
+    })
+    const selectedPath = e.layer._path
+    const path = document.querySelectorAll('path.leaflet-interactive')
+    const pathArray = [...path]
+    pathArray.forEach(el => {
+      console.log(el !== selectedPath)
+      if (el !== selectedPath) {
+        console.log(1)
+        el.setAttribute('fill', materialTheme.mainPrimaryColor)
+        el.setAttribute('stroke', materialTheme.mainPrimaryColor)
+      } else {
+        console.log(2)
+        el.setAttribute('fill', materialTheme.mainSecondaryColor)
+        el.setAttribute('stroke', materialTheme.mainSecondaryColor)
+      }
+    });
     toast.success(
       `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
       {duration: 5000,
@@ -231,12 +249,12 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     if (data[index].border !== "-") {
       if (index !== 0) {
         if (data[index-1].insee !== data[index].insee) {
-          return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)} style={{color:materialTheme.mainPrimaryColor}}/>
+          return <GeoJSON key={index} data={data[index].border} onclick={(e) => handleGeoJsonClick(e, index)} style={{color: materialTheme.mainPrimaryColor}}/>
         } else {
           return null
         }
       } else {
-        return <GeoJSON key={index} data={data[index].border} onclick={() => handleGeoJsonClick(index)} style={{color:materialTheme.mainPrimaryColor}}/>
+        return <GeoJSON key={index} data={data[index].border} onclick={(e) => handleGeoJsonClick(e, index)} style={{color: materialTheme.mainPrimaryColor}}/>
 
       }
     } else {
