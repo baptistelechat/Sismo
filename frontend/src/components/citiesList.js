@@ -36,14 +36,68 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function CitiesList({indexSelected, apiData, geoData, setIndex, materialTheme}) {
+function CitiesList({indexSelected, apiData, apiDataLoading, geoData, setIndex, gouvData, materialTheme}) {
   
   const classes = useStyles();
+
+  const data = []
+
+  for (let i = 0; i < apiData.length; i++) {
+    const sismo = apiData[i]
+    const gouv = gouvData[i]
+    if (apiData[0] === 'Aucune valeur correspondante à votre recherche') {
+      data.push(sismo)
+    } else {
+      const obj = {
+        ...sismo,
+        "border": gouv
+      }
+      data.push(obj)    
+    }
+  }
   
   const listItemClicked = (index) => {
     setIndex(index)
     toastOutput(index)
     console.log(apiData[index])
+    const path = document.querySelectorAll('path.leaflet-interactive')
+    const pathArray = [...path]
+    const selectedPath = pathArray[index]
+    if (pathArray.length === 1) {
+      pathArray[0].setAttribute('fill', materialTheme.mainSecondaryColor)
+      pathArray[0].setAttribute('stroke', materialTheme.mainSecondaryColor)
+    } else {
+      if (data[index].vent === "x") {
+        pathArray.forEach(el => {
+          pathArray.forEach(el => {
+            el.setAttribute('fill', materialTheme.mainPrimaryColor)
+            el.setAttribute('stroke', materialTheme.mainPrimaryColor)
+          });
+          selectedPath.setAttribute('fill', '#ffffff00')
+          selectedPath.setAttribute('stroke', '#ffffff00')
+        });
+      } else {
+        pathArray.forEach(el => {
+          if (el !== selectedPath) {
+            if (el.getAttribute('fill') === '#ffffff00') {
+              el.setAttribute('fill',  '#ffffff00')
+              el.setAttribute('stroke',  '#ffffff00')
+            } else {
+              el.setAttribute('fill', materialTheme.mainPrimaryColor)
+              el.setAttribute('stroke', materialTheme.mainPrimaryColor)
+            }
+          } else {
+            if (el.getAttribute('fill') === '#ffffff00') {
+              el.setAttribute('fill',  '#ffffff00')
+              el.setAttribute('stroke',  '#ffffff00')
+            } else {
+              el.setAttribute('fill', materialTheme.mainSecondaryColor)
+              el.setAttribute('stroke', materialTheme.mainSecondaryColor)
+            }
+          }
+        });
+      }
+    }
   }
 
   const toastOutput = (index) => {
@@ -134,7 +188,9 @@ const mapStateToProps = (state) => {
   return {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
+    apiDataLoading: state.cityApi.isLoading,
     geoData: state.geoApi.city,
+    gouvData: state.gouvApi.borders,
     materialTheme: state.theme
   }
 }

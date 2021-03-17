@@ -133,7 +133,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     {"name": "Nouméa", "position": [-22.2703661,166.4369939], "icon": BigCitiesIcon, "state": " Nouvelle-Calédonie", "vent":"-", "neige":"-", "seisme":"-"},
   ];
 
-  const companyVisibility = () => {
+  const bigCityVisibility = () => {
     setShowBigCities(!showBigCities)
   }
 
@@ -141,6 +141,42 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     setIndex(index)
     toastOutput(index)
     console.log(apiData[index])
+    const path = document.querySelectorAll('path.leaflet-interactive')
+    const pathArray = [...path]
+    const selectedPath = pathArray[index]
+    if (pathArray.length === 1) {
+      pathArray[0].setAttribute('fill', materialTheme.mainSecondaryColor)
+      pathArray[0].setAttribute('stroke', materialTheme.mainSecondaryColor)
+    } else {
+      if (data[index].vent === "x") {
+        pathArray.forEach(el => {
+          el.setAttribute('fill', materialTheme.mainPrimaryColor)
+          el.setAttribute('stroke', materialTheme.mainPrimaryColor)
+        });
+        selectedPath.setAttribute('fill', '#ffffff00')
+        selectedPath.setAttribute('stroke', '#ffffff00')
+      } else {
+        pathArray.forEach(el => {
+          if (el !== selectedPath) {
+            if (el.getAttribute('fill') === '#ffffff00') {
+              el.setAttribute('fill',  '#ffffff00')
+              el.setAttribute('stroke',  '#ffffff00')
+            } else {
+              el.setAttribute('fill', materialTheme.mainPrimaryColor)
+              el.setAttribute('stroke', materialTheme.mainPrimaryColor)
+            }
+          } else {
+            if (el.getAttribute('fill') === '#ffffff00') {
+              el.setAttribute('fill',  '#ffffff00')
+              el.setAttribute('stroke',  '#ffffff00')
+            } else {
+              el.setAttribute('fill', materialTheme.mainSecondaryColor)
+              el.setAttribute('stroke', materialTheme.mainSecondaryColor)
+            }
+          }
+        });
+      }
+    }
   }
 
   const toastOutput = (index) => {
@@ -186,7 +222,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     }
   }
 
-  const handleCompanyClick = (bigCities) => {
+  const handleBigCityClick = (bigCities) => {
     toast.success(
       `${bigCities.name} - ${bigCities.state}`,
       {duration: 5000,
@@ -222,13 +258,10 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     const path = document.querySelectorAll('path.leaflet-interactive')
     const pathArray = [...path]
     pathArray.forEach(el => {
-      console.log(el !== selectedPath)
       if (el !== selectedPath) {
-        console.log(1)
         el.setAttribute('fill', materialTheme.mainPrimaryColor)
         el.setAttribute('stroke', materialTheme.mainPrimaryColor)
       } else {
-        console.log(2)
         el.setAttribute('fill', materialTheme.mainSecondaryColor)
         el.setAttribute('stroke', materialTheme.mainSecondaryColor)
       }
@@ -255,10 +288,13 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
         }
       } else {
         return <GeoJSON key={index} data={data[index].border} onclick={(e) => handleGeoJsonClick(e, index)} style={{color: materialTheme.mainPrimaryColor}}/>
-
       }
     } else {
-      return null
+      if (data[1] === undefined) {
+        return null
+      } else {
+        return <GeoJSON key={index} data={data[1].border} onclick={(e) => handleGeoJsonClick(e, index)} style={{color: "#ffffff00"}}/>
+      }
     }
   }
 
@@ -279,7 +315,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
         <FormControlLabel
           className={classes.formControlLabel}
           value="start"
-          control={<Switch color="secondary" checked={showBigCities} onChange={companyVisibility}/>}
+          control={<Switch color="secondary" checked={showBigCities} onChange={bigCityVisibility}/>}
           label="Afficher les grandes villes"
           labelPlacement="start"
           />
@@ -299,7 +335,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
             <Marker key={index}
               position={bigCities.position}
               icon={bigCities.icon}
-              onClick={() => handleCompanyClick(bigCities)}>
+              onClick={() => handleBigCityClick(bigCities)}>
               <Popup>
                 <h3>{bigCities.name} - {bigCities.state}</h3>
                 <p>{`Vent : ${bigCities.vent}`}</p>
@@ -319,7 +355,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
                     <p>{`Neige : ${geoData.neige}`}</p>
                     <p>{`Séisme : ${geoData.seisme}`}</p>
                   </Popup>
-                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)} style={{color:materialTheme.mainPrimaryColor}}/> : null}
+                  {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)} style={{color:materialTheme.mainSecondaryColor}}/> : null}
                 </Marker>)
               :
               data[0] !== 'Aucune valeur correspondante à votre recherche' ? data.map((cities, index) => 

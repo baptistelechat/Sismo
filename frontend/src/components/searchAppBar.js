@@ -229,7 +229,6 @@ function SearchAppBar({setIndex, apiData, citiesApiCall, geoApiCall, geoApiReset
 
   const handleGeolocation = async () => {
     await geoApiCall()
-    await 
     setSearchValue('')
     setIndex(-1);
   }
