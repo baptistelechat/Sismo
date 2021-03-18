@@ -19,9 +19,14 @@ import toast from 'react-hot-toast'
 import Georisques from './georisques'
 // PICTURE
 import DefaultPin from '../img/pin/pinDefault.svg'
-import SelectedPin from '../img/pin/pinSelected.svg'
-import BigCities from '../img/pin/pinBigCities.svg'
-import OldCity from '../img/pin/pinOldCity.svg'
+// import SelectedPin from '../img/pin/pinSelected.svg'
+// import BigCities from '../img/pin/pinBigCities.svg'
+// import OldCity from '../img/pin/pinOldCity.svg'
+
+import FlagPin from '../img/pin/flag.svg'
+import LocationPin from '../img/pin/location.svg'
+import GeolocationPin from '../img/pin/geolocation.svg'
+import OldLocationPin from '../img/pin/oldLocation.svg'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -66,6 +71,39 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
   }
 
   const DefaultIcon = L.icon({
+    iconUrl: LocationPin,
+    iconRetinaUrl: LocationPin,
+    iconAnchor: null,
+    popupAnchor: [0,0],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 38,
+  });
+
+  const GeolocationIcon = L.icon({
+    iconUrl: GeolocationPin,
+    iconRetinaUrl: GeolocationPin,
+    iconAnchor: null,
+    popupAnchor: [0,0],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 38,
+  });
+
+  const SelectedIcon = L.icon({
+    iconUrl: FlagPin,
+    iconRetinaUrl: FlagPin,
+    iconAnchor: null,
+    popupAnchor: [0,-15],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: 30,
+  });
+
+  const BigCitiesIcon = L.icon({
     iconUrl: DefaultPin,
     iconRetinaUrl: DefaultPin,
     iconAnchor: null,
@@ -76,37 +114,15 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     iconSize: 30,
   });
 
-  const SelectedIcon = L.icon({
-    iconUrl: SelectedPin,
-    iconRetinaUrl: SelectedPin,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: 30,
-  });
-
-  const BigCitiesIcon = L.icon({
-    iconUrl: BigCities,
-    iconRetinaUrl: BigCities,
-    iconAnchor: null,
-    popupAnchor: [0,-15],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: 30,
-  });
-
   const OldCityIcon = L.icon({
-    iconUrl: OldCity,
-    iconRetinaUrl: OldCity,
+    iconUrl: OldLocationPin,
+    iconRetinaUrl: OldLocationPin,
     iconAnchor: null,
     popupAnchor: [0,-15],
     shadowUrl: null,
     shadowSize: null,
     shadowAnchor: null,
-    iconSize: 30,
+    iconSize: 38,
   });
 
   const bigCities = [
@@ -347,7 +363,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
               {geoData.length !== 0 ? 
                 (<Marker
                   position={[geoData.latitude, geoData.longitude]}
-                  icon={SelectedIcon}
+                  icon={GeolocationIcon}
                   onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)}>
                   <Popup>
                     <h3>{`📍 Vous êtes ici - ${geoData.nomCommune}`}</h3>
