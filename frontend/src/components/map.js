@@ -294,7 +294,41 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
     )
   }
 
-  const border = (data, index) => {
+  const marker = () => {
+    return (data.map((cities, index) =>
+      index === 0 ? 
+      (<Marker key={index}
+        position={[cities.latitude, cities.longitude]}
+        icon={indexSelected === index ? SelectedIcon : cities.vent === "x" ? OldCityIcon : DefaultIcon}
+        onClick={() => handleMarkerClick(index)}>
+        <Popup>
+          <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
+          <p>{`Vent : ${cities.vent}`}</p>
+          <p>{`Neige : ${cities.neige}`}</p>
+          <p>{`Séisme : ${cities.seisme}`}</p>
+        </Popup>
+        {border(index)}
+      </Marker>)
+      :
+      data[index-1].insee !== data[index].insee ?
+        (<Marker key={index}
+          position={[cities.latitude, cities.longitude]}
+          icon={indexSelected === index ? SelectedIcon : cities.vent === "x" ? OldCityIcon : DefaultIcon}
+          onClick={() => handleMarkerClick(index)}>
+          <Popup>
+            <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
+            <p>{`Vent : ${cities.vent}`}</p>
+            <p>{`Neige : ${cities.neige}`}</p>
+            <p>{`Séisme : ${cities.seisme}`}</p>
+          </Popup>
+          {border(index)}
+        </Marker>)
+        :
+        null
+    ))
+  }
+
+  const border = (index) => {
     if (data[index].border !== "-") {
       if (index !== 0) {
         if (data[index-1].insee !== data[index].insee) {
@@ -374,19 +408,7 @@ const ReactMap = ({indexSelected, apiData, geoData, setIndex, gouvData, material
                   {geoData.border !== "-" ? <GeoJSON key={"GeoJSON"} data={geoData.border} onclick={() => handleGeolocalisationClick(geoData.nomCommuneExact)} style={{color:materialTheme.mainSecondaryColor}}/> : null}
                 </Marker>)
               :
-              data[0] !== 'Aucune valeur correspondante à votre recherche' ? data.map((cities, index) => 
-              <Marker key={index}
-                position={[cities.latitude, cities.longitude]}
-                icon={indexSelected === index ? SelectedIcon : cities.vent === "x" ? OldCityIcon : DefaultIcon}
-                onClick={() => handleMarkerClick(index)}>
-                <Popup>
-                  <h3>{`${cities.nomCommune} (${cities.codePostal})`}</h3>
-                  <p>{`Vent : ${cities.vent}`}</p>
-                  <p>{`Neige : ${cities.neige}`}</p>
-                  <p>{`Séisme : ${cities.seisme}`}</p>
-                </Popup>
-                {border(data, index)}
-              </Marker>) : null}
+              data[0] !== 'Aucune valeur correspondante à votre recherche' ? marker() : null}
             </FeatureGroup>
       </Map>
     </Grid>
