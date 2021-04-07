@@ -27,7 +27,7 @@ import MyLocationIcon from '@material-ui/icons/MyLocation';
 // OTHER
 import toast from 'react-hot-toast'
 // COMPONENTS
-import MyDrawer from './drawer';
+import MyDrawer from './Drawer';
 // PICTURES
 import logo from '../img/logo.png'
 

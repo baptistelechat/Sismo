@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import SearchAppBar from './components/searchAppBar'
-import CitiesList from './components/citiesList'
-import ReactMap from './components/map';
-import DataPaper from './components/dataPaper'
+import SearchAppBar from './components/SearchAppBar'
+import CitiesList from './components/CitiesList'
+import ReactMap from './components/Map';
+import CardsContainer from './components/CardsContainer'
 import { Helmet } from 'react-helmet';
 import { Toaster } from 'react-hot-toast';
-import Toolbox from './components/toolbox'
+import Toolbox from './components/Toolbox'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,7 +111,7 @@ function App({materialTheme, indexSelected, apiData, geoData}) {
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paperL} elevation={3}>
               <CitiesList/>
-              <DataPaper/>
+              <CardsContainer/>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>

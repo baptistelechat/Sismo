@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 // REDUX
 import { connect } from 'react-redux'
-import { setPrimaryColorPicker, setSecondaryColorPicker } from '../redux/colorPicker/actionColorPicker'
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../redux/colorPicker/actionColorPicker'
 import {
   setIndigoPinkTheme,
   setCyanAmberTheme,
   setRedBrownTheme,
   setLightGreenBlueTheme,
   setPersoTheme,
-} from '../redux/theme/actionTheme'
+} from '../../redux/theme/actionTheme'
 // MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -33,7 +33,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
 // COMPONENTS
-import SampleComponent from './sampleComponent'
+import SampleComponent from './SampleComponent'
 // OTHER
 import { HexColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
  },
   title: {
-    color: theme.palette.text.primary,
+    color: theme.palette.secondary.main,
+    margin: 0
   },
   dialogContentText: {
     marginBottom: theme.spacing(2)
@@ -314,8 +315,8 @@ const ThemePicker = ({
     <div>
       {openColorPickerButton()}
       <Dialog open={openThemePicker} onClose={confirm} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.title}>
-          Choisir son thème
+        <DialogTitle id="form-dialog-title">
+          <h4 className={classes.title}>Choisir son thème</h4>
         </DialogTitle>
         <ListItem button onClick={handleThemeChange} className={classes.theme}>
           <ListItemIcon>{materialTheme.type === "light" ? <BrightnessLowIcon/> : <Brightness4Icon/>}</ListItemIcon>

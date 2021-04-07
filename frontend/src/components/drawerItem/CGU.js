@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3)
   },
   title: {
-    color: theme.palette.text.primary,
+    color: theme.palette.secondary.main,
+    margin: 0
   },
   dialogContentText: {
     marginBottom: theme.spacing(1)
@@ -64,7 +65,9 @@ const CGU = () => {
         <ListItemText primary={"Conditions générales d'utilisation"} secondary={"Consulter les CGU"}/>
       </ListItem>
       <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.title}>Conditions générales d'utilisation (CGU)</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          <h4 className={classes.title}>Conditions générales d'utilisation (CGU)</h4>
+        </DialogTitle>
         <DialogContent style={{paddingBottom: '16px'}}>
           <DialogContentText className={classes.dialogContentText}>
             Mise à jour : 03/03/2021

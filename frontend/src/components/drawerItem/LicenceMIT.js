@@ -19,7 +19,8 @@ import CopyrightIcon from '@material-ui/icons/Copyright';
 // STYLE
 const useStyles = makeStyles((theme) => ({
   title: {
-    color: theme.palette.text.primary,
+    color: theme.palette.secondary.main,
+    margin: 0
   },
   dialogContentText: {
     marginBottom: theme.spacing(1)
@@ -69,7 +70,9 @@ const LicenceMIT = () => {
         <ListItemText primary={"Licence MIT"} secondary={"Ce projet est sous licence MIT"}/>
       </ListItem>
       <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.title}>Licence MIT</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          <h4 className={classes.title}>Licence MIT</h4>
+        </DialogTitle>
         <DialogContent style={{paddingBottom: '16px'}}>
           <DialogContentText className={classes.dialogContentText}>
             Ce projet est sous licence MIT
