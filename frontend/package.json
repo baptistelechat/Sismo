@@ -1,7 +1,17 @@
 {
-  "name": "frontend",
+  "name": "sismo-frontend",
+  "description": "A tool to get the snow, wind, and seismicity zones in France (including DROM-COM)",
   "version": "0.1.0",
-  "private": true,
+  "author": "Baptiste LECHAT / Matthieu LECHAT",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baptistelechat/Sismo"
+  },
+  "bugs": {
+    "url": "https://github.com/baptistelechat/Sismo/issues"
+  },
+  "homepage": "https://sismo.vercel.app/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
@@ -18,7 +28,7 @@
     "color-convert": "^2.0.1",
     "i": "^0.3.6",
     "leaflet": "^1.7.1",
-    "npm": "^6.14.11",
+    "npm": "^7.9.0",
     "react": "^17.0.1",
     "react-colorful": "^4.4.4",
     "react-copy-to-clipboard": "^5.0.3",

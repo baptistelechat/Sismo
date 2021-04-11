@@ -1,15 +1,22 @@
 {
-  "name": "sismo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "sismo-api",
+  "description": "A tool to get the snow, wind, and seismicity zones in France (including DROM-COM)",
+  "version": "0.1.0",
+  "author": "Baptiste LECHAT / Matthieu LECHAT",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baptistelechat/Sismo"
+  },
+  "bugs": {
+    "url": "https://github.com/baptistelechat/Sismo/issues"
+  },
+  "homepage": "https://sismo.vercel.app/",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
