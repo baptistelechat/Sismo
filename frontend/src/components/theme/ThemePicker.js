@@ -33,7 +33,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
 // COMPONENTS
-import SampleComponent from './SampleComponent1'
+import SampleComponent from './SampleComponent'
 // OTHER
 import { HexColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";

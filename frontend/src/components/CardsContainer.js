@@ -10,9 +10,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 // MATERIAL UI ICON
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 // COMPONENTS
-import CardWind from './card/CardWind1'
-import CardSnow from './card/CardSnow1'
-import CardSeism from './card/CardSeism1'
+import CardWind from './card/CardWind'
+import CardSnow from './card/CardSnow'
+import CardSeism from './card/CardSeism'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({

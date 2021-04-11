@@ -1,4 +1,4 @@
-import BigCitiesIcon from './icon/BigCitiesIcon1'
+import BigCitiesIcon from './icon/BigCitiesIcon'
 
 const bigCities = [
   {
