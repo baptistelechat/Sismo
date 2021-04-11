@@ -16,10 +16,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
 // COMPONENTS
-import LicenceMIT from "./drawerItem/LicenceMIT";
-import CGU from "./drawerItem/CGU";
-import Contact from './drawerItem/Contact';
-import ThemeSelector from "./theme/ThemeSelector";
+import LicenceMIT from "./drawerItem/LicenceMIT1";
+import CGU from "./drawerItem/CGU1";
+import Contact from './drawerItem/Contact1';
+import ThemeSelector from "./theme/ThemeSelector1";
 
 // OTHER
 import {CopyToClipboard} from 'react-copy-to-clipboard';

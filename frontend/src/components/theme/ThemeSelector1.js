@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../redux/colorPicker/actionColorPicker'
 import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, setPersoTheme } from '../../redux/theme/actionTheme'
 // COMPONENTS
-import ThemePicker from './ThemePicker'
+import ThemePicker from './ThemePicker1'
 // OTHER
 import convert from 'color-convert'
 const useStyles = makeStyles((theme) => ({

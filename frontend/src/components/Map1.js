@@ -15,12 +15,12 @@ import { Map, Marker, Popup, TileLayer, FeatureGroup, GeoJSON} from "react-leafl
 // OTHER
 import toast from 'react-hot-toast'
 // COMPONENTS
-import Georisques from './Georisques'
-import bigCities from './marker/BigCities'
-import DefaultIcon from './marker/icon/DefaultIcon'
-import SelectedIcon from './marker/icon/SelectedIcon'
-import OldCityIcon from './marker/icon/OldCityIcon'
-import GeolocationIcon from './marker/icon/GeolocationIcon'
+import Georisques from './Georisques1'
+import bigCities from './marker/BigCities1'
+import DefaultIcon from './marker/icon/DefaultIcon1'
+import SelectedIcon from './marker/icon/SelectedIcon1'
+import OldCityIcon from './marker/icon/OldCityIcon1'
+import GeolocationIcon from './marker/icon/GeolocationIcon1'
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
