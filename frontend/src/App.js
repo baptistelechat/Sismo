@@ -22,7 +22,6 @@ import Profil from "./components/security/Profil";
 // OTHER
 import { Helmet } from "react-helmet";
 import { Toaster } from "react-hot-toast";
-import toast from "react-hot-toast";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,7 +147,7 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
         />
       </Helmet>
       <Toaster position="bottom-right" reverseOrder={true} />
-      <SearchAppBar />
+      <SearchAppBar isLogin={isLogin}/>
       <Security
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}

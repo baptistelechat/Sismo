@@ -17,7 +17,6 @@ import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
 import ShareIcon from "@material-ui/icons/Share";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import EditIcon from "@material-ui/icons/Edit";
 

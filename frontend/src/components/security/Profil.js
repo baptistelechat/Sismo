@@ -2,23 +2,12 @@
 import React, { useContext } from "react";
 // Firebase
 import { FirebaseContext } from "../../services/firebase";
-// REDUX
-import { connect } from "react-redux";
 // MATERIAL UI
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import Fab from "@material-ui/core/Fab";
-import Tooltip from "@material-ui/core/Tooltip";
-import Zoom from "@material-ui/core/Zoom";
 // MATERIAL UI ICON
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import MyLocationIcon from "@material-ui/icons/MyLocation";
 import PersonIcon from "@material-ui/icons/Person";
 import ContactsIcon from "@material-ui/icons/Contacts";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -49,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const MyTooltip = withStyles((theme) => ({
-  tooltip: {
-    fontSize: "12px",
-  },
-}))(Tooltip);
 
 const Profil = ({ setOpenDialog }) => {
   const classes = useStyles();
