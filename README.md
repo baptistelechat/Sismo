@@ -4,6 +4,7 @@
 
 A tool to get the snow, wind, and seismicity zones in France (including DROM-COM).
 
+![Code Time](https://img.shields.io/endpoint?style=flat&url=https://codetime-api.datreks.com/badge/353?logoColor=white%26project=Sismo%26recentMS=0%26showProject=false)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/baptistelechat/Sismo/blob/main/LICENSE.txt)
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://sismo.vercel.app)
 
