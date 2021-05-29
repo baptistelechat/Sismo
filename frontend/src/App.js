@@ -122,7 +122,6 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
         }, 600);
         setUserSession(user);
         setIsLogin(true);
-        console.log(user);
         if (!!userSession) {
           firebase
             .userCollection(userSession.uid)

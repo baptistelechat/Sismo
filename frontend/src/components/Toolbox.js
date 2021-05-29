@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useState } from "react";
 // REDUX
 import { connect } from "react-redux";
 import { setIndex } from "../redux/indexSelected/actionIndexSelected";
@@ -73,7 +73,14 @@ const Toolbox = ({
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [downloadUrl, setDownloadUrl] = useState("");
 
+  const nomCommune =
+    geoData.length !== 0
+      ? geoData.nomCommune
+      : apiData[indexSelected] === undefined
+      ? "-"
+      : apiData[indexSelected].nomCommune;
   const nomCommuneExact =
     geoData.length !== 0
       ? geoData.nomCommuneExact
@@ -142,8 +149,7 @@ const Toolbox = ({
       : apiData[indexSelected].seisme;
 
   const data =
-    geoData.length !== 0
-      ? `🏡 ${nomCommuneExact} :
+`🏡 ${nomCommuneExact} (${codePostal}) :
 • Code INSEE : ${codeInsee}
 • Département : ${departement} (${codeDepartement})
 • Région : ${region}
@@ -152,17 +158,10 @@ const Toolbox = ({
 • Coordonnées : ${latitude},${longitude}
 • Vent : ${wind}
 • Neige : ${snow}
-• Sismicité : ${seism}`
-      : `🏡 ${nomCommuneExact} (${codePostal}) :
-• Code INSEE : ${codeInsee}
-• Département : ${departement} (${codeDepartement})
-• Région : ${region}
-• Latitude : ${latitude}
-• Longitude : ${longitude}
-• Coordonnées : ${latitude},${longitude}
-• Vent : ${wind}
-• Neige : ${snow}
-• Sismicité : ${seism}`;
+• Sismicité : ${seism}
+• Géoriques : https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}
+
+Informations issues de Sismo : https://sismo.vercel.app/`;
 
   const handleClose = () => {
     setOpen(false);
@@ -192,6 +191,15 @@ const Toolbox = ({
         color: "#FFFFFF",
       },
     });
+  };
+
+  const downloadFile = (event) => {
+    console.log(data);
+    const element = document.createElement("a");
+    const file = new Blob([data], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `${nomCommune} (${codePostal}) - Sismo.txt`;
+    element.click();
   };
 
   const share = () => {
@@ -224,7 +232,6 @@ const Toolbox = ({
 
   const handleGeolocation = () => {
     geoApiCall();
-    // setSearchValue('')
     setIndex(-1);
   };
 
@@ -238,8 +245,11 @@ const Toolbox = ({
       name: "Copier dans le presse-papier",
     },
     { icon: <ShareIcon onClick={share} />, name: "Partager" },
-    { icon: <SaveIcon onClick={workInProgress} />, name: "Enregistrer le résultat" },
-    { icon: <PrintIcon onClick={workInProgress} />, name: "Imprimer" }
+    {
+      icon: <SaveIcon onClick={downloadFile} />,
+      name: "Enregistrer le résultat",
+    },
+    { icon: <PrintIcon onClick={workInProgress} />, name: "Imprimer" },
   ];
 
   return (
