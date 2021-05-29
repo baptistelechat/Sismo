@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState }from 'react';
 // REDUX
 import { connect } from 'react-redux'
-import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import { setIndex } from '../services/redux/indexSelected/actionIndexSelected'
 // MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

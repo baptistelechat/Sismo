@@ -2,7 +2,7 @@
 import React from "react";
 // REDUX
 import { connect } from 'react-redux'
-import { setIndex } from '../redux/indexSelected/actionIndexSelected'
+import { setIndex } from '../services/redux/indexSelected/actionIndexSelected'
 // MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';

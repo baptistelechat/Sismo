@@ -2,7 +2,7 @@
 import React from 'react';
 // REDUX
 import { connect } from 'react-redux'
-import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../redux/colorPicker/actionColorPicker'
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../services/redux/colorPicker/actionColorPicker'
 // MATERIAL UI
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';

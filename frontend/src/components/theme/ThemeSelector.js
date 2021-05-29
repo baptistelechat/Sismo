@@ -11,8 +11,8 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import BrightnessLowIcon from '@material-ui/icons/BrightnessLow';
 // REDUX
 import { connect } from 'react-redux'
-import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../redux/colorPicker/actionColorPicker'
-import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, setPersoTheme } from '../../redux/theme/actionTheme'
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../services/redux/colorPicker/actionColorPicker'
+import { setIndigoPinkTheme, setCyanAmberTheme, setRedBrownTheme, setLightGreenBlueTheme, setPersoTheme } from '../../services/redux/theme/actionTheme'
 // COMPONENTS
 import ThemePicker from './ThemePicker'
 // OTHER

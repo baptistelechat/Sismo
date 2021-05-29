@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 // REDUX
 import { connect } from 'react-redux'
-import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../redux/colorPicker/actionColorPicker'
+import { setPrimaryColorPicker, setSecondaryColorPicker } from '../../services/redux/colorPicker/actionColorPicker'
 import {
   setIndigoPinkTheme,
   setCyanAmberTheme,
   setRedBrownTheme,
   setLightGreenBlueTheme,
   setPersoTheme,
-} from '../../redux/theme/actionTheme'
+} from '../../services/redux/theme/actionTheme'
 // MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

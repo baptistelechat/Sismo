@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 // REDUX
 import { connect } from "react-redux";
-import { setIndex } from "../redux/indexSelected/actionIndexSelected";
-import { citiesApiCall } from "../redux/citiesData/actionCitiesData";
-import { geoApiCall, geoApiReset } from "../redux/geoData/actionGeoData";
-import { gouvApiCall } from "../redux/gouvData/actionGouvData";
+import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
+import { citiesApiCall } from "../services/redux/citiesData/actionCitiesData";
+import { geoApiCall, geoApiReset } from "../services/redux/geoData/actionGeoData";
+import { gouvApiCall } from "../services/redux/gouvData/actionGouvData";
 // MATERIAL UI
 import { fade, withStyles, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";

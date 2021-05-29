@@ -1,9 +1,9 @@
 // REACT
-import React, { useState } from "react";
+import React from "react";
 // REDUX
 import { connect } from "react-redux";
-import { setIndex } from "../redux/indexSelected/actionIndexSelected";
-import { geoApiCall } from "../redux/geoData/actionGeoData";
+import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
+import { geoApiCall } from "../services/redux/geoData/actionGeoData";
 // MATERIAL UI
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import SpeedDial from "@material-ui/lab/SpeedDial";
@@ -73,7 +73,6 @@ const Toolbox = ({
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [downloadUrl, setDownloadUrl] = useState("");
 
   const nomCommune =
     geoData.length !== 0
