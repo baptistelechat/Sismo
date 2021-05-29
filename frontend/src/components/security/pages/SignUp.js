@@ -45,11 +45,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({ setAuthState, handleCloseDialog }) => {
+const SignUp = ({ setAuthState, setNewUser, handleCloseDialog }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 
   const data = {
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -76,26 +78,39 @@ const SignUp = ({ setAuthState, handleCloseDialog }) => {
     event.preventDefault();
   };
 
-  const { email, password, confirmPassword } = loginData;
+  const { firstName, lastName, email, password, confirmPassword } = loginData;
 
   const handleSubmit = () => {
-    const { email, password } = loginData;
+    const { firstName, lastName, email, password } = loginData;
     firebase
       .signUpUser(email, password)
-      .then((user) => {
-        setLoginData({ ...data });
-        toast.success(`🎉 Compte utilisateur créé avec l'adresse ${email} !`, {
-          duration: 5000,
-          style: {
-            background: "#81c784",
-            color: "#FFFFFF",
-          },
-          iconTheme: {
-            primary: "#1b5e20",
-            secondary: "#FFFFFF",
-          },
+      .then((authUser) => {
+        return firebase.userCollection(authUser.user.uid).set({
+          firstName,
+          lastName,
+          email,
+          created: Date.now(),
+          modified: Date.now(),
         });
+      })
+      .then(() => {
+        setLoginData({ ...data });
+        toast.success(
+          `🎉 Compte utilisateur créé pour ${firstName} ${lastName} avec l'adresse ${email} !`,
+          {
+            duration: 5000,
+            style: {
+              background: "#81c784",
+              color: "#FFFFFF",
+            },
+            iconTheme: {
+              primary: "#1b5e20",
+              secondary: "#FFFFFF",
+            },
+          }
+        );
         handleCloseDialog();
+        setNewUser(true);
       })
       .catch((error) => {
         toast.error(`💥 ${error.message}`, {
@@ -111,6 +126,7 @@ const SignUp = ({ setAuthState, handleCloseDialog }) => {
         });
         setLoginData({ ...data });
       });
+    setLoginData({ ...data });
   };
 
   const button =
@@ -135,7 +151,34 @@ const SignUp = ({ setAuthState, handleCloseDialog }) => {
 
   return (
     <div>
-      <Grid container spacing={0} className={classes.gridContainer}>
+      <Grid container spacing={1} className={classes.gridContainer}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            type="firstName"
+            id="firstName"
+            label="Prénom"
+            variant="outlined"
+            color="secondary"
+            value={firstName}
+            onChange={handleTextFieldChange}
+            className={classes.textField}
+            autoFocus
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            type="lastName"
+            id="lastName"
+            label="Nom"
+            variant="outlined"
+            color="secondary"
+            value={lastName}
+            onChange={handleTextFieldChange}
+            className={classes.textField}
+          />
+        </Grid>
         <Grid item xs={12} sm={12}>
           <TextField
             required
@@ -147,7 +190,6 @@ const SignUp = ({ setAuthState, handleCloseDialog }) => {
             value={email}
             onChange={handleTextFieldChange}
             className={classes.textField}
-            autoFocus
           />
           <TextField
             required
@@ -203,7 +245,9 @@ const SignUp = ({ setAuthState, handleCloseDialog }) => {
       </Grid>
       <Grid container spacing={0} className={classes.gridContainer}>
         <Grid item xs={"auto"} sm={9}>
-          <p className={classes.link} onClick={() => setAuthState('login')}>Déjà inscrit ? Connectez-vous</p>
+          <p className={classes.link} onClick={() => setAuthState("login")}>
+            Déjà inscrit ? Connectez-vous
+          </p>
         </Grid>
         <Grid item xs={12} sm={3}>
           {button}

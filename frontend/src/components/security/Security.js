@@ -59,6 +59,7 @@ const Security = ({
   isLogin,
   openDialog,
   setOpenDialog,
+  setNewUser,
 }) => {
   const classes = useStyles();
 
@@ -146,6 +147,7 @@ const Security = ({
           <SignUp
             handleCloseDialog={handleCloseDialog}
             setAuthState={setAuthState}
+            setNewUser={setNewUser}
           />
         ) : authState === "login" ? (
           <Login
@@ -173,6 +175,7 @@ const mapStateToProps = (state, ownProps) => {
     openDialog: ownProps.openDialog,
     setOpenDialog: ownProps.setOpenDialog,
     isLogin: ownProps.isLogin,
+    setNewUser: ownProps.setNewUser,
   };
 };
 

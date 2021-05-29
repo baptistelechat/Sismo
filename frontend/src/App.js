@@ -22,6 +22,9 @@ import Profil from "./components/security/Profil";
 // OTHER
 import { Helmet } from "react-helmet";
 import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import Confetti from "react-confetti";
+import useWindowSize from "@rooks/use-window-size";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 function App({ materialTheme, indexSelected, apiData, geoData }) {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
+  const { innerWidth, innerHeight } = useWindowSize();
 
   const muiTheme = createMuiTheme({
     palette: {
@@ -98,8 +102,15 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
 
   const [openDialog, setOpenDialog] = useState(true);
   const [isLogin, setIsLogin] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [userSession, setUserSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [newUser, setNewUser] = useState(false);
+
+  if (newUser) {
+    setTimeout(() => {
+      setNewUser(false);
+    }, 10000);
+  }
 
   useEffect(() => {
     firebase.auth.onAuthStateChanged((user) => {
@@ -109,19 +120,41 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
           setOpenDialog(false);
           setIsLoading(false);
         }, 600);
-        setCurrentUser(user);
+        setUserSession(user);
         setIsLogin(true);
+        console.log(user);
+        if (!!userSession) {
+          firebase
+            .userCollection(userSession.uid)
+            .get()
+            .then((doc) => {
+              if (doc && doc.exists) {
+                const data = doc.data();
+                toast.success(`Bonjour ${data.firstName} !`, {
+                  duration: 5000,
+                  icon: "👋",
+                  style: {
+                    background: materialTheme.toastColor,
+                    color: "#FFFFFF",
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       } else {
         // No user is signed in.
         setOpenDialog(true);
         setTimeout(() => {
           setIsLoading(false);
         }, 600);
-        setCurrentUser(null);
+        setUserSession(null);
         setIsLogin(false);
       }
     });
-  });
+  }, [firebase, userSession, materialTheme.toastColor]);
 
   return (
     <ThemeProvider theme={muiTheme}>
@@ -147,13 +180,17 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
         />
       </Helmet>
       <Toaster position="bottom-right" reverseOrder={true} />
-      <SearchAppBar isLogin={isLogin}/>
+      <SearchAppBar isLogin={isLogin} />
       <Security
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         isLoading={isLoading}
         isLogin={isLogin}
+        setNewUser={setNewUser}
       />
+      {newUser ? (
+        <Confetti style={{zIndex: 1000}} width={innerWidth * .98} height={innerHeight} colors={[materialTheme.mainPrimaryColor, materialTheme.mainSecondaryColor, materialTheme.toastColor]}/>
+      ) : null}
       <Grid
         container
         spacing={2}
@@ -176,7 +213,7 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
           </Paper>
         </Grid>
       </Grid>
-      <Profil setOpenDialog={setOpenDialog}/>
+      <Profil setOpenDialog={setOpenDialog} />
       <Toolbox />
     </ThemeProvider>
   );
