@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fab: {
     color: theme.palette.common.white,
-    marginLeft: theme.spacing(4),
+    marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(2),
   }
 }));
