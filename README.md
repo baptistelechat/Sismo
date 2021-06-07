@@ -67,10 +67,12 @@ localhost:3000
 - Firebase → https://firebase.google.com/
 - Express → https://expressjs.com/fr/
 
+<p align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png" height="100">
 <img src="https://img.icons8.com/color/452/material-ui.png" height="85">
 <img src="https://img.icons8.com/color/480/firebase.png" height="85">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="65">
+</p>
 
 ## 😸 Maintainers
 This project is mantained by:
