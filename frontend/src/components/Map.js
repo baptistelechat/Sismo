@@ -67,6 +67,8 @@ const ReactMap = ({
   setIndex,
   gouvData,
   materialTheme,
+  mapScreenshoter,
+  setMapScreenshoter,
 }) => {
   const layerGroupRef = useRef();
   const mapRef = useRef(null);
@@ -94,22 +96,17 @@ const ReactMap = ({
   }
 
   const takeScreenshot = () => {
-    console.log("screen");
-    toast.success(
-      'Génération de la capture ...',
-      {
-        duration: 5000,
-        icon: "⏳",
-        style: {
-          background: materialTheme.toastColor,
-          color: "#FFFFFF",
-        },
-      }
-    );
-    const date = new Date().toLocaleDateString()
-    const map = mapRef.current.leafletElement;
-    const simpleMapScreenshoter = new SimpleMapScreenshoter({ hidden: true }).addTo(map);
-    simpleMapScreenshoter.takeScreen("blob")
+    toast.success("Génération de la capture ...", {
+      duration: 5000,
+      icon: "⏳",
+      style: {
+        background: materialTheme.toastColor,
+        color: "#FFFFFF",
+      },
+    });
+    const date = new Date().toLocaleDateString();
+    mapScreenshoter
+      .takeScreen("blob")
       .then((blob) => {
         FileSaver.saveAs(blob, `Sismo - ${date}.png`);
       })
@@ -365,6 +362,15 @@ const ReactMap = ({
     }
   });
 
+  useEffect(() => {
+    const map = mapRef.current.leafletElement;
+    setMapScreenshoter(
+      new SimpleMapScreenshoter({
+        hidden: true, // hide screen btn on map
+    }).addTo(map)
+    );
+  }, [setMapScreenshoter]);
+
   return (
     <Grid container spacing={2} className={classes.grid}>
       <FormControl component="fieldset" className={classes.switch}>
@@ -464,13 +470,15 @@ const ReactMap = ({
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
     geoData: state.geoApi.city,
     gouvData: state.gouvApi.borders,
     materialTheme: state.theme,
+    mapScreenshoter: props.mapScreenshoter,
+    setMapScreenshoter: props.setMapScreenshoter,
   };
 };
 
