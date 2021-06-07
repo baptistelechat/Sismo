@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: "none",
+    fontWeight: "bold",
     color: theme.palette.common.white,
     [theme.breakpoints.up("tablet")]: {
       display: "block",
@@ -267,7 +268,7 @@ function SearchAppBar({
           />
           <Typography
             className={classes.title}
-            variant="h6"
+            variant="h5"
             noWrap
             onClick={() => document.location.reload()}
           >

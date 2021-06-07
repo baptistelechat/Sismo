@@ -25,7 +25,8 @@ import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import Confetti from "react-confetti";
 import useWindowSize from "@rooks/use-window-size";
-
+// STYLE
+import './App.css'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

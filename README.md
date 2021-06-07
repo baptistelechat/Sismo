@@ -24,6 +24,8 @@ Go to https://sismo.vercel.app to view the project.
 ![drawer](./screenshot/drawer.png)
 ### Color Picker 
 ![color picker](./screenshot/colorPicker.png)
+### Login Page
+![login page](./screenshot/login.png)
 ### Darkmode 
 ![darkmode](./screenshot/darkmode.png)
 ### Responsive
@@ -36,7 +38,7 @@ These instructions will get you a copy of the project up and running on your loc
 You have to install node on your machine : https://nodejs.org/en/download/
 
 ### ✔ Installing
-A step by step series of examples that tell you how to get a development env running.
+A step by step that tell you how to get a development env running.
 
 Step 1: clone the project by using the commands below :
 ```bash
@@ -62,11 +64,17 @@ localhost:3000
 ## 🏗 Built With
 - React → https://fr.reactjs.org/
 - Material UI → https://material-ui.com/
+- Firebase → https://firebase.google.com/
 - Express → https://expressjs.com/fr/
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png" height="100">
+<img src="https://img.icons8.com/color/452/material-ui.png" height="85">
+<img src="https://img.icons8.com/color/480/firebase.png" height="85">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="65">
 
 ## 😸 Maintainers
 This project is mantained by:
-* [Baptiste LECHAT - baptistelechat](https://github.com/baptistelechat)
+* [Baptiste et Matthieu LECHAT - baptistelechat](https://github.com/baptistelechat)
 
 ## 👨‍💻👩‍💻 Contributing
 
