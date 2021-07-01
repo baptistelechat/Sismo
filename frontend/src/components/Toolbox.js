@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useState } from "react";
 // REDUX
 import { connect } from "react-redux";
 import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
@@ -19,7 +19,6 @@ import PrintIcon from "@material-ui/icons/Print";
 import ShareIcon from "@material-ui/icons/Share";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import EditIcon from "@material-ui/icons/Edit";
-
 // OTHER
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import toast from "react-hot-toast";
@@ -70,9 +69,12 @@ const Toolbox = ({
   geoData,
   geoApiCall,
   materialTheme,
+  mapScreenshoter,
+  setScreenshot,
+  setOpenPdfDialog
 }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const nomCommune =
     geoData.length !== 0
@@ -147,8 +149,7 @@ const Toolbox = ({
       ? "-"
       : apiData[indexSelected].seisme;
 
-  const data =
-`🏡 ${nomCommuneExact} (${codePostal}) :
+  const data = `🏡 ${nomCommuneExact} (${codePostal}) :
 • Code INSEE : ${codeInsee}
 • Département : ${departement} (${codeDepartement})
 • Région : ${region}
@@ -181,16 +182,16 @@ Informations issues de Sismo : https://sismo.vercel.app/`;
     });
   };
 
-  const workInProgress = () => {
-    toast.success(`Fonctionnalité en cours de développement`, {
-      duration: 5000,
-      icon: "👨‍💻",
-      style: {
-        background: "#e65100",
-        color: "#FFFFFF",
-      },
-    });
-  };
+  // const workInProgress = () => {
+  //   toast.success(`Fonctionnalité en cours de développement`, {
+  //     duration: 5000,
+  //     icon: "👨‍💻",
+  //     style: {
+  //       background: "#e65100",
+  //       color: "#FFFFFF",
+  //     },
+  //   });
+  // };
 
   const downloadFile = (event) => {
     console.log(data);
@@ -229,6 +230,30 @@ Informations issues de Sismo : https://sismo.vercel.app/`;
     }
   };
 
+  const createPDF = () => {
+    toast.success("Génération du fichier PDF ...", {
+      duration: 5000,
+      icon: "⏳",
+      style: {
+        background: materialTheme.toastColor,
+        color: "#FFFFFF",
+      },
+    });
+    mapScreenshoter
+      .takeScreen("blob")
+      .then((blob) => {
+        setScreenshot(URL.createObjectURL(blob));
+        console.log(URL.createObjectURL(blob));
+        setOpenPdfDialog(true)
+        // var img = document.createElement("img");
+        // img.src = image;
+        // document.querySelector(".myImg").prepend(img);
+      })
+      .catch((e) => {
+        alert(e.toString());
+      });
+  };
+
   const handleGeolocation = () => {
     geoApiCall();
     setIndex(-1);
@@ -246,9 +271,9 @@ Informations issues de Sismo : https://sismo.vercel.app/`;
     { icon: <ShareIcon onClick={share} />, name: "Partager" },
     {
       icon: <SaveIcon onClick={downloadFile} />,
-      name: "Enregistrer le résultat",
+      name: "Enregistrer",
     },
-    { icon: <PrintIcon onClick={workInProgress} />, name: "Imprimer" },
+    { icon: <PrintIcon onClick={createPDF} />, name: "Imprimer" },
   ];
 
   return (
@@ -325,6 +350,9 @@ const mapStateToProps = (state, props) => {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
     geoData: state.geoApi.city,
+    mapScreenshoter: props.mapScreenshoter,
+    setScreenshot: props.setScreenshot,
+    setOpenPdfDialog: props.setOpenPdfDialog
   };
 };
 

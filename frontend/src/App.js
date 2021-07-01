@@ -19,6 +19,7 @@ import CardsContainer from "./components/CardsContainer";
 import Toolbox from "./components/Toolbox";
 import Security from "./components/security/Security";
 import Profil from "./components/security/Profil";
+import GeneratePDF from "./components/pdf/GeneratePDF";
 // OTHER
 import { Helmet } from "react-helmet";
 import { Toaster } from "react-hot-toast";
@@ -106,6 +107,9 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
   const [userSession, setUserSession] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [newUser, setNewUser] = useState(false);
+  const [mapScreenshoter, setMapScreenshoter] = useState(null);
+  const [screenshot, setScreenshot] = useState("");
+  const [openPdfDialog, setOpenPdfDialog] = useState(false);
 
   if (newUser) {
     setTimeout(() => {
@@ -189,7 +193,16 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
         setNewUser={setNewUser}
       />
       {newUser ? (
-        <Confetti style={{zIndex: 1000}} width={innerWidth * .98} height={innerHeight} colors={[materialTheme.mainPrimaryColor, materialTheme.mainSecondaryColor, materialTheme.toastColor]}/>
+        <Confetti
+          style={{ zIndex: 1000 }}
+          width={innerWidth * 0.98}
+          height={innerHeight}
+          colors={[
+            materialTheme.mainPrimaryColor,
+            materialTheme.mainSecondaryColor,
+            materialTheme.toastColor,
+          ]}
+        />
       ) : null}
       <Grid
         container
@@ -203,18 +216,26 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
       >
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
+            <GeneratePDF screenshot={screenshot} setOpenPdfDialog={setOpenPdfDialog} openPdfDialog={openPdfDialog}/>
             <CitiesList />
             <CardsContainer />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperR} elevation={3}>
-            <ReactMap />
+            <ReactMap
+              mapScreenshoter={mapScreenshoter}
+              setMapScreenshoter={setMapScreenshoter}
+            />
           </Paper>
         </Grid>
       </Grid>
       <Profil setOpenDialog={setOpenDialog} />
-      <Toolbox />
+      <Toolbox
+        mapScreenshoter={mapScreenshoter}
+        setScreenshot={setScreenshot}
+        setOpenPdfDialog={setOpenPdfDialog}
+      />
     </ThemeProvider>
   );
 }
