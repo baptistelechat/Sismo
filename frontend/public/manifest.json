@@ -38,23 +38,28 @@
       "type": "image/png"
     },
     {
+      "src": "../../screenshot/login.png",
+      "sizes": "1600x900",
+      "type": "image/png"
+    },
+    {
       "src": "../../screenshot/darkmode.png",
       "sizes": "1600x900",
       "type": "image/png"
     },
     {
       "src": "../../screenshot/responsive1.png",
-      "sizes": "357x590",
+      "sizes": "358x638",
       "type": "image/png"
     },
     {
       "src": "../../screenshot/responsive2.png",
-      "sizes": "360x590",
+      "sizes": "360x640",
       "type": "image/png"
     }
   ],
   "start_url": ".",
-  "lang": "en-US",
+  "lang": "fr",
   "display": "standalone",
   "theme_color": "#3f51b5",
   "background_color": "#3f51b5",

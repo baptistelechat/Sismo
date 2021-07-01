@@ -8,12 +8,10 @@ A tool to get the snow, wind, and seismicity zones in France (including DROM-COM
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/baptistelechat/Sismo/blob/main/LICENSE.txt)
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://sismo.vercel.app)
 
-
 ## 💻 Visit Website
 This project use vercel.com (A cloud platform for serverless deployment.)
 
 Go to https://sismo.vercel.app to view the project.
-
 
 ## 📸 Project's Screenshots
 ### Main page

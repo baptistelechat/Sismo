@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useState } from "react";
 // REDUX
 import { connect } from "react-redux";
 // MATERIAL UI
@@ -14,20 +14,16 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
 // MATERIAL UI ICON
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
+// COMPONENTS
+import DocumentPDF from "./DocumentPDF";
+import CGU from "../drawerItem/CGU"
 // OTHER
-import {
-  PDFViewer,
-  Page,
-  Text,
-  View,
-  Document,
-  Image,
-  StyleSheet,
-  Font,
-} from "@react-pdf/renderer";
+import { PDFViewer } from "@react-pdf/renderer";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -58,86 +54,33 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginBottom: theme.spacing(2),
   },
+  switch: {
+    marginBottom: theme.spacing(1),
+  },
+  formControlLabel: {
+    color: theme.palette.text.primary,
+  }
 }));
-
-// Create styles
-Font.register({
-  family: "Open Sans",
-  fonts: [
-    {
-      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
-    },
-    {
-      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-italic.ttf",
-      fontStyle: "italic",
-    },
-    {
-      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf",
-      fontWeight: "bold",
-    },
-    {
-      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-800.ttf",
-      fontWeight: "extrabold",
-    },
-  ],
-});
-
-const styles = StyleSheet.create({
-  page: {
-    fontFamily: "Open Sans",
-    flexDirection: "column",
-    padding: "10mm",
-  },
-  header: {
-    // justifyContent: "space-between",
-    flexDirection: "row",
-  },
-});
 
 const GeneratePDF = ({
   apiData,
+  geoData,
   indexSelected,
   screenshot,
   openPdfDialog,
   setOpenPdfDialog,
 }) => {
   const classes = useStyles();
-  const today = () => {
-    const today = Date.now();
-    const date = new Date(today);
-    const formatDate = date.toLocaleDateString();
-    return formatDate;
-  };
+
+  const [consent, setConsent] = useState(false);
 
   const handleCloseDialog = () => {
     setOpenPdfDialog(false);
   };
 
-  const document = () => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-            <Image
-              src="/icons/manifest-icon-192.png"
-              style={{ height: "50mm" }}
-            />
-          <View style={{ textAlign: "right", flexGrow:1 }}>
-            <Text style={{ fontWeight: "extrabold", fontSize: 25 }}>
-              Rapport Sismo
-            </Text>
-            <Text style={{ fontStyle: "italic" }}>Édité le {today()}</Text>
-          </View>
-          {/* <Image src={screenshot}/> */}
-        </View>
-        <hr/>
-        <View>
-        </View>
-        <View>
-          <Text>Section #3</Text>
-        </View>
-      </Page>
-    </Document>
-  );
+  const showPDF = () => {
+    setConsent(!consent);
+  };
 
   return (
     <div>
@@ -165,10 +108,35 @@ const GeneratePDF = ({
                 />
               </ListItem>
             ) : null}
+            <FormControl component="fieldset" className={classes.switch}>
+              <FormControlLabel
+                className={classes.formControlLabel}
+                value="start"
+                control={
+                  <Switch
+                    color="secondary"
+                    checked={consent}
+                    onChange={showPDF}
+                  />
+                }
+                label="J'ai lu et j'accepte les Conditions générales d'utilisation"
+                labelPlacement="start"
+              />
+            </FormControl>
+            <CGU/>
             <Grid item xs={12}>
-              <PDFViewer width="100%" height="500px">
-                {document()}
-              </PDFViewer>
+              {consent ? (
+                <PDFViewer width="100%" height="500px">
+                  <DocumentPDF
+                    apiData={apiData}
+                    geoData={geoData}
+                    indexSelected={indexSelected}
+                    screenshot={screenshot}
+                  />
+                </PDFViewer>
+              ) : (
+                <div></div>
+              )}
             </Grid>
           </Grid>
         </DialogContent>
@@ -186,6 +154,7 @@ const mapStateToProps = (state, props) => {
   return {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
+    geoData: state.geoApi.city,
   };
 };
 

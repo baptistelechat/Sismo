@@ -19,7 +19,7 @@ import CardsContainer from "./components/CardsContainer";
 import Toolbox from "./components/Toolbox";
 import Security from "./components/security/Security";
 import Profil from "./components/security/Profil";
-import GeneratePDF from "./components/GeneratePDF";
+import GeneratePDF from "./components/pdf/GeneratePDF";
 // OTHER
 import { Helmet } from "react-helmet";
 import { Toaster } from "react-hot-toast";
@@ -218,7 +218,6 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
             <GeneratePDF screenshot={screenshot} setOpenPdfDialog={setOpenPdfDialog} openPdfDialog={openPdfDialog}/>
             <CitiesList />
             <CardsContainer />
-            <div className={"myImg"}></div>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
