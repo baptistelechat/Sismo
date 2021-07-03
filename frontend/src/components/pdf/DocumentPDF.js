@@ -11,6 +11,7 @@ import {
   Font,
   Link,
 } from "@react-pdf/renderer";
+
 // WIND
 import wind_default from "../../img/wind/wind-default.png";
 import wind_1 from "../../img/wind/wind-1.png";
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
+const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
   const nomCommune =
     geoData.length !== 0
       ? geoData.nomCommune
@@ -94,7 +95,7 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
       : apiData[indexSelected].insee;
   const codePostal =
     geoData.length !== 0
-      ? "-"
+      ? geoData.codePostal
       : apiData[indexSelected] === undefined
       ? "-"
       : apiData[indexSelected].codePostal;
@@ -157,12 +158,20 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
   return (
     <Document title={`${nomCommune} (${codePostal}) - Sismo`} author="Sismo">
       <Page size="A4" style={styles.page}>
-        <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: "5mm",
+            borderStyle: "solid",
+            borderWidth: "1mm",
+            border: "1mm solid #3f51b5",
+          }}
+        >
           <Image
             src="/icons/manifest-icon-192.png"
-            style={{ height: "50mm", paddingBottom: "10mm" }}
+            style={{ height: "50mm" }}
           />
-          <View style={{ textAlign: "right", flexGrow: 1 }}>
+          <View style={{ textAlign: "right", flexGrow: 1, padding: "5mm" }}>
             <Text
               style={{
                 fontWeight: "extrabold",
@@ -183,7 +192,7 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
         <Image
           style={{
             objectFit: "contain",
-            maxHeight: "120mm",
+            maxHeight: "105mm",
             paddingBottom: "5mm",
           }}
           src={screenshot}
@@ -294,8 +303,9 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
         <View style={{ flexDirection: "row" }}>
           <View style={styles.paragraph}>
             <Text style={{ fontWeight: "extrabold", color: "#3f51b5" }}>
-              {nomCommune} - {codePostal}
+              {nomCommune}
             </Text>
+            <Text>Code Postal : {codePostal}</Text>
             <Text>Code INSEE : {codeInsee}</Text>
             <Text>
               Département : {departement} ({codeDepartement})
@@ -306,9 +316,6 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
             <Text>
               Coordonnées : {latitude}, {longitude}
             </Text>
-            {/* <Text>Vent : {wind}</Text>
-        <Text>Neige : {snow}</Text>
-        <Text>Séisme : {seism}</Text> */}
           </View>
           <View style={{ textAlign: "right", flexGrow: 1 }}>
             <View style={styles.paragraph}>
@@ -328,9 +335,7 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
               <Link
                 src={`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`}
               >
-                https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=
-                {codeInsee}&ign=false&CGU-commune=on&commune={codePostal}+
-                {nomCommuneExact}
+                {`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`}
               </Link>
               <Text
                 style={{
@@ -351,4 +356,4 @@ const DocumentPDF = ({apiData, geoData, indexSelected, screenshot}) => {
   );
 };
 
-export default DocumentPDF
+export default DocumentPDF;

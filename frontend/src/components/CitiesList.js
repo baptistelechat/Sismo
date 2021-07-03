@@ -175,7 +175,7 @@ function CitiesList({indexSelected, apiData, apiDataLoading, geoData, setIndex, 
               <ListItemIcon>
                 <CheckIcon color="secondary"/>
               </ListItemIcon>
-                <ListItemText className={classes.selected} primary={geoData.nomCommune} secondary={`INSEE : ${geoData.insee}`}/>
+                <ListItemText className={classes.selected} primary={geoData.nomCommune} secondary={`Code postal : ${geoData.codePostal} - INSEE : ${geoData.insee}`}/>
             </ListItem>)
           }
         </List>

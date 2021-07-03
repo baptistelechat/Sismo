@@ -96,7 +96,7 @@ const Toolbox = ({
       : apiData[indexSelected].insee;
   const codePostal =
     geoData.length !== 0
-      ? "-"
+      ? geoData.codePostal
       : apiData[indexSelected] === undefined
       ? "-"
       : apiData[indexSelected].codePostal;

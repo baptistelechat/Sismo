@@ -13,17 +13,19 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
+import Fab from "@material-ui/core/Fab";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 // MATERIAL UI ICON
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
 // COMPONENTS
 import DocumentPDF from "./DocumentPDF";
-import CGU from "../drawerItem/CGU"
+import CGU from "../drawerItem/CGU";
 // OTHER
-import { PDFViewer } from "@react-pdf/renderer";
+import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -38,20 +40,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     background: "rgba(0,0,0,0)",
   },
-  button: {
-    display: "none",
-    [theme.breakpoints.down("sm")]: {
-      display: "block",
-    },
-  },
   listItem: {
     marginBottom: theme.spacing(1),
   },
   firstFab: {
-    marginBottom: theme.spacing(2),
-  },
-  fab: {
-    marginLeft: theme.spacing(1),
     marginBottom: theme.spacing(2),
   },
   switch: {
@@ -59,7 +51,19 @@ const useStyles = makeStyles((theme) => ({
   },
   formControlLabel: {
     color: theme.palette.text.primary,
-  }
+  },
+  download: {
+    textTransform: "none",
+    textDecoration: "none",
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+  fab: {
+    color: theme.palette.common.white,
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(3),
+  },
 }));
 
 const GeneratePDF = ({
@@ -75,12 +79,27 @@ const GeneratePDF = ({
   const [consent, setConsent] = useState(false);
 
   const handleCloseDialog = () => {
+    setConsent(false);
     setOpenPdfDialog(false);
   };
 
   const showPDF = () => {
     setConsent(!consent);
   };
+
+  const nomCommune =
+    geoData.length !== 0
+      ? geoData.nomCommune
+      : apiData[indexSelected] === undefined
+      ? "-"
+      : apiData[indexSelected].nomCommune;
+
+  const codePostal =
+    geoData.length !== 0
+      ? geoData.codePostal
+      : apiData[indexSelected] === undefined
+      ? "-"
+      : apiData[indexSelected].codePostal;
 
   return (
     <div>
@@ -123,17 +142,45 @@ const GeneratePDF = ({
                 labelPlacement="start"
               />
             </FormControl>
-            <CGU/>
+            <CGU />
             <Grid item xs={12}>
               {consent ? (
-                <PDFViewer width="100%" height="500px">
-                  <DocumentPDF
-                    apiData={apiData}
-                    geoData={geoData}
-                    indexSelected={indexSelected}
-                    screenshot={screenshot}
-                  />
-                </PDFViewer>
+                <div>
+                  <PDFDownloadLink
+                    document={
+                      <DocumentPDF
+                        apiData={apiData}
+                        geoData={geoData}
+                        indexSelected={indexSelected}
+                        screenshot={screenshot}
+                      />
+                    }
+                    fileName={`${nomCommune} (${codePostal}) - Sismo`}
+                    className={classes.download}
+                  >
+                    <Fab
+                      variant="extended"
+                      component="span"
+                      color="secondary"
+                      className={classes.fab}
+                    >
+                      <SaveAltIcon className={classes.extendedIcon} />
+                      Télécharger mon rapport
+                    </Fab>
+                  </PDFDownloadLink>
+                  {/mobile|android/i.test(navigator.userAgent) ? (
+                    <div></div>
+                  ) : (
+                    <PDFViewer width="100%" height="500px">
+                      <DocumentPDF
+                        apiData={apiData}
+                        geoData={geoData}
+                        indexSelected={indexSelected}
+                        screenshot={screenshot}
+                      />
+                    </PDFViewer>
+                  )}
+                </div>
               ) : (
                 <div></div>
               )}
