@@ -10,6 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Fab from "@material-ui/core/Fab";
+import Avatar from "@material-ui/core/Avatar";
 // MATERIAL UI ICON
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import PersonIcon from "@material-ui/icons/Person";
@@ -46,6 +47,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
+  avatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+    float: "right",
+    marginBottom: theme.spacing(2)
+  },
 }));
 
 const override = css`
@@ -64,18 +71,12 @@ const Security = ({
   const classes = useStyles();
 
   const [authState, setAuthState] = useState("");
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setTimeout(() => {
-      setAuthState("");
-    }, 600);
-  };
-
+  const [avatar, setAvatar] = useState(
+    "https://source.boringavatars.com/beam/500/?colors=3f51b5,e91e63"
+  );
   return (
     <Dialog
       open={openDialog}
-      onClose={handleCloseDialog}
       aria-labelledby="form-dialog-title"
       BackdropProps={{
         classes: {
@@ -105,6 +106,11 @@ const Security = ({
             : authState === "forgetPassword"
             ? "Veuillez saisir votre adresse mail :"
             : "Veuillez vous connecter ou vous inscrire"}
+          {authState === "signUp" ? (
+            <Avatar alt="avatar" src={avatar} className={classes.avatar} />
+          ) : (
+            <div></div>
+          )}
         </DialogContentText>
         <Grid container spacing={0} className={classes.gridContainer}>
           {isLoading === true ? (
@@ -145,18 +151,23 @@ const Security = ({
         </Grid>
         {authState === "signUp" ? (
           <SignUp
-            handleCloseDialog={handleCloseDialog}
+            // handleCloseDialog={handleCloseDialog}
+            setOpenDialog={setOpenDialog}
             setAuthState={setAuthState}
             setNewUser={setNewUser}
+            avatar={avatar}
+            setAvatar={setAvatar}
           />
         ) : authState === "login" ? (
           <Login
-            handleCloseDialog={handleCloseDialog}
+            // handleCloseDialog={handleCloseDialog}
+            setOpenDialog={setOpenDialog}
             setAuthState={setAuthState}
           />
         ) : authState === "forgetPassword" ? (
           <ForgetPassword
-            handleCloseDialog={handleCloseDialog}
+            // handleCloseDialog={handleCloseDialog}
+            setOpenDialog={setOpenDialog}
             setAuthState={setAuthState}
           />
         ) : (

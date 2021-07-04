@@ -1,5 +1,5 @@
 // REACT
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // Firebase
 import { FirebaseContext } from "../../services/firebase";
 // MATERIAL UI
@@ -8,12 +8,11 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 // MATERIAL UI ICON
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import PersonIcon from "@material-ui/icons/Person";
 import ContactsIcon from "@material-ui/icons/Contacts";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
 // OTHER
 import toast from "react-hot-toast";
+import Avatar from "@material-ui/core/Avatar";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -37,13 +36,20 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  avatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
 }));
 
-const Profil = ({ setOpenDialog }) => {
+const Profil = ({ setOpenDialog, userSession }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [avatar, setAvatar] = useState(
+    "https://source.boringavatars.com/beam/500/?colors=3f51b5,e91e63"
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -80,6 +86,25 @@ const Profil = ({ setOpenDialog }) => {
     setOpenDialog(true);
   };
 
+  useEffect(() => {
+    if (!!userSession) {
+      firebase
+        .userCollection(userSession.uid)
+        .get()
+        .then((doc) => {
+          if (doc && doc.exists) {
+            const data = doc.data();
+            setAvatar(
+              `https://source.boringavatars.com/beam/500/${data.firstName}%20${data.lastName}%20${data.email}?colors=3f51b5,e91e63`
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [firebase, userSession]);
+
   const actions = [
     {
       icon: <ContactsIcon onClick={workInProgress} />,
@@ -92,9 +117,10 @@ const Profil = ({ setOpenDialog }) => {
   return (
     <div>
       <SpeedDial
+        color="secondary"
         ariaLabel="SpeedDial example"
         className={classes.speedDialDefault}
-        icon={<PersonIcon />}
+        icon={<Avatar alt="avatar" src={avatar} className={classes.avatar} />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
@@ -111,9 +137,10 @@ const Profil = ({ setOpenDialog }) => {
         ))}
       </SpeedDial>
       <SpeedDial
+        color="secondary"
         ariaLabel="SpeedDial example"
         className={classes.speedDialResponsive}
-        icon={<PersonIcon />}
+        icon={<Avatar alt="avatar" src={avatar} className={classes.avatar} />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ForgetPassword = ({ setAuthState, handleCloseDialog }) => {
+const ForgetPassword = ({ setAuthState }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 

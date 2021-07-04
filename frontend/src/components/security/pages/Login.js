@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ setAuthState, handleCloseDialog }) => {
+const Login = ({ setAuthState, setOpenDialog }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 
@@ -68,6 +68,13 @@ const Login = ({ setAuthState, handleCloseDialog }) => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setTimeout(() => {
+      setAuthState("");
+    }, 600);
   };
 
   const { email, password } = loginData;

@@ -304,7 +304,7 @@ Informations issues de Sismo : https://sismo.vercel.app/`;
           <SpeedDial
             ariaLabel="SpeedDial example"
             className={classes.speedDialResponsive}
-            icon={<SpeedDialIcon />}
+            icon={<SpeedDialIcon openIcon={<EditIcon />} />}
             onClose={handleClose}
             onOpen={handleOpen}
             open={open}

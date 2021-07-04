@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import Confetti from "react-confetti";
 import useWindowSize from "@rooks/use-window-size";
 // STYLE
-import './App.css'
+import "./App.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -216,7 +216,11 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
       >
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paperL} elevation={3}>
-            <GeneratePDF screenshot={screenshot} setOpenPdfDialog={setOpenPdfDialog} openPdfDialog={openPdfDialog}/>
+            <GeneratePDF
+              screenshot={screenshot}
+              setOpenPdfDialog={setOpenPdfDialog}
+              openPdfDialog={openPdfDialog}
+            />
             <CitiesList />
             <CardsContainer />
           </Paper>
@@ -230,7 +234,7 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
           </Paper>
         </Grid>
       </Grid>
-      <Profil setOpenDialog={setOpenDialog} />
+      <Profil setOpenDialog={setOpenDialog} userSession={userSession} />
       <Toolbox
         mapScreenshoter={mapScreenshoter}
         setScreenshot={setScreenshot}

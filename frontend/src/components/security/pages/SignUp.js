@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({ setAuthState, setNewUser, handleCloseDialog }) => {
+const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 
@@ -64,6 +64,9 @@ const SignUp = ({ setAuthState, setNewUser, handleCloseDialog }) => {
 
   const handleTextFieldChange = (e) => {
     setLoginData({ ...loginData, [e.target.id]: e.target.value });
+    setAvatar(
+      `https://source.boringavatars.com/beam/500/${firstName}%20${lastName}%20${email}?colors=3f51b5,e91e63`
+    );
   };
 
   const handleClickShowPassword = () => {
@@ -78,6 +81,13 @@ const SignUp = ({ setAuthState, setNewUser, handleCloseDialog }) => {
     event.preventDefault();
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setTimeout(() => {
+      setAuthState("");
+    }, 600);
+  };
+
   const { firstName, lastName, email, password, confirmPassword } = loginData;
 
   const handleSubmit = () => {
@@ -89,6 +99,7 @@ const SignUp = ({ setAuthState, setNewUser, handleCloseDialog }) => {
           firstName,
           lastName,
           email,
+          avatar,
           created: Date.now(),
           modified: Date.now(),
         });
