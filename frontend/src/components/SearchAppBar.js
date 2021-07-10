@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
 import { citiesApiCall } from "../services/redux/citiesData/actionCitiesData";
 import { geoApiCall, geoApiReset } from "../services/redux/geoData/actionGeoData";
-import { gouvApiCall } from "../services/redux/gouvData/actionGouvData";
 // MATERIAL UI
 import { fade, withStyles, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -178,7 +177,6 @@ function SearchAppBar({
   citiesApiCall,
   geoApiCall,
   geoApiReset,
-  gouvApiCall,
   materialTheme,
 }) {
   const classes = useStyles();
@@ -189,7 +187,6 @@ function SearchAppBar({
   const handleSubmit = async () => {
     setIndex(-1);
     geoApiReset();
-    await gouvApiCall(param, searchValue);
     await citiesApiCall(param, searchValue);
   };
 
@@ -427,9 +424,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     geoApiReset: () => {
       dispatch(geoApiReset());
-    },
-    gouvApiCall: (param, searchValue) => {
-      dispatch(gouvApiCall(param, searchValue));
     },
   };
 };

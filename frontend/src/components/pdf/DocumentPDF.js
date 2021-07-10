@@ -19,7 +19,7 @@ import wind_2 from "../../img/wind/wind-2.png";
 import wind_3 from "../../img/wind/wind-3.png";
 import wind_4 from "../../img/wind/wind-4.png";
 import wind_5 from "../../img/wind/wind-5.png";
-import wind_error from "../../img/wind/wind-error.png";
+// import wind_error from "../../img/wind/wind-error.png";
 // SNOW
 import snow_default from "../../img/snow/snow-default.png";
 import snow_0 from "../../img/snow/snow-0.png";
@@ -31,7 +31,7 @@ import snow_C1 from "../../img/snow/snow-C1.png";
 import snow_C2 from "../../img/snow/snow-C2.png";
 import snow_D from "../../img/snow/snow-D.png";
 import snow_E from "../../img/snow/snow-E.png";
-import snow_error from "../../img/snow/snow-error.png";
+// import snow_error from "../../img/snow/snow-error.png";
 // SEISM
 import seism_default from "../../img/seism/seism-default.png";
 import seism_1 from "../../img/seism/seism-1.png";
@@ -39,7 +39,7 @@ import seism_2 from "../../img/seism/seism-2.png";
 import seism_3 from "../../img/seism/seism-3.png";
 import seism_4 from "../../img/seism/seism-4.png";
 import seism_5 from "../../img/seism/seism-5.png";
-import seism_error from "../../img/seism/seism-error.png";
+// import seism_error from "../../img/seism/seism-error.png";
 // STYLE
 Font.register({
   family: "Open Sans",
@@ -147,6 +147,12 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
       : apiData[indexSelected] === undefined
       ? "-"
       : apiData[indexSelected].seisme;
+  const georisques =
+    geoData.length !== 0
+      ? geoData.georisques
+      : apiData[indexSelected] === undefined
+      ? "-"
+      : apiData[indexSelected].georisques;
 
   const today = () => {
     const today = Date.now();
@@ -228,8 +234,6 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
                   ? wind_4
                   : wind === "5"
                   ? wind_5
-                  : wind === "x"
-                  ? wind_error
                   : wind_default
               }
             />
@@ -265,8 +269,6 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
                   ? snow_E
                   : snow === "0"
                   ? snow_0
-                  : snow === "x"
-                  ? snow_error
                   : snow_default
               }
             />
@@ -293,8 +295,6 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
                   ? seism_4
                   : seism === "5"
                   ? seism_5
-                  : seism === "x"
-                  ? seism_error
                   : seism_default
               }
             />
@@ -333,9 +333,9 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
               </Text>
 
               <Link
-                src={`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`}
+                src={georisques}
               >
-                {`https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`}
+                {georisques}
               </Link>
               <Text
                 style={{

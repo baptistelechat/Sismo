@@ -148,6 +148,12 @@ const Toolbox = ({
       : apiData[indexSelected] === undefined
       ? "-"
       : apiData[indexSelected].seisme;
+  const georisques =
+    geoData.length !== 0
+      ? geoData.georisques
+      : apiData[indexSelected] === undefined
+      ? "-"
+      : apiData[indexSelected].georisques;
 
   const data = `🏡 ${nomCommuneExact} (${codePostal}) :
 • Code INSEE : ${codeInsee}
@@ -159,7 +165,7 @@ const Toolbox = ({
 • Vent : ${wind}
 • Neige : ${snow}
 • Sismicité : ${seism}
-• Géoriques : https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}
+• Géoriques : ${georisques}
 
 Informations issues de Sismo : https://sismo.vercel.app/`;
 

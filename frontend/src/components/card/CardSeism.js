@@ -13,9 +13,9 @@ import seism_2 from "../../img/seism/seism-2.png";
 import seism_3 from "../../img/seism/seism-3.png";
 import seism_4 from "../../img/seism/seism-4.png";
 import seism_5 from "../../img/seism/seism-5.png";
-import seism_error from "../../img/seism/seism-error.png";
 import seism_default_dark from "../../img/seism/seism-default-dark.png";
-import seism_error_dark from "../../img/seism/seism-error-dark.png";
+// import seism_error from "../../img/seism/seism-error.png";
+// import seism_error_dark from "../../img/seism/seism-error-dark.png";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -72,10 +72,6 @@ const CardSeism = ({ indexSelected, apiData, geoData, materialTheme }) => {
               ? seism_4
               : seism === "5"
               ? seism_5
-              : seism === "x" && materialTheme.type === "dark"
-              ? seism_error_dark
-              : seism === "x"
-              ? seism_error
               : materialTheme.type === "dark"
               ? seism_default_dark
               : seism_default

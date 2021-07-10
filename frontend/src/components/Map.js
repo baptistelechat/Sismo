@@ -33,7 +33,7 @@ import Georisques from "./Georisques";
 import bigCities from "./marker/BigCities";
 import DefaultIcon from "./marker/icon/DefaultIcon";
 import SelectedIcon from "./marker/icon/SelectedIcon";
-import OldCityIcon from "./marker/icon/OldCityIcon";
+// import OldCityIcon from "./marker/icon/OldCityIcon";
 import GeolocationIcon from "./marker/icon/GeolocationIcon";
 
 // STYLE
@@ -65,7 +65,6 @@ const ReactMap = ({
   apiData,
   geoData,
   setIndex,
-  gouvData,
   materialTheme,
   mapScreenshoter,
   setMapScreenshoter,
@@ -78,22 +77,6 @@ const ReactMap = ({
   const [showBigCities, setShowBigCities] = useState(true);
 
   const defaultPosition = [46.539006, 2.4298391];
-
-  const data = [];
-
-  for (let i = 0; i < apiData.length; i++) {
-    const sismo = apiData[i];
-    const gouv = gouvData[i];
-    if (apiData[0] === "Aucune valeur correspondante à votre recherche") {
-      data.push(sismo);
-    } else {
-      const obj = {
-        ...sismo,
-        border: gouv,
-      };
-      data.push(obj);
-    }
-  }
 
   const takeScreenshot = () => {
     toast.success("Génération de la capture ...", {
@@ -125,39 +108,31 @@ const ReactMap = ({
     console.log(apiData[index]);
     const path = document.querySelectorAll("path.leaflet-interactive");
     const pathArray = [...path];
+    console.log(pathArray);
     const selectedPath = pathArray[index];
     if (pathArray.length === 1) {
       pathArray[0].setAttribute("fill", materialTheme.mainSecondaryColor);
       pathArray[0].setAttribute("stroke", materialTheme.mainSecondaryColor);
     } else {
-      if (data[index].vent === "x") {
-        pathArray.forEach((el) => {
-          el.setAttribute("fill", materialTheme.mainPrimaryColor);
-          el.setAttribute("stroke", materialTheme.mainPrimaryColor);
-        });
-        selectedPath.setAttribute("fill", "#ffffff00");
-        selectedPath.setAttribute("stroke", "#ffffff00");
-      } else {
-        pathArray.forEach((el) => {
-          if (el !== selectedPath) {
-            if (el.getAttribute("fill") === "#ffffff00") {
-              el.setAttribute("fill", "#ffffff00");
-              el.setAttribute("stroke", "#ffffff00");
-            } else {
-              el.setAttribute("fill", materialTheme.mainPrimaryColor);
-              el.setAttribute("stroke", materialTheme.mainPrimaryColor);
-            }
+      pathArray.forEach((el) => {
+        if (el !== selectedPath) {
+          if (el.getAttribute("fill") === "#ffffff00") {
+            el.setAttribute("fill", "#ffffff00");
+            el.setAttribute("stroke", "#ffffff00");
           } else {
-            if (el.getAttribute("fill") === "#ffffff00") {
-              el.setAttribute("fill", "#ffffff00");
-              el.setAttribute("stroke", "#ffffff00");
-            } else {
-              el.setAttribute("fill", materialTheme.mainSecondaryColor);
-              el.setAttribute("stroke", materialTheme.mainSecondaryColor);
-            }
+            el.setAttribute("fill", materialTheme.mainPrimaryColor);
+            el.setAttribute("stroke", materialTheme.mainPrimaryColor);
           }
-        });
-      }
+        } else {
+          if (el.getAttribute("fill") === "#ffffff00") {
+            el.setAttribute("fill", "#ffffff00");
+            el.setAttribute("stroke", "#ffffff00");
+          } else {
+            el.setAttribute("fill", materialTheme.mainSecondaryColor);
+            el.setAttribute("stroke", materialTheme.mainSecondaryColor);
+          }
+        }
+      });
     }
   };
 
@@ -173,21 +148,6 @@ const ReactMap = ({
           },
           iconTheme: {
             primary: "#b71c1c",
-            secondary: "#FFFFFF",
-          },
-        }
-      );
-    } else if (apiData[index].vent === "x") {
-      toast.error(
-        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) - Ancienne commune française sélectionnée. Données indisponible.`,
-        {
-          duration: 5000,
-          style: {
-            background: "#ffb74d",
-            color: "#FFFFFF",
-          },
-          iconTheme: {
-            primary: "#e65100",
             secondary: "#FFFFFF",
           },
         }
@@ -263,7 +223,7 @@ const ReactMap = ({
   };
 
   const marker = () => {
-    return data.map((cities, index) =>
+    return apiData.map((cities, index) =>
       index === 0 ? (
         <Marker
           key={index}
@@ -271,8 +231,6 @@ const ReactMap = ({
           icon={
             indexSelected === index
               ? SelectedIcon
-              : cities.vent === "x"
-              ? OldCityIcon
               : DefaultIcon
           }
           onClick={() => handleMarkerClick(index)}
@@ -285,15 +243,13 @@ const ReactMap = ({
           </Popup>
           {border(index)}
         </Marker>
-      ) : data[index - 1].insee !== data[index].insee ? (
+      ) : apiData[index - 1].insee !== apiData[index].insee ? (
         <Marker
           key={index}
           position={[cities.latitude, cities.longitude]}
           icon={
             indexSelected === index
               ? SelectedIcon
-              : cities.vent === "x"
-              ? OldCityIcon
               : DefaultIcon
           }
           onClick={() => handleMarkerClick(index)}
@@ -311,13 +267,13 @@ const ReactMap = ({
   };
 
   const border = (index) => {
-    if (data[index].border !== "-") {
+    if (apiData[index].border !== "-") {
       if (index !== 0) {
-        if (data[index - 1].insee !== data[index].insee) {
+        if (apiData[index - 1].insee !== apiData[index].insee) {
           return (
             <GeoJSON
               key={index}
-              data={data[index].border}
+              data={apiData[index].border}
               onclick={(e) => handleGeoJsonClick(e, index)}
               style={{ color: materialTheme.mainPrimaryColor }}
             />
@@ -329,20 +285,20 @@ const ReactMap = ({
         return (
           <GeoJSON
             key={index}
-            data={data[index].border}
+            data={apiData[index].border}
             onclick={(e) => handleGeoJsonClick(e, index)}
             style={{ color: materialTheme.mainPrimaryColor }}
           />
         );
       }
     } else {
-      if (data[1] === undefined) {
+      if (apiData[1] === undefined) {
         return null;
       } else {
         return (
           <GeoJSON
             key={index}
-            data={data[1].border}
+            data={apiData[1].border}
             onclick={(e) => handleGeoJsonClick(e, index)}
             style={{ color: "#ffffff00" }}
           />
@@ -367,7 +323,7 @@ const ReactMap = ({
     setMapScreenshoter(
       new SimpleMapScreenshoter({
         hidden: true, // hide screen btn on map
-    }).addTo(map)
+      }).addTo(map)
     );
   }, [setMapScreenshoter]);
 
@@ -461,7 +417,8 @@ const ReactMap = ({
                 />
               ) : null}
             </Marker>
-          ) : data[0] !== "Aucune valeur correspondante à votre recherche" ? (
+          ) : apiData[0] !==
+            "Aucune valeur correspondante à votre recherche" ? (
             marker()
           ) : null}
         </FeatureGroup>
@@ -475,7 +432,6 @@ const mapStateToProps = (state, props) => {
     indexSelected: state.index.indexSelected,
     apiData: state.cityApi.cities,
     geoData: state.geoApi.city,
-    gouvData: state.gouvApi.borders,
     materialTheme: state.theme,
     mapScreenshoter: props.mapScreenshoter,
     setMapScreenshoter: props.setMapScreenshoter,

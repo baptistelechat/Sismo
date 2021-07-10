@@ -17,9 +17,9 @@ import snow_C1 from "../../img/snow/snow-C1.png";
 import snow_C2 from "../../img/snow/snow-C2.png";
 import snow_D from "../../img/snow/snow-D.png";
 import snow_E from "../../img/snow/snow-E.png";
-import snow_error from "../../img/snow/snow-error.png";
 import snow_default_dark from "../../img/snow/snow-default-dark.png";
-import snow_error_dark from "../../img/snow/snow-error-dark.png";
+// import snow_error from "../../img/snow/snow-error.png";
+// import snow_error_dark from "../../img/snow/snow-error-dark.png";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -84,10 +84,6 @@ const CardSnow = ({ indexSelected, apiData, geoData, materialTheme }) => {
               ? snow_E
               : snow === "0"
               ? snow_0
-              : snow === "x" && materialTheme.type === "dark"
-              ? snow_error_dark
-              : snow === "x"
-              ? snow_error
               : materialTheme.type === "dark"
               ? snow_default_dark
               : snow_default

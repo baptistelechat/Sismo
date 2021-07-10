@@ -36,7 +36,7 @@ const Georisques = ({indexSelected, apiData, geoData}) => {
   const codePostal = geoData.length !== 0 ? geoData.codePostal : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].codePostal
   const nomCommuneExact = geoData.length !== 0 ? geoData.nomCommuneExact : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].nomCommuneExact
   
-  const url = `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${codeInsee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`
+  const url = geoData.length !== 0 ? geoData.georisques : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].georisques
 
   const openInNewTab = () => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')

@@ -13,9 +13,9 @@ import wind_2 from "../../img/wind/wind-2.png";
 import wind_3 from "../../img/wind/wind-3.png";
 import wind_4 from "../../img/wind/wind-4.png";
 import wind_5 from "../../img/wind/wind-5.png";
-import wind_error from "../../img/wind/wind-error.png";
 import wind_default_dark from "../../img/wind/wind-default-dark.png";
-import wind_error_dark from "../../img/wind/wind-error-dark.png";
+// import wind_error from "../../img/wind/wind-error.png";
+// import wind_error_dark from "../../img/wind/wind-error-dark.png";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -72,10 +72,6 @@ const CardWind = ({ indexSelected, apiData, geoData, materialTheme }) => {
               ? wind_4
               : wind === "5"
               ? wind_5
-              : wind === "x" && materialTheme.type === "dark"
-              ? wind_error_dark
-              : wind === "x"
-              ? wind_error
               : materialTheme.type === "dark"
               ? wind_default_dark
               : wind_default
