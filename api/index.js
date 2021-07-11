@@ -147,6 +147,7 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;
@@ -252,6 +253,7 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;
@@ -367,6 +369,7 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;

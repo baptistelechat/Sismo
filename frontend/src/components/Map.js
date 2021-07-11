@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import FileSaver from "file-saver";
 // COMPONENTS
 import Georisques from "./Georisques";
+import GoogleMaps from "./GoogleMaps";
 import bigCities from "./marker/BigCities";
 import DefaultIcon from "./marker/icon/DefaultIcon";
 import SelectedIcon from "./marker/icon/SelectedIcon";
@@ -228,11 +229,7 @@ const ReactMap = ({
         <Marker
           key={index}
           position={[cities.latitude, cities.longitude]}
-          icon={
-            indexSelected === index
-              ? SelectedIcon
-              : DefaultIcon
-          }
+          icon={indexSelected === index ? SelectedIcon : DefaultIcon}
           onClick={() => handleMarkerClick(index)}
         >
           <Popup>
@@ -247,11 +244,7 @@ const ReactMap = ({
         <Marker
           key={index}
           position={[cities.latitude, cities.longitude]}
-          icon={
-            indexSelected === index
-              ? SelectedIcon
-              : DefaultIcon
-          }
+          icon={indexSelected === index ? SelectedIcon : DefaultIcon}
           onClick={() => handleMarkerClick(index)}
         >
           <Popup>
@@ -362,6 +355,7 @@ const ReactMap = ({
         </Fab>
       </MyTooltip>
       <Georisques />
+      <GoogleMaps />
       <Map
         ref={mapRef}
         center={defaultPosition}

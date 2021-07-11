@@ -15,10 +15,10 @@ import Zoom from "@material-ui/core/Zoom";
 // MATERIAL UI ICON
 import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
-import PrintIcon from "@material-ui/icons/Print";
 import ShareIcon from "@material-ui/icons/Share";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import EditIcon from "@material-ui/icons/Edit";
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 // OTHER
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import toast from "react-hot-toast";
@@ -279,7 +279,7 @@ Informations issues de Sismo : https://sismo.vercel.app/`;
       icon: <SaveIcon onClick={downloadFile} />,
       name: "Enregistrer",
     },
-    { icon: <PrintIcon onClick={createPDF} />, name: "Imprimer" },
+    { icon: <PictureAsPdfIcon onClick={createPDF} />, name: "Générer un rapport" },
   ];
 
   return (

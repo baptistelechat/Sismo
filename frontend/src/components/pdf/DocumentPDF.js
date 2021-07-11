@@ -81,12 +81,6 @@ const DocumentPDF = ({ apiData, geoData, indexSelected, screenshot }) => {
       : apiData[indexSelected] === undefined
       ? "-"
       : apiData[indexSelected].nomCommune;
-  const nomCommuneExact =
-    geoData.length !== 0
-      ? geoData.nomCommuneExact
-      : apiData[indexSelected] === undefined
-      ? "-"
-      : apiData[indexSelected].nomCommuneExact;
   const codeInsee =
     geoData.length !== 0
       ? geoData.insee

@@ -8,7 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 // ICON
-import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +28,11 @@ const MyTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const Georisques = ({indexSelected, apiData, geoData}) => {
+const GoogleMaps = ({indexSelected, apiData, geoData}) => {
 
   const classes = useStyles();
   
-  const url = geoData.length !== 0 ? geoData.georisques : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].georisques
+  const url = geoData.length !== 0 ? geoData.googleMaps : apiData[indexSelected] === undefined ? "-" : apiData[indexSelected].googleMaps
 
   const openInNewTab = () => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -42,7 +42,7 @@ const Georisques = ({indexSelected, apiData, geoData}) => {
   return (
     <div>
       {(indexSelected !== -1 && apiData[indexSelected].vent !== 'x') || geoData.length !== 0 ?
-        <MyTooltip title="Accéder au site Géorisques" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
+        <MyTooltip title="Accéder à Google Maps" enterDelay={500} leaveDelay={300} TransitionComponent={Zoom} interactive arrow>
           <Fab
             variant="extended"
             size="medium"
@@ -52,8 +52,8 @@ const Georisques = ({indexSelected, apiData, geoData}) => {
             // href={url}
             onClick={openInNewTab}
           >
-            <EmojiTransportationIcon className={classes.extendedIcon}/>
-            Géorisques
+            <LocationOnIcon className={classes.extendedIcon}/>
+            Google Maps
           </Fab>
         </MyTooltip>
         :
@@ -65,8 +65,8 @@ const Georisques = ({indexSelected, apiData, geoData}) => {
           aria-label="add"
           className={classes.fab}
         >
-          <EmojiTransportationIcon className={classes.extendedIcon}/>
-          Géorisques
+          <LocationOnIcon className={classes.extendedIcon}/>
+          Google Maps
         </Fab>        
     }
     </div>
@@ -82,4 +82,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Georisques);
+export default connect(mapStateToProps)(GoogleMaps);
