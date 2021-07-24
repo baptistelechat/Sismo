@@ -1,62 +1,66 @@
 // REACT
-import React, {useState} from 'react';
+import React, { useState } from "react";
 // MATERIAL UI
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import Button from '@material-ui/core/Button'
-import Fab from '@material-ui/core/Fab';
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
 // MATERIAL UI ICON
-import CopyrightIcon from '@material-ui/icons/Copyright';
+import CopyrightIcon from "@material-ui/icons/Copyright";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.secondary.main,
-    margin: 0
+    margin: 0,
   },
   dialogContentText: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   gridContainer: {
-    width: '100%',
-    background: 'rgba(0,0,0,0)'
+    width: "100%",
+    background: "rgba(0,0,0,0)",
   },
   fab: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
   },
   button: {
-    display: 'none',
-    [theme.breakpoints.down('sm')]: {
-      display: 'block',
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
     },
-  }
+  },
+  backDrop: {
+    backdropFilter: "blur(10px)",
+    backgroundColor: "#ffffff00",
+  },
 }));
 
 const LicenceMIT = () => {
-
   const classes = useStyles();
 
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const urlMIT = 'https://github.com/baptistelechat/Sismo/blob/main/LICENSE.txt'
+  const urlMIT =
+    "https://github.com/baptistelechat/Sismo/blob/main/LICENSE.txt";
 
   const openLink = (url) => {
-    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-    if (newWindow) newWindow.opener = null
-  }
-  
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+  };
+
   const handleOpenDialog = () => {
-    setOpenDialog(true)
+    setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
@@ -66,14 +70,28 @@ const LicenceMIT = () => {
   return (
     <div>
       <ListItem button onClick={handleOpenDialog}>
-        <ListItemIcon><CopyrightIcon/></ListItemIcon>
-        <ListItemText primary={"Licence MIT"} secondary={"Ce projet est sous licence MIT"}/>
+        <ListItemIcon>
+          <CopyrightIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={"Licence MIT"}
+          secondary={"Ce projet est sous licence MIT"}
+        />
       </ListItem>
-      <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="form-dialog-title"
+        BackdropProps={{
+          classes: {
+            root: classes.backDrop,
+          },
+        }}
+      >
         <DialogTitle id="form-dialog-title">
           <h4 className={classes.title}>Licence MIT</h4>
         </DialogTitle>
-        <DialogContent style={{paddingBottom: '16px'}}>
+        <DialogContent style={{ paddingBottom: "16px" }}>
           <DialogContentText className={classes.dialogContentText}>
             Ce projet est sous licence MIT
           </DialogContentText>
@@ -81,13 +99,28 @@ const LicenceMIT = () => {
             <Grid item xs={12}>
               <h4>Copyright (c) 2021 Baptiste LECHAT and Matthieu LECHAT</h4>
               <p>
-                Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+                Permission is hereby granted, free of charge, to any person
+                obtaining a copy of this software and associated documentation
+                files (the "Software"), to deal in the Software without
+                restriction, including without limitation the rights to use,
+                copy, modify, merge, publish, distribute, sublicense, and/or
+                sell copies of the Software, and to permit persons to whom the
+                Software is furnished to do so, subject to the following
+                conditions:
               </p>
               <p>
-                The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+                The above copyright notice and this permission notice shall be
+                included in all copies or substantial portions of the Software.
               </p>
-              <p>  
-                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+              <p>
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+                EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+                OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+                NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+                HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+                WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+                FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+                OTHER DEALINGS IN THE SOFTWARE.
               </p>
             </Grid>
           </Grid>
@@ -98,11 +131,17 @@ const LicenceMIT = () => {
             aria-label="add"
             className={classes.fab}
             onClick={() => openLink(urlMIT)}
-            >
-            <CopyrightIcon style={{marginRight: '8px'}}/>
-              Consulter la licence en ligne
+          >
+            <CopyrightIcon style={{ marginRight: "8px" }} />
+            Consulter la licence en ligne
           </Fab>
-          <Button color="secondary" className={classes.button} onClick={() => openLink(urlMIT)}>Consulter la licence en ligne</Button>
+          <Button
+            color="secondary"
+            className={classes.button}
+            onClick={() => openLink(urlMIT)}
+          >
+            Consulter la licence en ligne
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
@@ -111,7 +150,7 @@ const LicenceMIT = () => {
         </DialogActions>
       </Dialog>
     </div>
-    );
-}
+  );
+};
 
 export default LicenceMIT;

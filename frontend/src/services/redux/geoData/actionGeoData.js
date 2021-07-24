@@ -59,8 +59,8 @@ export const geoApiCall = () => {
           return data;
         })
         .then((data) => {
-          // axios.get(`https://sismo-api.vercel.app/api/v1/city/insee/${data.insee}`)
-            axios.get(`http://localhost:8000/api/v1/city/insee/${data.insee}`)
+          axios.get(`https://sismo-api.vercel.app/api/v1/city/insee/${data.insee}`)
+            // axios.get(`http://localhost:8000/api/v1/city/insee/${data.insee}`)
             .then((res) => {
               const city = {
                 ...res.data[0],

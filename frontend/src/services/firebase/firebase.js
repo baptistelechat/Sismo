@@ -1,6 +1,6 @@
 import app from "firebase/app";
 import "firebase/auth";
-import "firebase/firestore"
+import "firebase/firestore";
 
 var config = {
   apiKey: "AIzaSyANAaOfQvGCQPaRtHzttmT8guD8vGDcQ64",
@@ -33,8 +33,11 @@ class Firebase {
   // Récupérer le mot de passe
   passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
+  // Mise à jour du mot de passe
+  updatePassword = (password) => this.auth.currentUser.updatePassword(password);
+
   // Base de données
-  userCollection = uid => this.db.doc(`users/${uid}`)
+  userCollection = (uid) => this.db.doc(`users/${uid}`);
 }
 
 export default Firebase;

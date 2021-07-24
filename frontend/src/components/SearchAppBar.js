@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
 import { citiesApiCall } from "../services/redux/citiesData/actionCitiesData";
-import { geoApiCall, geoApiReset } from "../services/redux/geoData/actionGeoData";
+import {
+  geoApiCall,
+  geoApiReset,
+} from "../services/redux/geoData/actionGeoData";
 // MATERIAL UI
 import { fade, withStyles, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -331,7 +334,9 @@ function SearchAppBar({
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{
+                "aria-label": "search",
+              }}
               onChange={handleChange}
               value={searchValue}
               onKeyUp={handleKeypress}

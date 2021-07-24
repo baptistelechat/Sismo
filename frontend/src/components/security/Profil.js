@@ -10,9 +10,11 @@ import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ContactsIcon from "@material-ui/icons/Contacts";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Avatar from "@material-ui/core/Avatar";
+// COMPONENTS
+import ProfilSettings from "./ProfilSettings";
 // OTHER
 import toast from "react-hot-toast";
-import Avatar from "@material-ui/core/Avatar";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +49,7 @@ const Profil = ({ setOpenDialog, userSession }) => {
   const firebase = useContext(FirebaseContext);
 
   const [open, setOpen] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
   const [avatar, setAvatar] = useState(
     "https://source.boringavatars.com/beam/500/?colors=3f51b5,e91e63"
   );
@@ -57,6 +60,10 @@ const Profil = ({ setOpenDialog, userSession }) => {
 
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleOpenSettings = () => {
+    setOpenSettings(true);
   };
 
   const workInProgress = () => {
@@ -107,7 +114,7 @@ const Profil = ({ setOpenDialog, userSession }) => {
 
   const actions = [
     {
-      icon: <ContactsIcon onClick={workInProgress} />,
+      icon: <ContactsIcon onClick={handleOpenSettings} />,
       name: "Mon espace Sismo",
     },
     { icon: <ExitToAppIcon onClick={logOut} />, name: "Se déconnecter" },
@@ -116,6 +123,12 @@ const Profil = ({ setOpenDialog, userSession }) => {
 
   return (
     <div>
+      <ProfilSettings
+        openSettings={openSettings}
+        setOpenSettings={setOpenSettings}
+        avatar={avatar}
+        userSession={userSession}
+      />
       <SpeedDial
         color="secondary"
         ariaLabel="SpeedDial example"

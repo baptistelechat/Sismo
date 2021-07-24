@@ -7,7 +7,7 @@ import { Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
 // MATERIAL UI ICON
-import MailIcon from '@material-ui/icons/Mail';
+import MailIcon from "@material-ui/icons/Mail";
 // OTHER
 import toast from "react-hot-toast";
 
@@ -77,6 +77,7 @@ const ForgetPassword = ({ setAuthState }) => {
             },
           }
         );
+        setLoginData({ ...data });
       })
       .catch((error) => {
         toast.error(`💥 ${error.message}`, {
@@ -90,7 +91,6 @@ const ForgetPassword = ({ setAuthState }) => {
             secondary: "#FFFFFF",
           },
         });
-        setLoginData({ ...data });
       });
   };
 

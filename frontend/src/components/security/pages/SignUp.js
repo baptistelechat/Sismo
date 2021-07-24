@@ -14,6 +14,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // OTHER
 import toast from "react-hot-toast";
+import bcrypt from "bcryptjs";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +63,8 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const { firstName, lastName, email, password, confirmPassword } = loginData;
+  
   const handleTextFieldChange = (e) => {
     setLoginData({ ...loginData, [e.target.id]: e.target.value });
     setAvatar(
@@ -88,7 +91,6 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
     }, 600);
   };
 
-  const { firstName, lastName, email, password, confirmPassword } = loginData;
 
   const handleSubmit = () => {
     const { firstName, lastName, email, password } = loginData;
@@ -102,6 +104,7 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
           avatar,
           created: Date.now(),
           modified: Date.now(),
+          password: bcrypt.hashSync(password, 10)
         });
       })
       .then(() => {
@@ -120,6 +123,7 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
             },
           }
         );
+        setLoginData({ ...data });
         handleCloseDialog();
         setNewUser(true);
       })
@@ -135,9 +139,7 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
             secondary: "#FFFFFF",
           },
         });
-        setLoginData({ ...data });
       });
-    setLoginData({ ...data });
   };
 
   const button =

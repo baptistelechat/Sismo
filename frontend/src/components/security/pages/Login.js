@@ -96,6 +96,7 @@ const Login = ({ setAuthState, setOpenDialog }) => {
             secondary: "#FFFFFF",
           },
         });
+        setLoginData({ ...data });
         handleCloseDialog();
       })
       .catch((error) => {
@@ -110,7 +111,6 @@ const Login = ({ setAuthState, setOpenDialog }) => {
             secondary: "#FFFFFF",
           },
         });
-        setLoginData({ ...data });
       });
   };
 
