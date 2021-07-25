@@ -101,9 +101,7 @@ const Profil = ({ setOpenDialog, userSession }) => {
         .then((doc) => {
           if (doc && doc.exists) {
             const data = doc.data();
-            setAvatar(
-              `https://source.boringavatars.com/beam/500/${data.firstName}%20${data.lastName}%20${data.email}?colors=3f51b5,e91e63`
-            );
+            setAvatar(data.avatar);
           }
         })
         .catch((error) => {

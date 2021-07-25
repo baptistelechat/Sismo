@@ -14,7 +14,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 // OTHER
 import toast from "react-hot-toast";
-import bcrypt from "bcryptjs";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -104,7 +103,6 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
           avatar,
           created: Date.now(),
           modified: Date.now(),
-          password: bcrypt.hashSync(password, 10)
         });
       })
       .then(() => {
