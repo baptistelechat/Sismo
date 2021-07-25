@@ -165,9 +165,10 @@ const ProfilSettings = ({
           }
         );
         setFirebasePassword("");
+        firebase.userCollection(userSession.uid).update({ password: "" });
         firebase
           .userCollection(userSession.uid)
-          .update({ password: "" });
+          .update({ modified: Date.now() });
       })
       .catch((error) => {
         toast.error(`💥 ${error.message}`, {
@@ -205,6 +206,9 @@ const ProfilSettings = ({
             firebase
               .userCollection(userSession.uid)
               .update({ password: bcrypt.hashSync(newPassword, 10) });
+            firebase
+              .userCollection(userSession.uid)
+              .update({ modified: Date.now() });
             setCurrentPassword("");
             setNewPassword("");
             setConfirmNewPassword("");
@@ -254,7 +258,9 @@ const ProfilSettings = ({
             setFirstName(data.firstName);
             setLastName(data.lastName);
             setEmail(data.email);
-            setFirebasePassword(!data.password || data.password === "" ? "" : data.password);
+            setFirebasePassword(
+              !data.password || data.password === "" ? "" : data.password
+            );
           }
         })
         .catch((error) => {
