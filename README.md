@@ -59,6 +59,9 @@ Step 5 : open a browser and go to localhost
 localhost:3000
 ```
 
+## 📚 API Reference
+[Go to API Documentation](https://github.com/baptistelechat/Sismo/tree/main/api)
+
 ## 🏗 Built With
 - React → https://fr.reactjs.org/
 - Material UI → https://material-ui.com/

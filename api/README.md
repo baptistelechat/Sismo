@@ -1,6 +1,6 @@
 <h1 align="center">Sismo 🏡</h1>
 
-<img src="../frontend/public/logo.png" height="150" align="right">
+<img src="./frontend/public/logo.png" height="150" align="right">
 
 A tool to get the snow, wind, and seismicity zones in France (including DROM-COM).
 
@@ -9,25 +9,7 @@ A tool to get the snow, wind, and seismicity zones in France (including DROM-COM
 [![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://sismo.vercel.app)
 
 ## 💻 Visit Website
-This project use vercel.com (A cloud platform for serverless deployment.)
-
-Go to https://sismo.vercel.app to view the project.
-
-## 📸 Project's Screenshots
-### Main page
-![main page](../screenshot/mainPage.png)
-### Search result
-![search result](../screenshot/searchResult.png)
-### Drawer 
-![drawer](../screenshot/drawer.png)
-### Color Picker 
-![color picker](../screenshot/colorPicker.png)
-### Login Page
-![login page](../screenshot/login.png)
-### Darkmode 
-![darkmode](../screenshot/darkmode.png)
-### Responsive
-![responsive](../screenshot/responsive.png)
+Go to https://sismo-api.vercel.app to use the project.
 
 ## ✨ Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -42,9 +24,9 @@ Step 1: clone the project by using the commands below :
 ```bash
 git clone https://github.com/baptistelechat/Sismo.git
 ```
-Step 2: go to "frontend" folder :
+Step 2: go to "api" folder :
 ```bash
-cd frontend
+cd api
 ```
 Step 3: install the packages:
 ```bash
@@ -56,21 +38,46 @@ npm start
 ```
 Step 5 : open a browser and go to localhost
 ```bash
-localhost:3000
+localhost:8000
 ```
 
 ## 📚 API Reference
-[Go to API Documentation](https://github.com/baptistelechat/Sismo/tree/main/api)
+
+### Get items by Code Postal
+
+```http
+  GET /api/v1/city/cp/${id}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. Id is "Code Postal" of item(s) to fetch |
+
+### Get items by Code INSEE
+
+```http
+  GET /api/v1/city/insee/${id}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. Id is "Code INSEE" of item(s) to fetch |
+
+### Get items by name
+
+```http
+  GET /api/v1/city/name/${id}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. Id is name of item(s) to fetch |
 
 ## 🏗 Built With
-- React → https://fr.reactjs.org/
-- Material UI → https://material-ui.com/
-- Firebase → https://firebase.google.com/
+- Express → https://expressjs.com/fr/
 
-<p align="center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png" height="100">
-<img src="https://img.icons8.com/color/452/material-ui.png" height="85">
-<img src="https://img.icons8.com/color/480/firebase.png" height="85">
+<p align="left">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="65">
 </p>
 
 ## 😸 Maintainers
