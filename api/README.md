@@ -1,6 +1,6 @@
 <h1 align="center">Sismo 🏡</h1>
 
-<img src="./frontend/public/logo.png" height="150" align="right">
+<img src="../frontend/public/logo.png" height="150" align="right">
 
 A tool to get the snow, wind, and seismicity zones in France (including DROM-COM).
 
