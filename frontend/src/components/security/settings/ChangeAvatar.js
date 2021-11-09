@@ -98,6 +98,17 @@ const ChangeAvatar = ({ userSession, avatar, setAvatar }) => {
     }
   }, [firebase, userSession, setAvatar]);
 
+  const workInProgress = () => {
+    toast.success(`Fonctionnalité en cours de développement`, {
+      duration: 5000,
+      icon: "👨‍💻",
+      style: {
+        background: "#e65100",
+        color: "#FFFFFF",
+      },
+    });
+  };
+
   return (
     <div>
       <h3 className={classes.subtitle}>Modifier mon avatar</h3>
@@ -153,7 +164,8 @@ const ChangeAvatar = ({ userSession, avatar, setAvatar }) => {
               color="secondary"
               className={classes.fab}
               // onClick={handleSubmitChangeAvatar}
-              onClick={generateAvatar}
+              // onClick={generateAvatar}
+              onClick={workInProgress}
             >
               <PersonIcon className={classes.extendedIcon} />
               Changer mon avatar
@@ -165,6 +177,7 @@ const ChangeAvatar = ({ userSession, avatar, setAvatar }) => {
               component="span"
               color="secondary"
               className={classes.fab}
+              onClick={workInProgress}
             >
               <PersonOutlineIcon className={classes.extendedIcon} />
               Changer mon avatar
