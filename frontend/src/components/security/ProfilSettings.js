@@ -17,6 +17,7 @@ import HelpIcon from "@material-ui/icons/Help";
 // COMPONENTS
 import ChangeProfileInformation from "./settings/ChangeProfileInformation";
 import ChangePassword from "./settings/ChangePassword";
+import ChangeAvatar from "./settings/ChangeAvatar";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -156,6 +157,8 @@ const ProfilSettings = ({
           ></DialogContentText>
           <Grid container spacing={0} className={classes.gridContainer}>
             <Grid item xs={12}>
+              <ChangeAvatar avatar={avatar} setAvatar={setAvatar} />
+              <hr />
               <ChangeProfileInformation
                 userSession={userSession}
                 firstName={firstName}
@@ -177,7 +180,7 @@ const ProfilSettings = ({
                 setAvatar={setAvatar}
                 setShowEmailPassword={setShowEmailPassword}
               />
-              <hr/>
+              <hr />
               <ChangePassword
                 userSession={userSession}
                 email={email}
