@@ -154,17 +154,34 @@ const ReactMap = ({
         }
       );
     } else {
-      toast.success(
-        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
-        {
-          duration: 5000,
-          icon: "🏡",
-          style: {
-            background: materialTheme.toastColor,
-            color: "#FFFFFF",
-          },
-        }
-      );
+      if (
+        apiData[index].littoral === "Mer" ||
+        apiData[index].littoral === "Estuaire"
+      ) {
+        toast.success(
+          `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée🌊\u00a0Commune proche du littoral`,
+          {
+            duration: 5000,
+            icon: "🏡",
+            style: {
+              background: materialTheme.toastColor,
+              color: "#FFFFFF",
+            },
+          }
+        );
+      } else {
+        toast.success(
+          `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+          {
+            duration: 5000,
+            icon: "🏡",
+            style: {
+              background: materialTheme.toastColor,
+              color: "#FFFFFF",
+            },
+          }
+        );
+      }
     }
   };
 
@@ -210,17 +227,34 @@ const ReactMap = ({
         el.setAttribute("stroke", materialTheme.mainSecondaryColor);
       }
     });
-    toast.success(
-      `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
-      {
-        duration: 5000,
-        icon: "🏡",
-        style: {
-          background: materialTheme.toastColor,
-          color: "#FFFFFF",
-        },
-      }
-    );
+    if (
+      apiData[index].littoral === "Mer" ||
+      apiData[index].littoral === "Estuaire"
+    ) {
+      toast.success(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée🌊\u00a0Commune proche du littoral`,
+        {
+          duration: 5000,
+          icon: "🏡",
+          style: {
+            background: materialTheme.toastColor,
+            color: "#FFFFFF",
+          },
+        }
+      );
+    } else {
+      toast.success(
+        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+        {
+          duration: 5000,
+          icon: "🏡",
+          style: {
+            background: materialTheme.toastColor,
+            color: "#FFFFFF",
+          },
+        }
+      );
+    }
   };
 
   const marker = () => {

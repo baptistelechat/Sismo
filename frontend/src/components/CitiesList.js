@@ -96,17 +96,34 @@ function CitiesList({
         }
       );
     } else {
-      toast.success(
-        `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
-        {
-          duration: 5000,
-          icon: "🏡",
-          style: {
-            background: materialTheme.toastColor,
-            color: "#FFFFFF",
-          },
-        }
-      );
+      if (
+        apiData[index].littoral === "Mer" ||
+        apiData[index].littoral === "Estuaire"
+      ) {
+        toast.success(
+          `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée🌊\u00a0Commune proche du littoral`,
+          {
+            duration: 5000,
+            icon: "🏡",
+            style: {
+              background: materialTheme.toastColor,
+              color: "#FFFFFF",
+            },
+          }
+        );
+      } else {
+        toast.success(
+          `${apiData[index].nomCommuneExact} (${apiData[index].codePostal}) sélectionnée`,
+          {
+            duration: 5000,
+            icon: "🏡",
+            style: {
+              background: materialTheme.toastColor,
+              color: "#FFFFFF",
+            },
+          }
+        );
+      }
     }
   };
 
@@ -153,7 +170,12 @@ function CitiesList({
                 {indexSelected === index ? (
                   <ListItemText
                     className={classes.selected}
-                    primary={cities.nomCommune}
+                    primary={
+                      cities.littoral === "Mer" ||
+                      cities.littoral === "Estuaire"
+                        ? cities.nomCommune + " 🌊"
+                        : cities.nomCommune
+                    }
                     secondary={`Code postal : ${cities.codePostal} - INSEE : ${cities.insee}`}
                   />
                 ) : (
@@ -161,7 +183,10 @@ function CitiesList({
                     className={classes.p}
                     primary={
                       cities.codePostal
-                        ? cities.nomCommune
+                        ? cities.littoral === "Mer" ||
+                          cities.littoral === "Estuaire"
+                          ? cities.nomCommune + " 🌊"
+                          : cities.nomCommune
                         : "Aucune valeur correspondante à votre recherche"
                     }
                     secondary={
