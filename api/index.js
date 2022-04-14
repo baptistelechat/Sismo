@@ -80,6 +80,28 @@ const georisquesAPI = (insee, codePostal, nomCommuneExact) => {
     });
 };
 
+const dataGouvAdresseExact = (adresse) => {
+  return axios
+    .get(
+      `https://api-adresse.data.gouv.fr/search/?q=${adresse}&type=housenumber&autocomplete=1`
+    )
+    .then((dataGouv) => {
+      if (dataGouv.data.features[0] !== undefined) {
+        return {
+          insee: dataGouv.data.features[0].properties.citycode,
+          latitude: dataGouv.data.features[0].geometry.coordinates[1].toString(),
+          longitude: dataGouv.data.features[0].geometry.coordinates[0].toString(),
+        };
+      } else {
+        return {
+          insee: "-",
+          latitude: "-",
+          longitude: "-",
+        };
+      }
+    });
+};
+
 app.get("/", (req, res) => {
   res.send("🌍 Sismo API Work !");
 });
@@ -147,7 +169,7 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;
@@ -253,7 +275,7 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;
@@ -369,7 +391,7 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
             ).then((e) => {
               city.seisme = e.seisme;
               city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`
+              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
               data.push(city);
               if (i === match.length - 1) {
                 const id = req.params.id;
@@ -408,6 +430,135 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
       }
     }
   });
+});
+
+// -----------------------------------------------------------------
+// ------------------------- GET BY Adresse --------------------------
+// ------------------- GET /api/v1/city/adresse/:id ------------------
+// -----------------------------------------------------------------
+app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
+  const dataCsv = csv()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      dataGouvAdresseExact(req.params.id)
+        .then((data) => {
+          const id = data.insee;
+          const match = [];
+          for (let i = 0; i < jsonObj.length; i++) {
+            if (
+              jsonObj[i].insee === id &&
+              jsonObj[i].seisme !== "x" &&
+              jsonObj[i].vent !== "x" &&
+              jsonObj[i].neige !== "x"
+            ) {
+              match.push(jsonObj[i]);
+            }
+          }
+          if (match.length !== 0) {
+            match[0].latitude = data.latitude;
+            match[0].longitude = data.longitude;
+            console.log(match);
+          }
+          return match;
+        })
+
+        .then(async (match) => {
+          if (match.length === 0) {
+            res.send(["Aucune valeur correspondante à votre recherche"]);
+            console.log(
+              chalk.bgYellow.black(`No Adress Match for ${req.params.id}`)
+            );
+          } else {
+            const data = [];
+            for (let i = 0; i < match.length; i++) {
+              const city = match[i];
+              const insee = match[i].insee;
+              match[i].border = "-";
+              match[i].population = "-";
+              match[i].surface = "-";
+              await dataGouv(insee)
+                .then((e) => {
+                  if (e !== null) {
+                    if (insee === e.insee) {
+                      match[i].population = e.population;
+                      match[i].surface = e.surface;
+                      match[i].border = e.border;
+                    }
+                  }
+                  return match[i];
+                })
+                .then((city) => {
+                  georisquesAPI(
+                    city.insee,
+                    city.codePostal,
+                    city.nomCommuneExact
+                  ).then((e) => {
+                    city.seisme = e.seisme;
+                    city.georisques = e.georisques;
+                    city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
+                    data.push(city);
+                    if (i === match.length - 1) {
+                      const id = req.params.id;
+                      res.send(data);
+                      console.log(
+                        chalk.bgMagenta.black(
+                          `Get by Adresse : ${id}`
+                        )
+                      );
+                    }
+                  });
+                })
+                .catch((err, e) => {
+                  switch (err.message) {
+                    case "Cannot read property 'insee' of null":
+                      res.send(match);
+                      console.log(
+                        chalk.bgMagenta.black(
+                          `Get by Code_commune_INSEE : ${id}`
+                        )
+                      );
+                      break;
+
+                    case "Request failed with status code 504":
+                      res.send(
+                        "Limite du nombre de résultats atteint. Merci de préciser votre recherche."
+                      );
+                      console.log(
+                        chalk.bgMagenta.black(
+                          `Get by Adresse : ${id}`
+                        )
+                      );
+                      break;
+
+                    case "Request failed with status code 500":
+                      res.send(
+                        "Aucune valeur correspondante à votre recherche"
+                      );
+                      console.log(
+                        chalk.bgMagenta.black(
+                          `Get by Adresse : ${id}`
+                        )
+                      );
+                      break;
+
+                    default:
+                      res.send(err.message);
+                      console.log(
+                        chalk.bgMagenta.black(
+                          `Get by Adresse : ${id}`
+                        )
+                      );
+                      break;
+                  }
+                  const id = req.params.id;
+                  console.log(
+                    chalk.bgMagenta.black(`Get by Adresse : ${id}`)
+                  );
+                });
+            }
+          }
+        });
+    });
 });
 
 // Server listening on port 3000
