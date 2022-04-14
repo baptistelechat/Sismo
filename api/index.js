@@ -89,8 +89,10 @@ const dataGouvAdresseExact = (adresse) => {
       if (dataGouv.data.features[0] !== undefined) {
         return {
           insee: dataGouv.data.features[0].properties.citycode,
-          latitude: dataGouv.data.features[0].geometry.coordinates[1].toString(),
-          longitude: dataGouv.data.features[0].geometry.coordinates[0].toString(),
+          latitude:
+            dataGouv.data.features[0].geometry.coordinates[1].toString(),
+          longitude:
+            dataGouv.data.features[0].geometry.coordinates[0].toString(),
         };
       } else {
         return {
@@ -101,6 +103,51 @@ const dataGouvAdresseExact = (adresse) => {
       }
     });
 };
+
+const cadastre = (longitude, latitude) => {
+  const long = `${longitude.split(".")[0]}.${longitude
+    .split(".")[1]
+    .slice(0, 4)}`;
+  const lat = `${latitude.split(".")[0]}.${latitude.split(".")[1].slice(0, 4)}`;
+
+  console.log(long, lat);
+
+  return axios
+    .get(
+      `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom={%22type%22:%22Point%22,%22coordinates%22:[${long},${lat}]}`
+    )
+    .then((cadastre) => {
+      if (cadastre.data.features[0] !== undefined) {
+        const features = cadastre.data.features[0].properties;
+        // console.log(cadastre.data.features);
+        console.log(
+          `${features.codeCommuneAbs}-${
+            features.section
+          }-${features.numero.slice(-3)}`
+        );
+        return `${features.codeCommuneAbs}-${
+          features.section
+        }-${features.numero.slice(-3)}`;
+      } else {
+        console.log("-");
+        return "-";
+      }
+    });
+};
+
+const argile = (insee, longitude, latitude) => {
+  cadastre(longitude, latitude).then((codeParcel) => {
+    return axios
+      .get(
+        `https://errial.georisques.gouv.fr/api/avis?codeINSEE=${insee}&codeParcelle=${codeParcel}@${insee}`
+      )
+      .then((argile) => {
+        console.log(argile.data.niveauArgile);
+      });
+  });
+};
+
+argile("72054", "0.324325", "48.028358");
 
 app.get("/", (req, res) => {
   res.send("🌍 Sismo API Work !");
@@ -459,6 +506,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
             match[0].longitude = data.longitude;
             console.log(match);
           }
+
           return match;
         })
 
@@ -501,9 +549,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                       const id = req.params.id;
                       res.send(data);
                       console.log(
-                        chalk.bgMagenta.black(
-                          `Get by Adresse : ${id}`
-                        )
+                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
                       );
                     }
                   });
@@ -524,9 +570,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                         "Limite du nombre de résultats atteint. Merci de préciser votre recherche."
                       );
                       console.log(
-                        chalk.bgMagenta.black(
-                          `Get by Adresse : ${id}`
-                        )
+                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
                       );
                       break;
 
@@ -535,25 +579,19 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                         "Aucune valeur correspondante à votre recherche"
                       );
                       console.log(
-                        chalk.bgMagenta.black(
-                          `Get by Adresse : ${id}`
-                        )
+                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
                       );
                       break;
 
                     default:
                       res.send(err.message);
                       console.log(
-                        chalk.bgMagenta.black(
-                          `Get by Adresse : ${id}`
-                        )
+                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
                       );
                       break;
                   }
                   const id = req.params.id;
-                  console.log(
-                    chalk.bgMagenta.black(`Get by Adresse : ${id}`)
-                  );
+                  console.log(chalk.bgMagenta.black(`Get by Adresse : ${id}`));
                 });
             }
           }
@@ -562,6 +600,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
 });
 
 // Server listening on port 3000
-app.listen(PORT, () =>
-  console.log(chalk.bgGreen.black("Server listening on port " + PORT))
-);
+app.listen(PORT, () => {
+  console.log(chalk.bgGreen.black("Server listening on port " + PORT));
+  console.log(chalk.bgGreen.black("Server run at http://localhost:" + PORT));
+});
