@@ -104,50 +104,80 @@ const dataGouvAdresseExact = (adresse) => {
     });
 };
 
-const cadastre = (longitude, latitude) => {
-  const long = `${longitude.split(".")[0]}.${longitude
-    .split(".")[1]
-    .slice(0, 4)}`;
-  const lat = `${latitude.split(".")[0]}.${latitude.split(".")[1].slice(0, 4)}`;
-
-  console.log(long, lat);
-
-  return axios
-    .get(
-      `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom={%22type%22:%22Point%22,%22coordinates%22:[${long},${lat}]}`
-    )
-    .then((cadastre) => {
-      if (cadastre.data.features[0] !== undefined) {
-        const features = cadastre.data.features[0].properties;
-        // console.log(cadastre.data.features);
-        console.log(
-          `${features.codeCommuneAbs}-${
-            features.section
-          }-${features.numero.slice(-3)}`
-        );
-        return `${features.codeCommuneAbs}-${
-          features.section
-        }-${features.numero.slice(-3)}`;
-      } else {
-        console.log("-");
-        return "-";
-      }
-    });
-};
-
-const argile = (insee, longitude, latitude) => {
-  cadastre(longitude, latitude).then((codeParcel) => {
+const cadastre = (adresse) => {
+  return dataGouvAdresseExact(adresse).then((dataGouv) => {
     return axios
       .get(
-        `https://errial.georisques.gouv.fr/api/avis?codeINSEE=${insee}&codeParcelle=${codeParcel}@${insee}`
+        `https://geocodage.ign.fr/look4/address/search?q=${adresse}&lonlat=${dataGouv.latitude},${dataGouv.longitude}`
       )
-      .then((argile) => {
-        console.log(argile.data.niveauArgile);
+      .then((coordinates) => {
+        const pos =
+          coordinates.data.features[0].properties.houseNumberInfos
+            .otherPositions[0].geometry;
+
+        return axios
+          .get(
+            `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom=${JSON.stringify(
+              pos
+            )}`
+          )
+          .then((res) => {
+            if (res.data.features[0] !== undefined) {
+              const features = res.data.features[0].properties;
+              // console.log(res.data.features);
+              // console.log({
+              //   insee: dataGouv.insee,
+              //   latitude: dataGouv.latitude,
+              //   longitude: dataGouv.longitude,
+              //   codeParcelle: `${features.codeCommuneAbs}-${
+              //     features.section
+              //   }-${features.numero.slice(-3)}`,
+              // });
+              return {
+                insee: dataGouv.insee,
+                latitude: dataGouv.latitude,
+                longitude: dataGouv.longitude,
+                codeParcelle: `${features.codeCommuneAbs}-${
+                  features.section
+                }-${features.numero.slice(-3)}`,
+              };
+            } else {
+              // console.log({
+              //   insee: "-",
+              //   latitude: "-",
+              //   longitude: "-",
+              //   codeParcelle: "-",
+              // });
+              return {
+                insee: "-",
+                latitude: "-",
+                longitude: "-",
+                codeParcelle: "-",
+              };
+            }
+          });
       });
   });
 };
 
-argile("72054", "0.324325", "48.028358");
+const argile = (adresse) => {
+  cadastre(adresse).then((cadastre) => {
+    return axios
+      .get(
+        `https://errial.georisques.gouv.fr/api/avis?codeINSEE=${cadastre.insee}&codeParcelle=${cadastre.codeParcel}@${cadastre.insee}`
+      )
+      .then((argile) => {
+        console.log({
+          codeParcel: cadastre.codeParcel,
+          argile: argile.data.niveauArgile,
+        });
+        return {
+          codeParcel: cadastre.codeParcel,
+          argile: argile.data.niveauArgile,
+        }
+      });
+  });
+};
 
 app.get("/", (req, res) => {
   res.send("🌍 Sismo API Work !");
@@ -554,6 +584,10 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                     }
                   });
                 })
+                // .then((city) => {
+                //   argile(req.params.id).then((e) => {
+                //     city.argile = e.argile;
+                //     city.codeParcelle = e.codeParcelle;
                 .catch((err, e) => {
                   switch (err.message) {
                     case "Cannot read property 'insee' of null":
