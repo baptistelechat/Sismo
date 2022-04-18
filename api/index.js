@@ -15,6 +15,18 @@ const PORT = 8000;
 const csvFilePath = path.join(__dirname, "/public/data.csv");
 const APIversion = "/api/v1";
 
+function toTitleCase(str) {
+  var splitStr = str.toLowerCase().split(" ");
+  for (var i = 0; i < splitStr.length; i++) {
+    // You do not need to check if i is larger than splitStr length, as your for does that for you
+    // Assign it back to the array
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  // Directly return the joined string
+  return splitStr.join(" ");
+}
+
 const dataGouv = (insee) => {
   return axios
     .get(
@@ -55,7 +67,7 @@ const dataGouv = (insee) => {
     });
 };
 
-const georisquesAPI = (insee, codePostal, nomCommuneExact) => {
+const georisquesAPI = (insee, codePostal, nomCommuneExact, adresseExact, longitude, latitude, adresse) => {
   const agent = (axios.default.httpsAgent = new https.Agent({
     rejectUnauthorized: false,
   }));
@@ -68,7 +80,7 @@ const georisquesAPI = (insee, codePostal, nomCommuneExact) => {
       if (georisques.data.data[0] !== undefined) {
         const obj = {
           seisme: georisques.data.data[0].code_zone,
-          georisques: `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${insee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`,
+          georisques: adresseExact ? `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-adresse=true&isCadastre=false&ign=false&codeInsee=${insee}&lon=${longitude}&lat=${latitude}&adresse=${adresse}&CGU-adresse=on`: `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${insee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`,
         };
         return obj;
       } else {
@@ -111,70 +123,185 @@ const cadastre = (adresse) => {
         `https://geocodage.ign.fr/look4/address/search?q=${adresse}&lonlat=${dataGouv.latitude},${dataGouv.longitude}`
       )
       .then((coordinates) => {
-        const pos =
+        if (
           coordinates.data.features[0].properties.houseNumberInfos
-            .otherPositions[0].geometry;
+            .otherPositions !== undefined
+        ) {
+          const data = coordinates.data.features[0].properties;
 
-        return axios
-          .get(
-            `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom=${JSON.stringify(
-              pos
-            )}`
-          )
-          .then((res) => {
-            if (res.data.features[0] !== undefined) {
-              const features = res.data.features[0].properties;
-              // console.log(res.data.features);
-              // console.log({
-              //   insee: dataGouv.insee,
-              //   latitude: dataGouv.latitude,
-              //   longitude: dataGouv.longitude,
-              //   codeParcelle: `${features.codeCommuneAbs}-${
-              //     features.section
-              //   }-${features.numero.slice(-3)}`,
-              // });
-              return {
-                insee: dataGouv.insee,
-                latitude: dataGouv.latitude,
-                longitude: dataGouv.longitude,
-                codeParcelle: `${features.codeCommuneAbs}-${
-                  features.section
-                }-${features.numero.slice(-3)}`,
-              };
-            } else {
-              // console.log({
-              //   insee: "-",
-              //   latitude: "-",
-              //   longitude: "-",
-              //   codeParcelle: "-",
-              // });
-              return {
-                insee: "-",
-                latitude: "-",
-                longitude: "-",
-                codeParcelle: "-",
-              };
-            }
-          });
+          const pos = data.houseNumberInfos.otherPositions[0].geometry;
+
+          const adresse = `${
+            data.number !== null ? data.number + " " : ""
+          }${toTitleCase(data.street)}, ${
+            data.postalCode
+          } ${data.city.toUpperCase()}`;
+          return axios
+            .get(
+              `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom=${JSON.stringify(
+                pos
+              )}`
+            )
+            .then((res) => {
+              if (res.data.features[0] !== undefined) {
+                const features = res.data.features[0].properties;
+                // console.log(res.data.features);
+                // console.log({
+                //   insee: dataGouv.insee,
+                //   latitude: dataGouv.latitude,
+                //   longitude: dataGouv.longitude,
+                //   adresse: adresse,
+                //   codeParcelle: `${features.codeCommuneAbs}-${
+                //     features.section.startsWith("0")
+                //       ? features.section.slice(-1)
+                //       : features.section
+                //   }-${parseInt(features.numero).toString()}`,
+                // });
+                return {
+                  insee: dataGouv.insee,
+                  latitude: dataGouv.latitude,
+                  longitude: dataGouv.longitude,
+                  adresse: adresse,
+                  codeParcelle: `${features.codeCommuneAbs}-${
+                    features.section.startsWith("0")
+                      ? features.section.slice(-1)
+                      : features.section
+                  }-${parseInt(features.numero).toString()}`,
+                };
+              } else {
+                // console.log({
+                //   insee: "-",
+                //   latitude: "-",
+                //   longitude: "-",
+                //   codeParcelle: "-",
+                // });
+                return {
+                  insee: "-",
+                  latitude: "-",
+                  longitude: "-",
+                  adresse: "-",
+                  codeParcelle: "-",
+                };
+              }
+            });
+        } else if (coordinates.data.features[0].geometry.type !== undefined) {
+          const data = coordinates.data.features[0];
+
+          const pos = data.geometry;
+
+          const adresse = `${
+            data.properties.number !== null ? data.properties.number + " " : ""
+          }${toTitleCase(data.properties.street)}, ${
+            data.properties.postalCode
+          } ${data.properties.city.toUpperCase()}`;
+
+          return axios
+            .get(
+              `https://geocodage.ign.fr/look4/parcel/reverse?searchGeom=${JSON.stringify(
+                pos
+              )}`
+            )
+            .then((res) => {
+              if (res.data.features[0] !== undefined) {
+                const features = res.data.features[0].properties;
+                // console.log(res.data.features);
+                // console.log({
+                //   insee: dataGouv.insee,
+                //   latitude: dataGouv.latitude,
+                //   longitude: dataGouv.longitude,
+                //   adresse: adresse,
+                //   codeParcelle: `${features.codeCommuneAbs}-${
+                //     features.section.startsWith("0")
+                //       ? features.section.slice(-1)
+                //       : features.section
+                //   }-${parseInt(features.numero).toString()}`,
+                // });
+                return {
+                  insee: dataGouv.insee,
+                  latitude: dataGouv.latitude,
+                  longitude: dataGouv.longitude,
+                  adresse: adresse,
+                  codeParcelle: `${features.codeCommuneAbs}-${
+                    features.section.startsWith("0")
+                      ? features.section.slice(-1)
+                      : features.section
+                  }-${parseInt(features.numero).toString()}`,
+                };
+              } else {
+                // console.log({
+                //   insee: "-",
+                //   latitude: "-",
+                //   longitude: "-",
+                //   codeParcelle: "-",
+                // });
+                return {
+                  insee: "-",
+                  latitude: "-",
+                  longitude: "-",
+                  adresse: "-",
+                  codeParcelle: "-",
+                };
+              }
+            });
+        } else {
+          // console.log({
+          //   insee: "-",
+          //   latitude: "-",
+          //   longitude: "-",
+          //   codeParcelle: "-",
+          // });
+          return {
+            insee: "-",
+            latitude: "-",
+            longitude: "-",
+            codeParcelle: "-",
+          };
+        }
       });
   });
 };
 
 const argile = (adresse) => {
-  cadastre(adresse).then((cadastre) => {
+  return cadastre(adresse).then((cadastre) => {
     return axios
       .get(
-        `https://errial.georisques.gouv.fr/api/avis?codeINSEE=${cadastre.insee}&codeParcelle=${cadastre.codeParcel}@${cadastre.insee}`
+        `https://errial.georisques.gouv.fr/api/avis?codeINSEE=${cadastre.insee}&codeParcelle=${cadastre.codeParcelle}@${cadastre.insee}`
       )
       .then((argile) => {
-        console.log({
-          codeParcel: cadastre.codeParcel,
-          argile: argile.data.niveauArgile,
-        });
+        // console.log({
+        //   codeParcelle: cadastre.codeParcelle,
+        //   argile: {
+        //     niveau: argile.data.niveauArgile,
+        //     classe:
+        //       argile.data.niveauArgile === 0
+        //         ? "Zone a priori non argileuse"
+        //         : argile.data.niveauArgile === 1
+        //         ? "Exposition faible"
+        //         : argile.data.niveauArgile === 2
+        //         ? "Exposition moyenne"
+        //         : argile.data.niveauArgile === 3
+        //         ? "Exposition élevée"
+        //         : "-",
+        //     adresse: cadastre.adresse,
+        //   },
+        // });
         return {
-          codeParcel: cadastre.codeParcel,
-          argile: argile.data.niveauArgile,
-        }
+          codeParcelle: cadastre.codeParcelle,
+          argile: {
+            niveau: argile.data.niveauArgile !== undefined ? argile.data.niveauArgile : "-",
+            classe:
+              argile.data.niveauArgile === 0
+                ? "Zone a priori non argileuse"
+                : argile.data.niveauArgile === 1
+                ? "Exposition faible"
+                : argile.data.niveauArgile === 2
+                ? "Exposition moyenne"
+                : argile.data.niveauArgile === 3
+                ? "Exposition élevée"
+                : "-",
+            adresse: cadastre.adresse,
+          },
+        };
       });
   });
 };
@@ -218,6 +345,12 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
         match[i].border = "-";
         match[i].population = "-";
         match[i].surface = "-";
+        match[i].argile = {
+          niveau: "-",
+          classe: "-",
+          adresse: "-",
+        };
+        match[i].codeParcelle = "-";
         await dataGouv(insee)
           .then((e) => {
             if (e !== null) {
@@ -324,6 +457,12 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
         match[i].border = "-";
         match[i].population = "-";
         match[i].surface = "-";
+        match[i].argile = {
+          niveau: "-",
+          classe: "-",
+          adresse: "-",
+        };
+        match[i].codeParcelle = "-";
         await dataGouv(insee)
           .then((e) => {
             if (e !== null) {
@@ -440,6 +579,12 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
         match[i].border = "-";
         match[i].population = "-";
         match[i].surface = "-";
+        match[i].argile = {
+          niveau: "-",
+          classe: "-",
+          adresse: "-",
+        };
+        match[i].codeParcelle = "-";
         await dataGouv(insee)
           .then((e) => {
             if (e !== null) {
@@ -534,7 +679,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
           if (match.length !== 0) {
             match[0].latitude = data.latitude;
             match[0].longitude = data.longitude;
-            console.log(match);
+            // console.log(match);
           }
 
           return match;
@@ -569,25 +714,32 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                   georisquesAPI(
                     city.insee,
                     city.codePostal,
-                    city.nomCommuneExact
-                  ).then((e) => {
-                    city.seisme = e.seisme;
-                    city.georisques = e.georisques;
-                    city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
-                    data.push(city);
-                    if (i === match.length - 1) {
-                      const id = req.params.id;
-                      res.send(data);
-                      console.log(
-                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
-                      );
-                    }
-                  });
+                    city.nomCommuneExact,
+                    true,
+                    city.longitude,
+                    city.latitude,
+                    req.params.id
+                  )
+                    .then((e) => {
+                      city.seisme = e.seisme;
+                      city.georisques = e.georisques;
+                      city.googleMaps = `https://www.google.fr/maps/place/${req.params.id}/@${city.latitude},${city.longitude}`;
+                      data.push(city);
+                      return city;
+                    })
+                    .then((city) => {
+                      argile(req.params.id).then((e) => {
+                        // console.log(e);
+                        city.argile = e.argile;
+                        city.codeParcelle = e.codeParcelle;
+                        const id = req.params.id;
+                        res.send(data);
+                        console.log(
+                          chalk.bgMagenta.black(`Get by Adresse : ${id}`)
+                        );
+                      });
+                    });
                 })
-                // .then((city) => {
-                //   argile(req.params.id).then((e) => {
-                //     city.argile = e.argile;
-                //     city.codeParcelle = e.codeParcelle;
                 .catch((err, e) => {
                   switch (err.message) {
                     case "Cannot read property 'insee' of null":
