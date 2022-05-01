@@ -1,5 +1,5 @@
 // REACT
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // REDUX
 import { connect } from "react-redux";
 import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
@@ -186,6 +186,20 @@ function SearchAppBar({
 
   const [searchValue, setSearchValue] = useState("");
   const [param, setParam] = useState("cp");
+
+  useEffect(() => {
+    const location = window.location.pathname;
+    const validParam = ["cp", "insee", "name", "adresse"];
+    if (location !== "/") {
+      const param = location.split("/")[1];
+      if (validParam.includes(param)) {
+        const searchValue = location.split("/")[2];
+        setIndex(-1);
+        geoApiReset();
+        citiesApiCall(param, searchValue);
+      }
+    }
+  }, [window.location.pathname]);
 
   const handleSubmit = async () => {
     setIndex(-1);
