@@ -298,6 +298,11 @@ function SearchAppBar({
                 control={<MyRadio />}
                 label="Nom"
               />
+              <FormControlLabel
+                value="adresse"
+                control={<MyRadio />}
+                label="Adresse"
+              />
             </RadioGroup>
           </FormControl>
 
@@ -320,6 +325,9 @@ function SearchAppBar({
               </option>
               <option value={"name"} className={classes.childrenSelectMenu}>
                 Nom
+              </option>
+              <option value={"adresse"} className={classes.childrenSelectMenu}>
+                Adresse
               </option>
             </Select>
           </FormControl>

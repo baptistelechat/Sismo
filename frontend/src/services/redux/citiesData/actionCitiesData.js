@@ -38,19 +38,34 @@ export const citiesApiCall = (param, searchValue) => {
       },
     });
 
-    axios.get(`https://sismo-api.vercel.app/api/v1/city/${param}/${searchValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace("'"," ").toUpperCase().replace("SAINT","ST").replace("SAINTE","STE").split('-').join(' ')}`)
-    // axios
-    //   .get(
-    //     `http://localhost:8000/api/v1/city/${param}/${searchValue
-    //       .normalize("NFD")
-    //       .replace(/[\u0300-\u036f]/g, "")
-    //       .replace("'", " ")
-    //       .toUpperCase()
-    //       .replace("SAINT", "ST")
-    //       .replace("SAINTE", "STE")
-    //       .split("-")
-    //       .join(" ")}`
-    //   )
+    axios
+      .get(
+        `https://sismo-api.vercel.app/api/v1/city/${param}/${
+          param === "adresse"
+            ? searchValue
+            : searchValue
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace("'", " ")
+                .toUpperCase()
+                .replace("SAINT", "ST")
+                .replace("SAINTE", "STE")
+                .split("-")
+                .join(" ")
+        }`
+      )
+      // axios
+      //   .get(
+      //     `http://localhost:8000/api/v1/city/${param}/${searchValue
+      //       .normalize("NFD")
+      //       .replace(/[\u0300-\u036f]/g, "")
+      //       .replace("'", " ")
+      //       .toUpperCase()
+      //       .replace("SAINT", "ST")
+      //       .replace("SAINTE", "STE")
+      //       .split("-")
+      //       .join(" ")}`
+      //   )
       .then((res) => {
         dispatch(loadCitiesApiSuccess(res.data));
 
@@ -66,6 +81,9 @@ export const citiesApiCall = (param, searchValue) => {
           if (apiDataLength > 1 && param === "name") {
             return `${apiDataLength} résultats trouvés pour la valeur : ${searchValue}`;
           }
+          if (apiDataLength > 1 && param === "adresse") {
+            return `${apiDataLength} résultats trouvés pour la recherche : ${searchValue}`;
+          }
           if (apiDataLength === 1 && param === "cp") {
             return `${apiDataLength} résultat trouvé pour le code postal : ${searchValue}`;
           }
@@ -74,6 +92,9 @@ export const citiesApiCall = (param, searchValue) => {
           }
           if (apiDataLength === 1 && param === "name") {
             return `${apiDataLength} résultat trouvé pour la valeur : ${searchValue}`;
+          }
+          if (apiDataLength === 1 && param === "adresse") {
+            return `${apiDataLength} résultat trouvé pour la recherche : ${searchValue}`;
           }
         };
 
