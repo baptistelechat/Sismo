@@ -199,7 +199,7 @@ function SearchAppBar({
         citiesApiCall(param, searchValue);
       }
     }
-  }, [window.location.pathname]);
+  }, [setIndex, geoApiReset, citiesApiCall]);
 
   const handleSubmit = async () => {
     setIndex(-1);
