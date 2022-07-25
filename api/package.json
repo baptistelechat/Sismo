@@ -18,7 +18,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.19",
     "standard": "^16.0.3"
   }
 }

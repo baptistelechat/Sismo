@@ -64,10 +64,19 @@ const dataGouv = (insee) => {
       } else {
         return null;
       }
-    });
+    })
+    .catch((err) => console.log(err.message));
 };
 
-const georisquesAPI = (insee, codePostal, nomCommuneExact, adresseExact, longitude, latitude, adresse) => {
+const georisquesAPI = (
+  insee,
+  codePostal,
+  nomCommuneExact,
+  adresseExact,
+  longitude,
+  latitude,
+  adresse
+) => {
   const agent = (axios.default.httpsAgent = new https.Agent({
     rejectUnauthorized: false,
   }));
@@ -80,7 +89,9 @@ const georisquesAPI = (insee, codePostal, nomCommuneExact, adresseExact, longitu
       if (georisques.data.data[0] !== undefined) {
         const obj = {
           seisme: georisques.data.data[0].code_zone,
-          georisques: adresseExact ? `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-adresse=true&isCadastre=false&ign=false&codeInsee=${insee}&lon=${longitude}&lat=${latitude}&adresse=${adresse}&CGU-adresse=on`: `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${insee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`,
+          georisques: adresseExact
+            ? `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-adresse=true&isCadastre=false&ign=false&codeInsee=${insee}&lon=${longitude}&lat=${latitude}&adresse=${adresse}&CGU-adresse=on`
+            : `https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi/rapport?form-commune=true&codeInsee=${insee}&ign=false&CGU-commune=on&commune=${codePostal}+${nomCommuneExact}`,
         };
         return obj;
       } else {
@@ -89,7 +100,8 @@ const georisquesAPI = (insee, codePostal, nomCommuneExact, adresseExact, longitu
         };
         return obj;
       }
-    });
+    })
+    .catch((err) => console.log(err.message));
 };
 
 const dataGouvAdresseExact = (adresse) => {
@@ -113,7 +125,8 @@ const dataGouvAdresseExact = (adresse) => {
           longitude: "-",
         };
       }
-    });
+    })
+    .catch((err) => console.log(err.message));
 };
 
 const cadastre = (adresse) => {
@@ -183,7 +196,8 @@ const cadastre = (adresse) => {
                   codeParcelle: "-",
                 };
               }
-            });
+            })
+            .catch((err) => console.log(err.message));
         } else if (coordinates.data.features[0].geometry.type !== undefined) {
           const data = coordinates.data.features[0];
 
@@ -242,7 +256,8 @@ const cadastre = (adresse) => {
                   codeParcelle: "-",
                 };
               }
-            });
+            })
+            .catch((err) => console.log(err.message));
         } else {
           // console.log({
           //   insee: "-",
@@ -288,7 +303,10 @@ const argile = (adresse) => {
         return {
           codeParcelle: cadastre.codeParcelle,
           argile: {
-            niveau: argile.data.niveauArgile !== undefined ? argile.data.niveauArgile : "-",
+            niveau:
+              argile.data.niveauArgile !== undefined
+                ? argile.data.niveauArgile
+                : "-",
             classe:
               argile.data.niveauArgile === 0
                 ? "Zone a priori non argileuse"
@@ -302,7 +320,8 @@ const argile = (adresse) => {
             adresse: cadastre.adresse,
           },
         };
-      });
+      })
+      .catch((err) => console.log(err.message));
   });
 };
 
@@ -377,14 +396,23 @@ app.get(`${APIversion}/city/cp/:id`, (req, res) => {
               city.codePostal,
               city.nomCommuneExact
             ).then((e) => {
-              city.seisme = e.seisme;
-              city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
-              data.push(city);
-              if (i === match.length - 1) {
-                const id = req.params.id;
-                res.send(data);
-                console.log(chalk.bgBlue.black(`Get by Code_postal : ${id}`));
+              if (e !== undefined) {
+                city.seisme = e.seisme;
+                city.georisques = e.georisques;
+                city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(chalk.bgBlue.black(`Get by Code_postal : ${id}`));
+                }
+              } else {
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(chalk.bgBlue.black(`Get by Code_postal : ${id}`));
+                }
               }
             });
           })
@@ -489,16 +517,27 @@ app.get(`${APIversion}/city/insee/:id`, (req, res) => {
               city.codePostal,
               city.nomCommuneExact
             ).then((e) => {
-              city.seisme = e.seisme;
-              city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
-              data.push(city);
-              if (i === match.length - 1) {
-                const id = req.params.id;
-                res.send(data);
-                console.log(
-                  chalk.bgMagenta.black(`Get by Code_commune_INSEE : ${id}`)
-                );
+              if (e !== undefined) {
+                city.seisme = e.seisme;
+                city.georisques = e.georisques;
+                city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(
+                    chalk.bgMagenta.black(`Get by Code_commune_INSEE : ${id}`)
+                  );
+                }
+              } else {
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(
+                    chalk.bgMagenta.black(`Get by Code_commune_INSEE : ${id}`)
+                  );
+                }
               }
             });
           })
@@ -611,14 +650,27 @@ app.get(`${APIversion}/city/name/:id`, (req, res) => {
               city.codePostal,
               city.nomCommuneExact
             ).then((e) => {
-              city.seisme = e.seisme;
-              city.georisques = e.georisques;
-              city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
-              data.push(city);
-              if (i === match.length - 1) {
-                const id = req.params.id;
-                res.send(data);
-                console.log(chalk.bgYellow.black(`Get by Nom_commune : ${id}`));
+              if (e !== undefined) {
+                city.seisme = e.seisme;
+                city.georisques = e.georisques;
+                city.googleMaps = `https://www.google.fr/maps/place/${city.codePostal}+${city.nomCommuneExact}`;
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(
+                    chalk.bgYellow.black(`Get by Nom_commune : ${id}`)
+                  );
+                }
+              } else {
+                data.push(city);
+                if (i === match.length - 1) {
+                  const id = req.params.id;
+                  res.send(data);
+                  console.log(
+                    chalk.bgYellow.black(`Get by Nom_commune : ${id}`)
+                  );
+                }
               }
             });
           })
@@ -721,11 +773,16 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                     req.params.id
                   )
                     .then((e) => {
-                      city.seisme = e.seisme;
-                      city.georisques = e.georisques;
-                      city.googleMaps = `https://www.google.fr/maps/place/${req.params.id}/@${city.latitude},${city.longitude}`;
-                      data.push(city);
-                      return city;
+                      if (e !== undefined) {
+                        city.seisme = e.seisme;
+                        city.georisques = e.georisques;
+                        city.googleMaps = `https://www.google.fr/maps/place/${req.params.id}/@${city.latitude},${city.longitude}`;
+                        data.push(city);
+                        return city;
+                      } else {
+                        data.push(city);
+                        return city;
+                      }
                     })
                     .then((city) => {
                       argile(req.params.id).then((e) => {
@@ -735,7 +792,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                         const id = req.params.id;
                         res.send(data);
                         console.log(
-                          chalk.bgMagenta.black(`Get by Adresse : ${id}`)
+                          chalk.bgCyan.black(`Get by Adresse : ${id}`)
                         );
                       });
                     });
@@ -745,9 +802,7 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                     case "Cannot read property 'insee' of null":
                       res.send(match);
                       console.log(
-                        chalk.bgMagenta.black(
-                          `Get by Code_commune_INSEE : ${id}`
-                        )
+                        chalk.bgCyan.black(`Get by Code_commune_INSEE : ${id}`)
                       );
                       break;
 
@@ -755,29 +810,23 @@ app.get(`${APIversion}/city/adresse/:id`, (req, res) => {
                       res.send(
                         "Limite du nombre de résultats atteint. Merci de préciser votre recherche."
                       );
-                      console.log(
-                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
-                      );
+                      console.log(chalk.bgCyan.black(`Get by Adresse : ${id}`));
                       break;
 
                     case "Request failed with status code 500":
                       res.send(
                         "Aucune valeur correspondante à votre recherche"
                       );
-                      console.log(
-                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
-                      );
+                      console.log(chalk.bgCyan.black(`Get by Adresse : ${id}`));
                       break;
 
                     default:
                       res.send(err.message);
-                      console.log(
-                        chalk.bgMagenta.black(`Get by Adresse : ${id}`)
-                      );
+                      console.log(chalk.bgCyan.black(`Get by Adresse : ${id}`));
                       break;
                   }
                   const id = req.params.id;
-                  console.log(chalk.bgMagenta.black(`Get by Adresse : ${id}`));
+                  console.log(chalk.bgCyan.black(`Get by Adresse : ${id}`));
                 });
             }
           }
