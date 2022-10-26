@@ -45,7 +45,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) => {
+const SignUp = ({
+  setAuthState,
+  setNewUser,
+  setOpenDialog,
+  avatar,
+  setAvatar,
+}) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
 
@@ -63,7 +69,7 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { firstName, lastName, email, password, confirmPassword } = loginData;
-  
+
   const handleTextFieldChange = (e) => {
     setLoginData({ ...loginData, [e.target.id]: e.target.value });
     setAvatar(
@@ -90,7 +96,6 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
     }, 600);
   };
 
-
   const handleSubmit = () => {
     const { firstName, lastName, email, password } = loginData;
     firebase
@@ -101,6 +106,7 @@ const SignUp = ({ setAuthState, setNewUser, setOpenDialog, avatar, setAvatar }) 
           lastName,
           email,
           avatar,
+          authorizedUser: 0,
           created: Date.now(),
           modified: Date.now(),
         });

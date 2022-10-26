@@ -184,7 +184,7 @@ function App({ materialTheme, indexSelected, apiData, geoData }) {
         />
       </Helmet>
       <Toaster position="bottom-right" reverseOrder={true} />
-      <SearchAppBar isLogin={isLogin} />
+      <SearchAppBar isLogin={isLogin} userSession={userSession} />
       <Security
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}

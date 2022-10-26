@@ -1,5 +1,5 @@
 // REACT
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // REDUX
 import { connect } from "react-redux";
 import { setIndex } from "../services/redux/indexSelected/actionIndexSelected";
@@ -32,6 +32,8 @@ import toast from "react-hot-toast";
 import MyDrawer from "./Drawer";
 // PICTURES
 import logo from "../img/logo.png";
+// FIREBASE
+import { FirebaseContext } from "../services/firebase";
 
 // STYLE
 const useStyles = makeStyles((theme) => ({
@@ -175,6 +177,7 @@ const MyTooltip = withStyles((theme) => ({
 
 function SearchAppBar({
   isLogin,
+  userSession,
   setIndex,
   apiData,
   citiesApiCall,
@@ -186,20 +189,9 @@ function SearchAppBar({
 
   const [searchValue, setSearchValue] = useState("");
   const [param, setParam] = useState("cp");
+  const [isAuthorizedUser, setIsAuthorizedUser] = useState(null);
 
-  useEffect(() => {
-    const location = window.location.pathname;
-    const validParam = ["cp", "insee", "name", "adresse"];
-    if (location !== "/") {
-      const param = location.split("/")[1];
-      if (validParam.includes(param)) {
-        const searchValue = location.split("/")[2];
-        setIndex(-1);
-        geoApiReset();
-        citiesApiCall(param, searchValue);
-      }
-    }
-  }, [setIndex, geoApiReset, citiesApiCall]);
+  const firebase = useContext(FirebaseContext);
 
   const handleSubmit = async () => {
     setIndex(-1);
@@ -208,22 +200,10 @@ function SearchAppBar({
   };
 
   const handleSubmitDisable = () => {
-    isLogin === false
-      ? toast.error(
-          `Une erreur est survenue, merci d'actualiser l'application pour vous connecter.`,
-          {
-            duration: 5000,
-            style: {
-              background: "#e57373",
-              color: "#FFFFFF",
-            },
-            iconTheme: {
-              primary: "#b71c1c",
-              secondary: "#FFFFFF",
-            },
-          }
-        )
-      : toast.error(`Champ de recherche vide. Veuillez saisir une valeur.`, {
+    if (isLogin === false) {
+      toast.error(
+        `Une erreur est survenue, merci d'actualiser l'application pour vous connecter.`,
+        {
           duration: 5000,
           style: {
             background: "#e57373",
@@ -233,7 +213,24 @@ function SearchAppBar({
             primary: "#b71c1c",
             secondary: "#FFFFFF",
           },
-        });
+        }
+      );
+    }
+    if (isAuthorizedUser === 0) {
+      console.log("unAuthorizedUser");
+    } else {
+      toast.error(`Champ de recherche vide. Veuillez saisir une valeur.`, {
+        duration: 5000,
+        style: {
+          background: "#e57373",
+          color: "#FFFFFF",
+        },
+        iconTheme: {
+          primary: "#b71c1c",
+          secondary: "#FFFFFF",
+        },
+      });
+    }
   };
 
   const handleChange = (event) => {
@@ -268,6 +265,37 @@ function SearchAppBar({
     setSearchValue("");
     setIndex(-1);
   };
+
+  useEffect(() => {
+    const location = window.location.pathname;
+    const validParam = ["cp", "insee", "name", "adresse"];
+    if (location !== "/") {
+      const param = location.split("/")[1];
+      if (validParam.includes(param)) {
+        const searchValue = location.split("/")[2];
+        setIndex(-1);
+        geoApiReset();
+        citiesApiCall(param, searchValue);
+      }
+    }
+  }, [setIndex, geoApiReset, citiesApiCall]);
+
+  useEffect(() => {
+    if (!!userSession) {
+      firebase
+        .userCollection(userSession.uid)
+        .get()
+        .then((doc) => {
+          if (doc && doc.exists) {
+            const data = doc.data();
+            setIsAuthorizedUser(data.authorizedUser);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [firebase, userSession, setIsAuthorizedUser]);
 
   return (
     <div className={classes.root}>
