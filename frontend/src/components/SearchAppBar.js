@@ -194,9 +194,26 @@ function SearchAppBar({
   const firebase = useContext(FirebaseContext);
 
   const handleSubmit = async () => {
-    setIndex(-1);
-    geoApiReset();
-    await citiesApiCall(param, searchValue);
+    if (isAuthorizedUser === 1) {
+      setIndex(-1);
+      geoApiReset();
+      await citiesApiCall(param, searchValue);
+    } else {
+      toast.error(
+        `Votre compte n'a pas encore était validé. Contactez l'administrateur.`,
+        {
+          duration: 5000,
+          style: {
+            background: "#e57373",
+            color: "#FFFFFF",
+          },
+          iconTheme: {
+            primary: "#b71c1c",
+            secondary: "#FFFFFF",
+          },
+        }
+      );
+    }
   };
 
   const handleSubmitDisable = () => {
@@ -215,9 +232,6 @@ function SearchAppBar({
           },
         }
       );
-    }
-    if (isAuthorizedUser === 0) {
-      console.log("unAuthorizedUser");
     } else {
       toast.error(`Champ de recherche vide. Veuillez saisir une valeur.`, {
         duration: 5000,

@@ -51,6 +51,7 @@ const SignUp = ({
   setOpenDialog,
   avatar,
   setAvatar,
+  materialTheme,
 }) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
@@ -127,6 +128,15 @@ const SignUp = ({
             },
           }
         );
+        toast.success(`Compte en cours de validation par l’administrateur`, {
+          duration: 5000,
+          icon: "🏡",
+          style: {
+            background: materialTheme.toastColor,
+            color: "#FFFFFF",
+          },
+        });
+
         setLoginData({ ...data });
         handleCloseDialog();
         setNewUser(true);
