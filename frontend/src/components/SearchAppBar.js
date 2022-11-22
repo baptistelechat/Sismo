@@ -194,7 +194,7 @@ function SearchAppBar({
   const firebase = useContext(FirebaseContext);
 
   const handleSubmit = async () => {
-    if (isAuthorizedUser === 1) {
+    if (isAuthorizedUser === "1") {
       setIndex(-1);
       geoApiReset();
       await citiesApiCall(param, searchValue);
