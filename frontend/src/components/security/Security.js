@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
     float: "right",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -157,6 +157,7 @@ const Security = ({
             setNewUser={setNewUser}
             avatar={avatar}
             setAvatar={setAvatar}
+            materialTheme={materialTheme}
           />
         ) : authState === "login" ? (
           <Login
